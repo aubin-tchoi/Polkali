@@ -8,11 +8,11 @@ function onOpen() {
 }
 
 function sync_onSelec() {
-  // Returning the last row of a sheet (not possible for this particular sheet for some unkown reasons)
+  // Returning the last non-empty row of a sheet (not possible with getLastRow for this particular sheet for some unkown reasons)
   function manually_getLastRow(sheet) {
-    let data = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues();
+    let data = sheet.getRange(1, 1, sheet.getLastRow(), 5).getValues();
     for (let row=1;row<sheet.getLastRow();row++) {
-      if (data[row][0] == "" || row > 200) {
+      if ((data[row][0] == "" && data[row][1] == "" && data[row][2] == "" && data[row][4] == "")|| row > 200) {
         return row;
       }
     }      
