@@ -18,7 +18,7 @@ function sync_onSelec() {
     }      
   }
   
-  // Updagint sheet sheet with row row
+  // Updating sheet sheet with row row
   function update(sheet, row) {
     // Checking whether PEP actually did obtain the mission or not
     if (row["État"] != "Etude obtenue ") {
@@ -55,7 +55,7 @@ function sync_onSelec() {
   .setHeight(350);
   
   // Confirm selection
-  let confirm_selection = ui.alert("Synchronisation des données", "Avez-vous bien sélectionné les lignes à synchroniser ?", ui.ButtonSet.YES_NO);
+  let confirm_selection = ui.alert("Synchronisation des données", "Vous devez préalablement sélectionner la ligne à synchroniser (par exemple en cliquant sur le numéro à gauche). \n Confirmez-vous votre sélection ?", ui.ButtonSet.YES_NO);
   if (confirm_selection == ui.Button.NO) {return;}
   
   // Loading screen
@@ -81,5 +81,6 @@ function sync_onSelec() {
   .createHtmlOutput(`<span style='font-size: 16pt;'> <span style="font-family: 'roboto', sans-serif;">L'opération a été effectuée avec succès, veuillez remplir manuellement le nom de l'étude dans le <a href="${sheet_url}">suivi des études</a>.<br/><br/> La bise</span></span><p style="text-align:center;"><img src="${img_url}" alt="C'est la PEP qui régale !" width="130" height="131"></p>`);
   ui.showModalDialog(operation_success, "Synchronisation des données");
 }
+
 
 
