@@ -75,12 +75,11 @@ function sync_onSelec() {
   });
   
   // Confirmation
-  let img_url = "https://fcbk.su/_data/stickers/tonton_friends_returns/tonton_friends_returns_06.png",
+  let img_url = "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/Ddabong.png",
       sheet_url = "https://docs.google.com/spreadsheets/d/1gmJLAKvUOYFeS32raOiSTYiE_ozr7YSk26Y0t0blm04/edit#gid=0",
       operation_success = HtmlService
   .createHtmlOutput(`<span style='font-size: 16pt;'> <span style="font-family: 'roboto', sans-serif;">L'opération a été effectuée avec succès, veuillez remplir manuellement le nom de l'étude dans le <a href="${sheet_url}">suivi des études</a>.<br/><br/> La bise</span></span><p style="text-align:center;"><img src="${img_url}" alt="C'est la PEP qui régale !" width="130" height="131"></p>`);
   ui.showModalDialog(operation_success, "Synchronisation des données");
 }
-
 
 
