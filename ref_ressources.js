@@ -27,5 +27,6 @@ function properCase(phrase) {
 
 // Formatage de mot pour leur ajouter 1 espace toutes les n lettres (par exemple : numéros de tel)
 function add_spaces(x,n) {
-    return x.toString().replace(/\B(?=(\d{n})+(?!\d))/g, " ");
+    let regexp = new RegExp(`\\d{${n}}(?=.)`, "g");
+    return x.toString().replace(regexp, "$& ");
   }
