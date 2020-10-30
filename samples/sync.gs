@@ -31,8 +31,8 @@ function sync() {
     Object.keys(filters).forEach(function(col) {sheetdst.getFilter().setColumnFilterCriteria(col, filters[col]);});
   }
   
-  const planscr = SpreadsheetApp.openById("").getSheetByName(""),
-      plandst = SpreadsheetApp.openById("").getSheetByName("");
+  const sheetscr = SpreadsheetApp.openById("").getSheetByName(""),
+      sheetdst = SpreadsheetApp.openById("").getSheetByName("");
   
-  copyData(planscr, plandst);
+  copyData(sheetscr, sheetdst);
 }
