@@ -1,6 +1,6 @@
+// Author : Pôle Qualité 022 (Aubin Tchoï)
+
 // Lets you synchronize a sheet with another sheet
-
-
 function sync() {
   
   function getFilters(sheet) {
