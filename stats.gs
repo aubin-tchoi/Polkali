@@ -15,21 +15,6 @@ function stats_merged_fetchAllSheets() {
     return val;
   }
   
-  // Retrieving the colors from the data found in 'Base créa Aubin' (returns a js object)
-  function getColors(ss_id="1kTsC6pACEBGHt-9FVhWp-LQTCJUBLcnyeZQ0KwK-7H8", s_name="Base créa Aubin") {
-    let colorsheet = SpreadsheetApp.openById(ss_id).getSheetByName(s_name),
-        colors = colorsheet.getRange(1, 1, colorsheet.getLastRow(), 1).getBackgrounds().map(r => r[0]),
-        schools = colorsheet.getRange(1, 1, colorsheet.getLastRow(), 1).getValues().map(r => r[0]),
-        colorobj = {};
-    schools.forEach(function(s, idx) {colorobj[s] = colors[idx];});
-    
-    Logger.log(`Liste des collèges : ${schools}`);
-    Logger.log(`Liste des couleurs : ${colors}`);
-    Logger.log(`Color set : ${JSON.stringify(colorobj, null, 4)}`);
-  
-    return colorobj;
-  }
-  
   // Loading screen
   function display_LoadingScreen(msg) {
     let htmlLoading = HtmlService
@@ -99,27 +84,20 @@ function stats_merged_fetchAllSheets() {
   }
   
   // Creating a PieChart
-  function create_PieChart(question, data, heads, htmlOutput, attachments, width, height, is_College=false) {
+  function create_PieChart(question, data, heads, htmlOutput, attachments, width, height) {
     let dataTable = Charts.newDataTable();
     dataTable.addColumn(Charts.ColumnType.STRING, question);
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion");
     
-    if (is_College) {var colorlist = [];}
-    
-    unique_val(question, data, heads).forEach(function(val) {dataTable.addRow([val, data.filter(r => r[heads.indexOf(question)] == val).length/data.length]);
-                                                       if (is_College) {colorlist.push(colorobj[val]);}
-                                                      });
+    unique_val(question, data, heads).forEach(function(val) {dataTable.addRow([val, data.filter(r => r[heads.indexOf(question)] == val).length/data.length]);});
     
     let chart = Charts.newPieChart()
     .setDataTable(dataTable)
     .setOption('legend', {textStyle: {font: 'trebuchet ms', fontSize: 11}})
     .setTitle(question)
     .setDimensions(width, height)
-    .set3D();
-    
-    if (is_College) {chart.setOption('colors', colorlist);}
-    
-    chart = chart.build();
+    .set3D()
+    .build();
     
     // Adding the chart to the Html output
     let imageData = Utilities.base64Encode(chart.getAs('image/png').getBytes()),
@@ -193,7 +171,7 @@ function stats_merged_fetchAllSheets() {
   heads.forEach(function(question) {
     Logger.log(`Question : ${question}, type : ${question_type(question, data, heads)}`);
     if (question_type(question, data, heads) == "PieChart") {
-      [htmlOutput, attachments] = create_PieChart(question, data, heads, htmlOutput, attachments, 750, 400, question == "Quel est ton collège ? ");
+      [htmlOutput, attachments] = create_PieChart(question, data, heads, htmlOutput, attachments, 750, 400);
     } else if (question_type(question, data, heads) == "TextResponse") {
       resp_quali.push(heads.indexOf(question));
     } else if (question_type(question, data, heads) == "ColumnChart") {
