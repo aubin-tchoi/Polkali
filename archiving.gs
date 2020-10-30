@@ -1,5 +1,6 @@
-// Lets you make a copy of current spreadsheet in a given folder for archiving or backuping purposes
+// Author : Pôle Qualité 022 (Aubin Tchoï)
 
+// Lets you make a copy of current spreadsheet in a given folder for archiving or backuping purposes
 function archiving() {
   const ssOld = SpreadsheetApp.getActiveSpreadsheet(),
     ssNew = SpreadsheetApp.create(ssOld.getName()),
