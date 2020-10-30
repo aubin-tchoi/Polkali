@@ -3,7 +3,7 @@
 function mailing() {
   function sendEmails(template, subject, sheet, row, out, categories) {
     
-    // Counting the number of mails sent (dialog box at the end)
+    // Counting the number of mails sent (for the dialog box at the end)
     let c = 0;
     
     function subjectFilter_(template){

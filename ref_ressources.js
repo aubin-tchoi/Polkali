@@ -21,7 +21,7 @@ function display_LoadingScreen(msg) {
 
 // Formatage de phrase pour leur ajouter 1 majuscule au début de chaque mot avec le reste en minuscules
 function properCase(phrase) {
-    return (phrase.toLowerCase().replace(/([^a-zÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖŒÙÚÛÜàáâãäçèéêëìíîïôöùúûüýÿ])([a-zÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖŒÙÚÛÜàáâãäçèéêëìíîïôöùúûüýÿ])(?=[a-zÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖŒÙÚÛÜàáâãäçèéêëìíîïôöùúûüýÿ]{2})|^([a-zÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖŒÙÚÛÜàáâãäçèéêëìíîïôöùúûüýÿ])/g, function(_, g1, g2, g3) {
+    return (phrase.toLowerCase().replace(/([^A-Za-zÀ-ÖØ-öø-ÿ])([A-Za-zÀ-ÖØ-öø-ÿ])(?=[A-Za-zÀ-ÖØ-öø-ÿ]{2})|^([A-Za-zÀ-ÖØ-öø-ÿ])/g, function(_, g1, g2, g3) {
       return (typeof g1 === 'undefined') ? g3.toUpperCase() : g1 + g2.toUpperCase(); }));
 }
 
