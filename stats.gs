@@ -36,7 +36,7 @@ function stats_merged_fetchAllSheets() {
   }
   
   // Query and save data on the Drive
-  function save_onDrive(folder_id="16Un5b-wbKrObuRzNyo4ls8715Xq2OLS5", image_blobs) {
+  function save_onDrive(folder_id, image_blobs) {
     let query = ui.alert("Enregistrement des images sur le Drive", "Souhaitez vous enregistrer les images sur le Drive ?", ui.ButtonSet.YES_NO);
     if (query == ui.Button.YES) {
       display_LoadingScreen("Enregistrement des images sur le Drive..");
@@ -146,9 +146,6 @@ function stats_merged_fetchAllSheets() {
       ss = SpreadsheetApp.getActiveSpreadsheet(),
       sheets = ss.getSheets().filter(s => s.getName() != "Réponses groupées"),
       heads = sheets[0].getRange(1, 2, 1, sheets[0].getLastColumn() - 1).getDisplayValues().shift();
-  
-  // Colors (used in charts displaying the repartition in each school)
-  let colorobj = getColors("1kTsC6pACEBGHt-9FVhWp-LQTCJUBLcnyeZQ0KwK-7H8", "Base créa Aubin");
   
   let data = [],
       resp_quali = [];
