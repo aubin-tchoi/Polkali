@@ -30,6 +30,9 @@ La fonction `archiving` permet de créer une copie du speadsheet courant dans le
 Cette fonctionnalité peut être utilisée entre autres à des fins d'archivage ou de création de backup.
 Elle se montrera proablement assez peu utile en tant que telle, mais vous noterez qu'il est possible de facilement sélectionner les sheets à archiver, de copier seulement une partie des données, de renommer la destination (ce qui peut être utile dans le cadre d'une activité régulière qui fait l'objet de rapports réguliers).
 
+#### presentation.js
+Ce script a été utilisé au cours de la présentation pour ajouter vos têtes au slides. Il a été relié à un déclencheur `onOpen(e)` du Google Docs que je vous ai demandé d'ouvrir. Il montre comment insérer des images du Drive dans un Slides.
+
 #### stats.js
 Les deux fonctions `stats_merged_fetchAllSheets` et `stats_merged_filtered` permettent de construire des statistiques sur l'ensemble des données présentes dans les différents sheets du spreadsheet courant. Pour chaque type d'information un choix intelligent est fait par la fonction `question_type` pour décider comment sera traitée cette information; sachant qu'elle peut être traitée sous forme de PieChart, de ColumnChart ou présentée dans un tableau récapitulatif. Les diagrammes en question peuvent être ensuite envoyés par mail à une adresse spécifiée, et/ou enregistrés sur le Drive dans un dossier dont on spécifiera l'ID. Ils seront également présentés sur une fenêtre.
 /!\ Les headers sont supposés se trouver en première ligne de chaque sheet.
