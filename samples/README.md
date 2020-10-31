@@ -35,3 +35,10 @@ Les deux fonctions `stats_merged_fetchAllSheets` et `stats_merged_filtered` perm
 /!\ Les headers sont supposés se trouver en première ligne de chaque sheet.
 
 #### mailing.js
+La fonction `mailing` permet d'envoyer des mails personnalisés à un grand nombre de personnes. Cette fonction repose sur différents prérequis :
+* On dispose d'un tableau de données contenant les adresses mails à contacter ainsi que les colonnes "Template" et "Date d'envoi du mail" (en lignes les différentes personnes)
+* Des modèles Gmail ont été conçus aux alias spécifié dans cette colonne "Template"
+La colonne "Template" sert à choisir quel template utiliser pour chaque personne, et la colonne "Date d'envoi du mail" permet de retenir quand le mail a été envoyé, en plus de servir de confirmation (un mail est envoyé uniquement si cette cellule est vide).
+Il est possible d'inclure des images dans le modèle (images à ajouter comme dans un mail classique) ainsi que des pièces jointes, ces pièces jointes devant d'abord être upload sur le Drive avant d'être mentionnées dans le modèle par la mention {PJ=`file_URL`}, `file_URL` étant l'URL du fichier à ajouter en pièce jointe (entre guillemets). Cette mention sera supprimée lors de l'envoi.
+Il est également possible de personnaliser les mails avec les données du tableau d'entrée, pour ce faire il suffit d'inscrire dans le modèle la mention `{key}` pour qu'elle soit complété pour chaque personne par ce qui se trouve dans la cellule correspondant à la colonne `key` (le header doit contenir la valeur `key`).
+N'oubliez pas d'adapter la position du header dans ce script à la configuration du Google Sheets considéré.
