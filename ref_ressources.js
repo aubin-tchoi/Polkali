@@ -29,4 +29,4 @@ function properCase(phrase) {
 function add_spaces(x,n) {
     let regexp = new RegExp(`\\d{${n}}(?=.)`, "g");
     return x.toString().replace(regexp, "$& ");
-  }
+}
