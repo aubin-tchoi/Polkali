@@ -1,25 +1,44 @@
 function onOpen() {
   const ui = DocumentApp.getUi();
+  ui.alert("Follow-up présentation gs", "Veuillez vous rendre dans le menu 'Formations' puis sélectionner 'Booking' afin d'obtenir quelques approfondissements si nécessaire.", ui.ButtonSet.OK);
+  ui.createMenu('Formations')
+  .addItem("Booking", "formations")
+  .addToUi();
+}
 
-  ui.alert("Follow-up présentation gs", "Les questions suivantes vont vous proposer de booker différentes sessions d'aide, à la suite desquelles vous serez redirigé vers un membre émérite de la communauté des programmaticiens afin d'augmenter votre patrimoine intellectuel sur le sujet demandé. \n Ceci est un shotgun.", ui.ButtonSet.OK);
+function formations() {
+  const ui = DocumentApp.getUi();
+
+  ui.alert("Follow-up présentation gs", "Les questions suivantes vont vous proposer de booker différentes sessions d'aide, à la suite desquelles vous serez redirigé vers un membre émérite de la communauté des programmaticiens afin d'augmenter votre patrimoine intellectuel sur le sujet demandé. \n \n Les six premiers à répondre auront une carotte.", ui.ButtonSet.OK);
   
   // Retrieving the user's choices
   let book = [];
-  book.push(["Git", ui.alert("C'est Aubin qui régale !", "Souhaitez-vous apprendre les bases de git ?", ui.ButtonSet.YES_NO).getSelectedButton() == ui.Button.YES ? "Oui" : "Non"]);
-  book.push(["Installation d'outils", ui.alert("C'est Aubin qui régale !", "Souhaitez-vous être accompagé dans l'installation des différents outils présentés ?", ui.ButtonSet.YES_NO).getSelectedButton() == ui.Button.YES ? "Oui" : "Non"]);
-  book.push(["Apps script", ui.alert("C'est Aubin qui régale !", "Souhaitez-vous une mini-formation Apps Script pour bien débuter ?", ui.ButtonSet.YES_NO).getSelectedButton() == ui.Button.YES ? "Oui" : "Non"]);
+  book.push(["Git", ui.alert("C'est Aubin qui régale !", "Souhaitez-vous apprendre les bases de git ?", ui.ButtonSet.YES_NO) == ui.Button.YES ? "Oui" : "Non"]);
+  book.push(["Installation d'outils", ui.alert("C'est Aubin qui régale !", "Souhaitez-vous être accompagé dans l'installation des différents outils présentés ?", ui.ButtonSet.YES_NO) == ui.Button.YES ? "Oui" : "Non"]);
+  book.push(["Apps script", ui.alert("C'est Aubin qui régale !", "Souhaitez-vous une mini-formation Apps Script pour bien débuter ?", ui.ButtonSet.YES_NO) == ui.Button.YES ? "Oui" : "Non"]);
   book.push(["Besoin supplémentaire", ui.prompt("C'est Aubin qui régale !", "Si vous avez un autre besoin qui n'a pas été spécifié dans les questions précédentes, exprimez vous.", ui.ButtonSet.OK).getResponseText() || ""]);
-  let name = ui.prompt("C'est Aubin qui régale !", "Quel est votre nom ? (Mettez votre vrai nom pour que je puisse vous envoyer un mail auto)", ui.ButtonSet.OK).getResponseText() || "";
-  book.push(name);
+  let name = ui.prompt("C'est Aubin qui régale !", "Quel est votre prénom ? (Mettez votre vrai prénom pour que je puisse vous envoyer un mail auto)", ui.ButtonSet.OK).getResponseText() || "";
+
+  try {
+  // Thank you message
+  let img_url = "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Ddabong.png",
+      thankyou = HtmlService
+  .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">Le pôle Qualité a été notifié de votre demande.<br/><br/> &nbsp; La bise.</span></span><p style="text-align:center;"><img src="${img_url}" alt="Thumbs up" width="130" height="131"></p>`)
+  .setHeight(230)
+  .setWidth(500);
+  ui.showModelessDialog(thankyou, "Merci de votre participation !");
+  } catch(e) {Logger.log(`Could not show thank you display : ${e}`)}
   
+  try {
   // “A mind forever Voyaging through strange seas of Thought, alone.”
   addImage(name);
+  } catch(e) {Logger.log(`Could not add image ${e}`)}
 
   // Writing the mail's content
   let msgHtml = `Voici ce qu'a demandé ${name} : <br/> <br/> <ul>`;
   book.forEach(function(request) {msgHtml += `<li> ${request[0]} : ${request[1]} </li>`;});
   msgHtml += "</ul>";
-  
+
   let htmlOutput = HtmlService.createHtmlOutput(msgHtml),
     msgPlain = msgHtml.replace(/\<br\/\>/gi, '\n').replace(/(<([^>]+)>)/ig, "");
   
