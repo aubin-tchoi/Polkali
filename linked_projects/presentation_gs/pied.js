@@ -1,3 +1,5 @@
+// Author : Pôle Qualité 022 (Aubin Tchoï)
+
 function onOpen() {
   const ui = DocumentApp.getUi();
   ui.alert("Follow-up présentation gs", "Veuillez vous rendre dans le menu 'Formations' puis sélectionner 'Booking' afin d'obtenir quelques approfondissements si nécessaire.", ui.ButtonSet.OK);
