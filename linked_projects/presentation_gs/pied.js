@@ -18,7 +18,6 @@ function formations() {
   book.push(["Git", ui.alert("C'est Aubin qui régale !", "Souhaitez-vous apprendre les bases de git ?", ui.ButtonSet.YES_NO) == ui.Button.YES ? "Oui" : "Non"]);
   book.push(["Installation d'outils", ui.alert("C'est Aubin qui régale !", "Souhaitez-vous être accompagé dans l'installation des différents outils présentés ?", ui.ButtonSet.YES_NO) == ui.Button.YES ? "Oui" : "Non"]);
   book.push(["Apps script", ui.alert("C'est Aubin qui régale !", "Souhaitez-vous une mini-formation Apps Script pour bien débuter ?", ui.ButtonSet.YES_NO) == ui.Button.YES ? "Oui" : "Non"]);
-  book.push(["Besoin supplémentaire", ui.prompt("C'est Aubin qui régale !", "Si vous avez un autre besoin qui n'a pas été spécifié dans les questions précédentes, exprimez vous.", ui.ButtonSet.OK).getResponseText() || ""]);
   let name = ui.prompt("C'est Aubin qui régale !", "Quel est votre prénom ? (Mettez votre vrai prénom pour que je puisse vous envoyer un mail auto)", ui.ButtonSet.OK).getResponseText() || "";
 
   try {
