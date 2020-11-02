@@ -67,7 +67,7 @@ function addImage(username) {
                  antoine: "1FYY6UX_EwGk-zKc9VSh16InVWOrLlqFK",
                  anatole: "1XC3H09q3lLUBu5XHGwK4QOkDUbVKx_9e",
                  aubin: "1Kc3qqdS-kM75ZCrhEYlrXI2QCQJkmD1L"},
-      name = username.toString().toLowerCase().match(/([a-z]+)/gi)[0];
+      name = username.toString().toLowerCase().replace(/[ïî]/gi, "i").replace(/[êéè]/gi, "e").match(/([a-z]+)/gi)[0];
   
   Logger.log(`Users list : ${Object.keys(img_ids)}`);
   Logger.log(`${name} has logged in ! (${Object.keys(img_ids).includes(name)})`);
