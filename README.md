@@ -1,4 +1,11 @@
 ### Ponts Études Projets
 ## Pôle Qualité 022
 
-Ressources développées par le pôle Qualité 022 pour Ponts Études Projets afin de faciliter l'implémentation de différentes fonctionnalités sur la G Suite.
+Ensemble des ressources Google Apps Script développées par le pôle Qualité 022 afin d'implémenter certaines fonctionnalités sur le Drive de Ponts Études Projets ou faciliter l'installation de nouvelles fonctionnalités.
+
+Vous trouverez différents fichiers ou dossiers dans ce respository : 
+* `samples` : différents scripts qui servent d'exemple ou de template à des scripts plus spécifiques. Consultez le readme du dossier pour plus de détail sur chaque script.
+* `linked_projects` : des scripts utilisés dans le Drive de PEP, ils sont séparés par dossier afin de permetter l'utilisation de `clasp`.
+
+* `ref_ressources.js` : une compilation de certaines lignes de code que j'utilise très fréquemment.
+* `images` : quelques images que j'utilise régulièrement.
