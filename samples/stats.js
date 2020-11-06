@@ -42,7 +42,7 @@ function stats_merged(filtered) {
             key_idx = parseInt(ui.prompt("Filtrage", `Entrez un numéro parmi la liste suivante : ${list_ToQuery(key_list)}`, ui.ButtonSet.OK).getResponseText(), 10);
         
         if (key_idx != "") {
-          return data.filter(row => row[key] == key_list[key_idx - 1]));
+          return data.filter(row => row[key] == key_list[key_idx - 1]);
         }
       } catch(e) {
         ui.alert("Filtrage", "Entrée invalide, veuillez recommencer", ui.ButtonSet.OK);
@@ -61,12 +61,12 @@ function stats_merged(filtered) {
   }
   
   // Query and send mail
-  function send_Mail(htmlOutput, adress, subject, attachments) {
+  function send_Mail(htmlOutput, adress, subject, attachments, inlineImages) {
     let query = ui.alert("Envoi des diagrammes par mail", "Souhaitez vous recevoir les diagrammes par mail ?", ui.ButtonSet.YES_NO);
     if (query == ui.Button.YES) {
       let msgHtml = htmlOutput.getContent(),
           msgPlain = htmlOutput.getContent().replace(/\<br\/\>/gi, '\n').replace(/(<([^>]+)>)/ig, "");
-      GmailApp.sendEmail(adress, subject, msgPlain, {htmlBody:msgHtml, attachments:attachments});
+      GmailApp.sendEmail(adress, subject, msgPlain, {htmlBody:msgHtml, attachments:attachments, inlineImages:inlineImages});
       ui.alert("Envoi des diagrammes par mail", `Les diagrammes ont été envoyés par mail à : ${adress}`, ui.ButtonSet.OK);
     }
   }
@@ -113,7 +113,7 @@ function stats_merged(filtered) {
   }
       
   // Choosing how a question should be treated (PieChart, BarChart, ..), you can exclude a question by returning something else here
-  function question_type(question, data, heads) {
+  function question_type(question, data) {
     // Empty column
     if (unique_val(question, data).every(element => element == "")) {return "TextResponse"};
 
@@ -128,7 +128,7 @@ function stats_merged(filtered) {
   }
   
   // Creating a PieChart
-  function create_PieChart(question, data, heads, htmlOutput, attachments, width, height) {
+  function create_PieChart(question, data, htmlOutput, attachments, inlineImages, width, height) {
     try {
       
       // Creating a DataTable with the proportion of responses for each unique response to question
@@ -146,23 +146,27 @@ function stats_merged(filtered) {
       .setDimensions(width, height)
       .set3D()
       .build();
+
+      // Putting the image into a blob
+      let cid = question.replace(" ", "_"),
+          imageData = chart.getAs('image/png').getBytes(),
+          imgblob = Utilities.newBlob(imageData, "image/png", cid);
+      
+      // Adding the chart to inlineImages
+      inlineImages[cid] = imgblob;
       
       // Adding the chart to the Html output
-      let imageData = Utilities.base64Encode(chart.getAs('image/png').getBytes()),
-          imageUrl = "data:image/png;base64," + encodeURI(imageData);
-      htmlOutput.append("<img border=\"1\" src=\"" + imageUrl + "\">");
+      htmlOutput.append(`<img src="cid:${cid}"/><br/>`);
       
       // Adding the chart to the attachments
-      let imageDatamail = chart.getAs('image/png').getBytes(),
-          imgblob = Utilities.newBlob(imageDatamail, "image/png", question);
       attachments.push(imgblob);
       
-      return [htmlOutput, attachments];
+      return [htmlOutput, attachments, inlineImages];
     } catch(e) {Logger.log(`Could not create graph for question : ${question}`);}
   }
   
   // Creating a ColumnChart
-  function create_ColumnChart(question, data, heads, htmlOutput, attachments, width, height) {
+  function create_ColumnChart(question, data, htmlOutput, attachments, inlineImages, width, height) {
     try {
       // Creating a DataTable with the proportion of responses for each unique response to question
       let dataTable = Charts.newDataTable();
@@ -179,17 +183,21 @@ function stats_merged(filtered) {
       .setDimensions(width, height)
       .build();
       
+      // Putting the image into a blob
+      let cid = question.replace(" ", "_"),
+          imageData = chart.getAs('image/png').getBytes(),
+          imgblob = Utilities.newBlob(imageData, "image/png", cid);
+      
+      // Adding the chart to inlineImages
+      inlineImages[cid] = imgblob;
+      
       // Adding the chart to the Html output
-      let imageData = Utilities.base64Encode(chart.getAs('image/png').getBytes()),
-          imageUrl = "data:image/png;base64," + encodeURI(imageData);
-      htmlOutput.append("<img border=\"1\" src=\"" + imageUrl + "\">");
+      htmlOutput.append(`<img src="cid:${cid}"/><br/>`);
       
       // Adding the chart to the attachments
-      let imageDatamail = chart.getAs('image/png').getBytes(),
-          imgblob = Utilities.newBlob(imageDatamail, "image/png", question);
       attachments.push(imgblob);
       
-      return [htmlOutput, attachments];
+      return [htmlOutput, attachments, inlineImages];
     } catch(e) {Logger.log(`Could not create graph for question : ${question}`);}
   }
   
@@ -225,17 +233,17 @@ function stats_merged(filtered) {
       attachments = [];
  
   heads.forEach(function(question) {
-    Logger.log(`Question : ${question}, type : ${question_type(question, data, heads)}`);
-    if (question_type(question, data, heads) == "PieChart") {
-      [htmlOutput, attachments] = create_PieChart(question, data, heads, htmlOutput, attachments, 750, 400, question == "Quel est ton collège ? ");
-    } else if (question_type(question, data, heads) == "TextResponse") {
+    Logger.log(`Question : ${question}, type : ${question_type(question, data)}`);
+    if (question_type(question, data) == "PieChart") {
+      [htmlOutput, attachments, inlineImages] = create_PieChart(question, data, htmlOutput, attachments, inlineImages, 750, 400, question == "Quel est ton collège ? ");
+    } else if (question_type(question, data) == "TextResponse") {
       resp_quali.push(question);
-    } else if (question_type(question, data, heads) == "ColumnChart") {
-      [htmlOutput, attachments] = create_ColumnChart(question, data, heads, htmlOutput, attachments, 750, 400);
+    } else if (question_type(question, data) == "ColumnChart") {
+      [htmlOutput, attachments, inlineImages] = create_ColumnChart(question, data, htmlOutput, attachments, inlineImages, 750, 400);
     }
   });
   
-  send_Mail(htmlMail, "", "Statistiques groupées", attachments);
+  send_Mail(htmlMail, "", "Statistiques groupées", attachments, inlineImages);
   save_onDrive("", attachments);
   rewrite(data, resp_quali, ss, "Statistiques groupées");
   
