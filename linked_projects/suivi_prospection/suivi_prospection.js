@@ -5,7 +5,8 @@
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
   ui.createMenu('KPI')
-  .addItem("Obtention des graphes", "sync_onSelec")
+  .addItem("Synchronisation de la sélection avec le suivi d'études", "sync_onSelec")
+  .addItem("Affichage des KPI", "stats_KPI")
   .addToUi();
 }
 
@@ -143,27 +144,7 @@ function sync_onSelec() {
 }
 
 
-function stats_merged(filtered) {
-  // Returns true if str can be converted into a float
-  function isNumeric(str) {
-    if (typeof str != "string") {return false;} // Only processes strings
-    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-      !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
-  }
-
-  // Getting an array of all unique values inside of a set of data for 1 information (heads.indexOf(str) being the index of the column that contains the data inside of each row)
-  function unique_val(str, data) {
-    let val = [];
-    for (let row = 0; row < data.length; row++) {
-      if (data[row][str] != "") {
-        if (val.indexOf(data[row][str]) == -1) {
-          val.push(data[row][str]);
-        }
-      }
-    }
-    return val;
-  }
-  
+function stats_KPI() {
   // Loading screen
   function display_LoadingScreen(msg) {
     let htmlLoading = HtmlService
