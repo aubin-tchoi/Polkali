@@ -174,14 +174,14 @@ function stats_merged(filtered) {
   }
   
   // Query and send mail to designated adress
-  function send_Mail(htmlOutput, subject, attachments) {
+  function send_Mail(htmlOutput, subject, attachments, inlineImages) {
     let query = ui.alert("Envoi des diagrammes par mail", "Souhaitez vous recevoir les diagrammes par mail ?", ui.ButtonSet.YES_NO);
     if (query == ui.Button.YES) {
       let adress = ui.prompt("Envoi des diagrammes par mail", "Entrez l'adresse mail de destination :", ui.ButtonSet.OK).getResponseText(),
           msgHtml = htmlOutput.getContent(),
           msgPlain = htmlOutput.getContent().replace(/\<br\/\>/gi, '\n').replace(/(<([^>]+)>)/ig, "");
-      GmailApp.sendEmail(adress, subject, msgPlain, {htmlBody:msgHtml, attachments:attachments});
-      ui.alert("Envoi des diagrammes par mail", `Les diagrammes ont été envoyés par mail à : ${adress}`, ui.ButtonSet.OK);
+      GmailApp.sendEmail(adress, subject, msgPlain, {htmlBody:msgHtml, attachments:attachments, inlineImages:inlineImages});
+      ui.alert("Envoi des diagrammes par mail", `Les diagrammes ont été envoyés par mail à : ${adress}.`, ui.ButtonSet.OK);
     }
   }
   
@@ -205,88 +205,119 @@ function stats_merged(filtered) {
       }
     }
   }
-      
-  // Choosing how a question should be treated (PieChart, BarChart, ..), you can exclude a question by returning something else here
-  function question_type(question, data) {
-    // Empty column
-    if (unique_val(question, data).every(element => element == "")) {return "TextResponse"};
-
-    // Less than 10 distinct values, and all values are integers
-    if (unique_val(question, data).length/data.length <= 0.25 && unique_val(question, data).every(element => isNumeric(element))) {return "ColumnChart";}
-    
-    // Less than 6 distinct values (not integers)
-    if (unique_val(question, data).length/data.length <= 0.25) {return "PieChart";}
-    
-    // Too many different responses, it has to be a qualitative question
-    else {return "TextResponse";}
-  }
-  
-  // Creating a PieChart
-  function create_PieChart(question, data, htmlOutput, attachments, width, height) {
-    try {
-      
-      // Creating a DataTable with the proportion of responses for each unique response to question
-      let dataTable = Charts.newDataTable();
-      dataTable.addColumn(Charts.ColumnType.STRING, question);
-      dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion");
-      
-      unique_val(question, data).forEach(function(val) {dataTable.addRow([val, data.filter(r => r[question] == val).length/data.length]);});
-      
-      // Creating a PieChart with data from dataTable
-      let chart = Charts.newPieChart()
-      .setDataTable(dataTable)
-      .setOption('legend', {textStyle: {font: 'trebuchet ms', fontSize: 11}})
-      .setTitle(question)
-      .setDimensions(width, height)
-      .set3D()
-      .build();
-      
-      // Adding the chart to the Html output
-      let imageData = Utilities.base64Encode(chart.getAs('image/png').getBytes()),
-          imageUrl = "data:image/png;base64," + encodeURI(imageData);
-      htmlOutput.append("<img border=\"1\" src=\"" + imageUrl + "\">");
-      
-      // Adding the chart to the attachments
-      let imageDatamail = chart.getAs('image/png').getBytes(),
-          imgblob = Utilities.newBlob(imageDatamail, "image/png", question);
-      attachments.push(imgblob);
-      
-      return [htmlOutput, attachments];
-    } catch(e) {Logger.log(`Could not create graph for question : ${question}`);}
-  }
   
   // Creating a ColumnChart
-  function create_ColumnChart(question, data, htmlOutput, attachments, width, height) {
+  function create_ColumnChart(infos, data, htmlOutput, attachments, inlineImages, width, height) {
     try {
-      // Creating a DataTable with the proportion of responses for each unique response to question
+      // Creating a DataTable
       let dataTable = Charts.newDataTable();
-      dataTable.addColumn(Charts.ColumnType.STRING, question);
-      dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion");
+      dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
+      infos.forEach(function(info) {dataTable.addColumn(Charts.ColumnType.NUMBER, info);});
       
-      unique_val(question, data).sort().forEach(function(val) {dataTable.addRow([val, data.filter(r => r[question] == val).length/data.length]);});
+      data.forEach(function(row) {let dataRow = [row["Mois"]];
+                                  infos.forEach(function(info) {dataRow.push(row[info]);});
+                                  dataTable.addRow(dataRow)});
       
       // Creating a ColumnChart with data from dataTable
       let chart = Charts.newColumnChart()
       .setDataTable(dataTable)
       .setOption('legend', {textStyle: {font: 'trebuchet ms', fontSize: 11}})
-      .setTitle(question)
+      .setTitle("Contacts prospection")
       .setDimensions(width, height)
+      .set3D()
       .build();
+
+      // Putting the image into a blob
+      let cid = infos[0].replace(" ", "_"),
+          imageData = chart.getAs('image/png').getBytes(),
+          imgblob = Utilities.newBlob(imageData, "image/png", cid);
+      
+      // Adding the chart to inlineImages
+      inlineImages[cid] = imgblob;
       
       // Adding the chart to the Html output
-      let imageData = Utilities.base64Encode(chart.getAs('image/png').getBytes()),
-          imageUrl = "data:image/png;base64," + encodeURI(imageData);
-      htmlOutput.append("<img border=\"1\" src=\"" + imageUrl + "\">");
+      htmlOutput.append(`<img src="cid:${cid}"/><br/>`);
       
       // Adding the chart to the attachments
-      let imageDatamail = chart.getAs('image/png').getBytes(),
-          imgblob = Utilities.newBlob(imageDatamail, "image/png", question);
       attachments.push(imgblob);
       
-      return [htmlOutput, attachments];
-    } catch(e) {Logger.log(`Could not create graph for question : ${question}`);}
+      return [htmlOutput, attachments, inlineImages];
+    } catch(e) {Logger.log(`Could not create graph for infos : ${infos}`);}
   }
   
+  // Creating a PieChart
+  function create_PieChart(info, data, htmlOutput, attachments, inlineImages, width, height) {
+    try {
+      // Creating a DataTable
+      let dataTable = Charts.newDataTable();
+      dataTable.addColumn(Charts.ColumnType.STRING, "Tranche de prix");
+      dataTable.addColumn(Charts.ColumnType.NUMBER, info);
+      
+      data.forEach(function(row) {dataTable.addRow([row["Tranche de prix"], row[info]]);});
+      
+      // Creating a PieChart with data from dataTable
+      let chart = Charts.newPieChart()
+      .setDataTable(dataTable)
+      .setOption('legend', {textStyle: {font: 'trebuchet ms', fontSize: 11}})
+      .setTitle(`${info} par tranche de prix`)
+      .setDimensions(width, height)
+      .set3D()
+      .build();
+      
+      // Putting the image into a blob
+      let cid = info.replace(" ", "_"),
+          imageData = chart.getAs('image/png').getBytes(),
+          imgblob = Utilities.newBlob(imageData, "image/png", cid);
+      
+      // Adding the chart to inlineImages
+      inlineImages[cid] = imgblob;
+      
+      // Adding the chart to the Html output
+      htmlOutput.append(`<img src="cid:${cid}"/><br/>`);
+      
+      // Adding the chart to the attachments
+      attachments.push(imgblob);
+      
+      return [htmlOutput, attachments, inlineImages];
+    } catch(e) {Logger.log(`Could not create graph for data : ${info}`);}
+  }
+  
+  // Creating a LineChart
+  function create_LineChart(info, data, htmlOutput, attachments, inlineImages, width, height) {
+    try {
+      // Creating a DataTable
+      let dataTable = Charts.newDataTable();
+      dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
+      dataTable.addColumn(Charts.ColumnType.NUMBER, info);
+      
+      data.forEach(function(row) {dataTable.addRow([row["Mois"], row[info]]);});
+      
+      // Creating a LineChart with data from dataTable
+      let chart = Charts.newLineChart()
+      .setDataTable(dataTable)
+      .setOption('legend', {textStyle: {font: 'trebuchet ms', fontSize: 11}})
+      .setTitle(`${info} par mois`)
+      .setDimensions(width, height)
+      .set3D()
+      .build();
+      
+      // Putting the image into a blob
+      let cid = info.replace(" ", "_"),
+          imageData = chart.getAs('image/png').getBytes(),
+          imgblob = Utilities.newBlob(imageData, "image/png", cid);
+      
+      // Adding the chart to inlineImages
+      inlineImages[cid] = imgblob;
+      
+      // Adding the chart to the Html output
+      htmlOutput.append(`<img src="cid:${cid}"/><br/>`);
+      
+      // Adding the chart to the attachments
+      attachments.push(imgblob);
+      
+      return [htmlOutput, attachments, inlineImages];
+    } catch(e) {Logger.log(`Could not create graph for data : ${info}`);}
+  }
     
   // Initialization
   const ui = SpreadsheetApp.getUi(),
@@ -294,35 +325,40 @@ function stats_merged(filtered) {
       heads1 = sheet.getRange(1,  1, 1, 7).getDisplayValues().shift(),
       heads2 = sheet.getRange(1, 11, 1, 3).getDisplayValues().shift();
   
+  // I chose to keep the data as an array of objects (other possibility : object of objects, the keys being the months' names and the values the data in each row)
   let data1 = sheet.getRange(1,  1, sheet.getLastRow(), 7).getDisplayValues().map(r => heads1.reduce((o, k, i) => (o[k] = (r[i] != "") ? r[i] : o[k] || '', o), {})),
       data2 = sheet.getRange(1, 11, sheet.getLastRow(), 3).getDisplayValues().map(r => heads2.reduce((o, k, i) => (o[k] = (r[i] != "") ? r[i] : o[k] || '', o), {}));
   
+  // Getting rid of the first column
+  heads1.shift(); heads2.shift();
+
   display_LoadingScreen("Chargement des diagrammes..");
                                                                                                                                                                    
   // Final outputs (displaying the charts on screen & mail content)  
   let htmlOutput = HtmlService
-  .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'trebuchet ms', sans-serif;">Voici la répartition des ${data.length} lignes de données :<br/></span> </span> <br/>`)
+  .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'trebuchet ms', sans-serif;">Comme promis, voici les KPI tant attendus :<br/></span> </span> <br/>`)
   .setWidth(800)
   .setHeight(465);
   
   let htmlMail = HtmlService.createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'trebuchet ms', sans-serif;">&nbsp; &nbsp; Bonjour, <br/><br/> Voici les diagrammes récapitulatifs des ${data.length} lignes de données.<br/> <br/>Bonne journée !</span> </span>`),
+      inlineImages = {},
       attachments = [];
- 
-  heads.forEach(function(question) {
-    Logger.log(`Question : ${question}, type : ${question_type(question, data)}`);
-    if (question_type(question, data) == "PieChart") {
-      [htmlOutput, attachments] = create_PieChart(question, data, htmlOutput, attachments, 750, 400, question == "Quel est ton collège ? ");
-    } else if (question_type(question, data) == "TextResponse") {
-      resp_quali.push(question);
-    } else if (question_type(question, data) == "ColumnChart") {
-      [htmlOutput, attachments] = create_ColumnChart(question, data, htmlOutput, attachments, 750, 400);
-    }
-  });
   
-  send_Mail(htmlMail, "Statistiques groupées", attachments);
+  // Creating ColumnCharts (by month) of the following informations : "Nombre de contacts", "Contact: Sans Suite", "Conversion en Étude", "Nombre de devis réalisés"
+  [htmlOutput, attachments, inlineImages] = create_ColumnChart([heads[0], heads[1], heads[2], heads[3]], data1, htmlOutput, attachments, inlineImages, 750, 400);
+  
+  // Creating a LineChart (by month) of the foloowing information : "Taux de conversion"
+  [htmlOutput, attachments, inlineImages] = create_LineChart(heads[4], data1, htmlOutput, attachments, inlineImages, 750, 400);
+
+  // Creating ColumnCharts (by month) of the following informations : "CA sur étude potentielle", "CA réalisé"
+  [htmlOutput, attachments, inlineImages] = create_ColumnChart([heads[5], heads[6]], data1, htmlOutput, attachments, inlineImages, 750, 400);
+  
+  // Creating PieCharts (classified by price range) of the following informations : "Pourcentage de devis acceptés", "Pourcentage de devis refusés"
+  heads2.forEach(function(info) {[htmlOutput, attachments, inlineImages] = create_PieChart(info, data2, htmlOutput, attachments, inlineImages, 750, 400);});
+
+  send_Mail(htmlMail, "KPI", attachments);
   save_onDrive(attachments);
-  rewrite(data, resp_quali, ss, "Statistiques groupées");
   
   // Final display of the charts
-  ui.showModalDialog(htmlOutput, "Réponses aux questionnaires");
+  ui.showModalDialog(htmlOutput, "KPI");
 }
