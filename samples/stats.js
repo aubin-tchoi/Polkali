@@ -209,7 +209,7 @@ function stats_merged(filtered) {
   // Filtering by class if requested
   if (filtered) {
     let key = ui.prompt("Filtrage des données", "Suivant quelle information souhaitez-vous filtrer les données ? (Entrez un nom de colonne)", ui.ButtonSet.OK).getResponseText();
-    data = filter_ByClass(data, heads, key);
+    data = filter_ByKey(data, heads, key);
   }
 
   display_LoadingScreen("Chargement des diagrammes..");
