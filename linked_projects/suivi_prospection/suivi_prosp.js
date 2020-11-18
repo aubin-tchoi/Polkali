@@ -1,6 +1,6 @@
-// Author : Pôle Qualité 022 (Aubin Tchoï)
+// Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022)
 
-// Two parts in this script : updating the data from (hidden) sheet "Base calcul KPI" and then using this set of data to produce some graphs (current month + last month, evolution)
+// Two parts in this script : synchronizing with "Suivi d'études" and producing some KPIs
 
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
@@ -13,41 +13,22 @@ function onOpen() {
 // Returning the last non-empty row of a sheet (not possible with getLastRow for this particular sheet bc of data validation)
 function manually_getLastRow(sheet) {
   let data = sheet.getRange(1, 1, sheet.getLastRow(), 5).getValues();
-  for (let row=1;row<sheet.getLastRow();row++) {
+  for (let row=4;row<sheet.getLastRow();row++) {
     if ((data[row][0] == "" && data[row][1] == "" && data[row][2] == "" && data[row][4] == "")|| row > 200) {
       return row;
     }
   }
 }
 
-function onEdit(e) {
-  let range = e.range,
-    colidx_ContactType = 3;
-  if (range.getNumColumns() == 1 && range.getNumRows() == 1) {
 
-  }
-  // Check here if getColumn() returns an A1 notation or an 0-array one
-  // Data in sheet "Suivi" have been modified
-  if (range.getSheet().getName() == "Suivi") {
-    
-    if (range.getColumn() > 1 && range.getColumn() <= colidx_ContactType && (range.getColumn() + range.getNumColumns() - 1) >= colidx_ContactType) {
-      
-    }
+function onEdit(e) {
+  let range = e.range;
+  if (range.getNumColumns() == 1 && range.getNumRows() == 1 && e.value == "Etude obtenue") {
+    sync_onEdit(range.getRow());
   }
 }
 
-
 function sync_onEdit(rowidx) {
-  // Returning the last non-empty row of a sheet (not possible with getLastRow for this particular sheet for some unkown reasons)
-  function manually_getLastRow(sheet) {
-    let data = sheet.getRange(1, 1, sheet.getLastRow(), 5).getValues();
-    for (let row=1;row<sheet.getLastRow();row++) {
-      if ((data[row][0] == "" && data[row][1] == "" && data[row][2] == "" && data[row][4] == "")|| row > 200) {
-        return row;
-      }
-    }
-  }
-  
   // Updating sheet sheet with row row
   function update(sheet, row) {
     // Checking whether PEP actually did obtain the mission or not
@@ -77,12 +58,20 @@ function sync_onEdit(rowidx) {
   update(sheetdst, data);
 }
 
-
 function sync_onSelec() {
+  // Loading screen
+  function display_LoadingScreen(msg) {
+    let htmlLoading = HtmlService
+    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Kkooljem.gif" alt="Loading" width="442" height="249">`)
+    .setWidth(450)
+    .setHeight(280);
+    ui.showModelessDialog(htmlLoading, msg);
+  }
+
   // Updating sheet sheet with row row
   function update(sheet, row) {
     // Checking whether PEP actually did obtain the mission or not
-    if (row["État"] != "Etude obtenue ") {
+    if (row["État"] != "Etude obtenue") {
       ui.alert("Entrée invalide", `L'étude confiée par l'entreprise ${row["Entreprise"]} ne correspond pas à une étude obtenue.`, ui.ButtonSet.OK);
       return;
     }
@@ -97,34 +86,21 @@ function sync_onSelec() {
     sheet.getRange((last_row + 1), 1, 1, rnew.length).setValues([rnew]);
   }
   
-  // Displaying a loading screen
-  function display_LoadingScreen() {
-    let htmlLoading = HtmlService
-    .createHtmlOutput(`<img src="https://www.demilked.com/magazine/wp-content/uploads/2016/06/gif-animations-replace-loading-screen-14.gif" alt="Loading" width="531" height="299">`)
-    .setWidth(540)
-    .setHeight(350);
-    ui.showModelessDialog(htmlLoading, "Synchronisation des données.."); // Not clean bc ui is not defined here but who cares
-  }
-  
   // -- MAIN --
   const sheetscr = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet(),
       sheetdst = SpreadsheetApp.openById("1gmJLAKvUOYFeS32raOiSTYiE_ozr7YSk26Y0t0blm04").getSheetByName("Suivi"),
-      ui = SpreadsheetApp.getUi(),
-      htmlLoading = HtmlService
-  .createHtmlOutput(`<img src="https://www.demilked.com/magazine/wp-content/uploads/2016/06/gif-animations-replace-loading-screen-14.gif" alt="Loading" width="531" height="299">`)
-  .setWidth(540)
-  .setHeight(350);
+      ui = SpreadsheetApp.getUi();
   
   // Confirm selection
   let confirm_selection = ui.alert("Synchronisation des données", "Vous devez préalablement sélectionner la ligne à synchroniser (par exemple en cliquant sur le numéro à gauche). \n Confirmez-vous votre sélection ?", ui.ButtonSet.YES_NO);
   if (confirm_selection == ui.Button.NO) {return;}
   
   // Loading screen
-  display_LoadingScreen();
+  display_LoadingScreen("Synchronisation ..");
   
   // heads is the sheet's header, data a 2D-array representation of the selected values, and obj its 'array of js object' representation
   let heads = sheetscr.getRange(1, 1, 1, sheetscr.getLastColumn()).getValues().shift(),
-      data = sheetscr.getActiveRange().getDisplayValues(),
+      data = sheetscr.getActiveRange().getValues(),
       obj = data.map(r => (heads.reduce((o, k, i) => (o[k] = r[i] || '', o), {})));
   
   // Checking the selection again (empty or not)
@@ -136,7 +112,7 @@ function sync_onSelec() {
   });
   
   // Confirmation
-  let img_url = "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/Ddabong.png",
+  let img_url = "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Ddabong.png",
       sheet_url = "https://docs.google.com/spreadsheets/d/1gmJLAKvUOYFeS32raOiSTYiE_ozr7YSk26Y0t0blm04/edit#gid=0",
       operation_success = HtmlService
   .createHtmlOutput(`<span style='font-size: 16pt;'> <span style="font-family: 'roboto', sans-serif;">L'opération a été effectuée avec succès, veuillez remplir manuellement le nom de l'étude dans le <a href="${sheet_url}">suivi des études</a>.<br/><br/> La bise</span></span><p style="text-align:center;"><img src="${img_url}" alt="C'est la PEP qui régale !" width="130" height="131"></p>`);
@@ -148,20 +124,32 @@ function stats_KPI() {
   // Loading screen
   function display_LoadingScreen(msg) {
     let htmlLoading = HtmlService
-    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Kkooljem.gif" alt="Loading" width="885" height="498">`)
-    .setWidth(900)
-    .setHeight(500);
+    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Kkooljem.gif" alt="Loading" width="442" height="249">`)
+    .setWidth(450)
+    .setHeight(280);
     ui.showModelessDialog(htmlLoading, msg);
+  }
+  // Getting an array of all unique values inside of a set of data for 1 information (heads.indexOf(str) being the index of the column that contains the data inside of each row)
+  function unique_val(str, data) {
+    let val = [];
+    for (let row = 0; row < data.length; row++) {
+      if (data[row][str] != "") {
+        if (val.indexOf(data[row][str]) == -1) {
+          val.push(data[row][str]);
+        }
+      }
+    }
+    return val;
   }
   
   // Query and send mail to designated adress
-  function send_Mail(htmlOutput, subject, attachments, inlineImages) {
+  function send_Mail(htmlOutput, subject, attachments) {
     let query = ui.alert("Envoi des diagrammes par mail", "Souhaitez vous recevoir les diagrammes par mail ?", ui.ButtonSet.YES_NO);
     if (query == ui.Button.YES) {
       let adress = ui.prompt("Envoi des diagrammes par mail", "Entrez l'adresse mail de destination :", ui.ButtonSet.OK).getResponseText(),
           msgHtml = htmlOutput.getContent(),
           msgPlain = htmlOutput.getContent().replace(/\<br\/\>/gi, '\n').replace(/(<([^>]+)>)/ig, "");
-      GmailApp.sendEmail(adress, subject, msgPlain, {htmlBody:msgHtml, attachments:attachments, inlineImages:inlineImages});
+      GmailApp.sendEmail(adress, subject, msgPlain, {htmlBody:msgHtml, attachments:attachments});
       ui.alert("Envoi des diagrammes par mail", `Les diagrammes ont été envoyés par mail à : ${adress}.`, ui.ButtonSet.OK);
     }
   }
@@ -188,154 +176,178 @@ function stats_KPI() {
   }
   
   // Creating a ColumnChart
-  function create_ColumnChart(infos, data, htmlOutput, attachments, inlineImages, width, height) {
+  function create_ColumnChart(dataTable, title, htmlOutput, attachments, width, height) {
     try {
-      // Creating a DataTable
-      let dataTable = Charts.newDataTable();
-      dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
-      infos.forEach(function(info) {dataTable.addColumn(Charts.ColumnType.NUMBER, info);});
-      
-      data.forEach(function(row) {let dataRow = [row["Mois"]];
-                                  infos.forEach(function(info) {dataRow.push(row[info]);});
-                                  dataTable.addRow(dataRow)});
-      
       // Creating a ColumnChart with data from dataTable
       let chart = Charts.newColumnChart()
       .setDataTable(dataTable)
       .setOption('legend', {textStyle: {font: 'trebuchet ms', fontSize: 11}})
-      .setTitle("Contacts prospection")
+      .setOption('colors', ["#8E3232", "#FFBE2B", "#404040", "#A29386"])
+      .setTitle(title)
       .setDimensions(width, height)
-      .set3D()
       .build();
 
-      // Putting the image into a blob
-      let cid = infos[0].replace(" ", "_"),
-          imageData = chart.getAs('image/png').getBytes(),
-          imgblob = Utilities.newBlob(imageData, "image/png", cid);
-      
-      // Adding the chart to inlineImages
-      inlineImages[cid] = imgblob;
-      
-      // Adding the chart to the Html output
-      htmlOutput.append(`<img src="cid:${cid}"/><br/>`);
+      // Adding the chart to the HtmlOutput
+      let imageData = Utilities.base64Encode(chart.getAs('image/png').getBytes()),
+          imageUrl = "data:image/png;base64," + encodeURI(imageData);
+      htmlOutput.append("<img border=\"1\" src=\"" + imageUrl + "\">");
       
       // Adding the chart to the attachments
+      let imageDatamail = chart.getAs('image/png').getBytes(),
+          imgblob = Utilities.newBlob(imageDatamail, "image/png", "Contacts prospection");
       attachments.push(imgblob);
       
-      return [htmlOutput, attachments, inlineImages];
-    } catch(e) {Logger.log(`Could not create graph for infos : ${infos}`);}
+      return [htmlOutput, attachments];
+    } catch(e) {Logger.log(`Could not create graph for info : ${title}, error : ${e}`);}
   }
-  
-  // Creating a PieChart
-  function create_PieChart(info, data, htmlOutput, attachments, inlineImages, width, height) {
+
+  // Creating a PieChart with unique values
+  function create_PieChart_uniqueval(title, data, htmlOutput, attachments, width, height) {
     try {
-      // Creating a DataTable
+      // Creating a DataTable with the proportion of each contact type
       let dataTable = Charts.newDataTable();
-      dataTable.addColumn(Charts.ColumnType.STRING, "Tranche de prix");
-      dataTable.addColumn(Charts.ColumnType.NUMBER, info);
-      
-      data.forEach(function(row) {dataTable.addRow([row["Tranche de prix"], row[info]]);});
+      dataTable.addColumn(Charts.ColumnType.STRING, title);
+      dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion");
+      Logger.log(`Valeurs uniques : ${unique_val(title, data)}`);
+      unique_val(title, data).forEach(function(val) {dataTable.addRow([val, data.filter(row => row[title] == val).length/data.length]);});
       
       // Creating a PieChart with data from dataTable
       let chart = Charts.newPieChart()
       .setDataTable(dataTable)
       .setOption('legend', {textStyle: {font: 'trebuchet ms', fontSize: 11}})
-      .setTitle(`${info} par tranche de prix`)
+      .setOption('colors', ["#8E3232", "#FFBE2B", "#404040", "#A29386"])
+      .setOption('dataOpacity', 0.7)
+      .setTitle(title)
       .setDimensions(width, height)
-      .set3D()
       .build();
-      
-      // Putting the image into a blob
-      let cid = info.replace(" ", "_"),
-          imageData = chart.getAs('image/png').getBytes(),
-          imgblob = Utilities.newBlob(imageData, "image/png", cid);
-      
-      // Adding the chart to inlineImages
-      inlineImages[cid] = imgblob;
-      
-      // Adding the chart to the Html output
-      htmlOutput.append(`<img src="cid:${cid}"/><br/>`);
+
+      // Adding the chart to the HtmlOutput
+      let imageData = Utilities.base64Encode(chart.getAs('image/png').getBytes()),
+          imageUrl = "data:image/png;base64," + encodeURI(imageData);
+      htmlOutput.append("<img border=\"1\" src=\"" + imageUrl + "\">");
       
       // Adding the chart to the attachments
+      let imageDatamail = chart.getAs('image/png').getBytes(),
+          imgblob = Utilities.newBlob(imageDatamail, "image/png", title);
       attachments.push(imgblob);
       
-      return [htmlOutput, attachments, inlineImages];
-    } catch(e) {Logger.log(`Could not create graph for data : ${info}`);}
+      return [htmlOutput, attachments];
+    } catch(e) {Logger.log(`Could not create graph for info : ${title}, error : ${e}`);}
   }
   
   // Creating a LineChart
-  function create_LineChart(info, data, htmlOutput, attachments, inlineImages, width, height) {
+  function create_LineChart(dataTable, colors, title, htmlOutput, attachments, width, height) {
     try {
-      // Creating a DataTable
-      let dataTable = Charts.newDataTable();
-      dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
-      dataTable.addColumn(Charts.ColumnType.NUMBER, info);
-      
-      data.forEach(function(row) {dataTable.addRow([row["Mois"], row[info]]);});
-      
       // Creating a LineChart with data from dataTable
       let chart = Charts.newLineChart()
       .setDataTable(dataTable)
       .setOption('legend', {textStyle: {font: 'trebuchet ms', fontSize: 11}})
-      .setTitle(`${info} par mois`)
+      .setOption('curveType', 'function')
+      .setOption('pointShape', 'square')
+      .setTitle(title)
       .setDimensions(width, height)
-      .set3D()
+      .setColors(colors)
       .build();
       
-      // Putting the image into a blob
-      let cid = info.replace(" ", "_"),
-          imageData = chart.getAs('image/png').getBytes(),
-          imgblob = Utilities.newBlob(imageData, "image/png", cid);
-      
-      // Adding the chart to inlineImages
-      inlineImages[cid] = imgblob;
-      
-      // Adding the chart to the Html output
-      htmlOutput.append(`<img src="cid:${cid}"/><br/>`);
+      // Adding the chart to the HtmlOutput
+      let imageData = Utilities.base64Encode(chart.getAs('image/png').getBytes()),
+          imageUrl = "data:image/png;base64," + encodeURI(imageData);
+      htmlOutput.append("<img border=\"1\" src=\"" + imageUrl + "\">");
       
       // Adding the chart to the attachments
+      let imageDatamail = chart.getAs('image/png').getBytes(),
+          imgblob = Utilities.newBlob(imageDatamail, "image/png", `KPIs par mois`);
       attachments.push(imgblob);
       
-      return [htmlOutput, attachments, inlineImages];
-    } catch(e) {Logger.log(`Could not create graph for data : ${info}`);}
+      return [htmlOutput, attachments];
+    } catch(e) {Logger.log(`Could not create graph for info : ${title},, error : ${e}`);}
   }
     
   // Initialization
   const ui = SpreadsheetApp.getUi(),
-      sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Base calcul KPI"),
-      heads1 = sheet.getRange(1,  1, 1, 7).getDisplayValues().shift(),
-      heads2 = sheet.getRange(1, 11, 1, 3).getDisplayValues().shift();
-  
-  // I chose to keep the data as an array of objects (other possibility : object of objects, the keys being the months' names and the values the data in each row)
-  let data1 = sheet.getRange(1,  1, sheet.getLastRow(), 7).getDisplayValues().map(r => heads1.reduce((o, k, i) => (o[k] = (r[i] != "") ? r[i] : o[k] || '', o), {})),
-      data2 = sheet.getRange(1, 11, sheet.getLastRow(), 3).getDisplayValues().map(r => heads2.reduce((o, k, i) => (o[k] = (r[i] != "") ? r[i] : o[k] || '', o), {}));
-  
-  // Getting rid of the first column
-  heads1.shift(); heads2.shift();
+      sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Suivi"),
+      data = sheet.getRange(4, 2, (manually_getLastRow(sheet) - 3), 12).getValues(),
+      heads = sheet.getRange(1, 2, 1, 12).getValues().shift();
 
-  display_LoadingScreen("Chargement des diagrammes..");
+  // I chose to keep the data as an array of objects (other possibility : object of objects, the keys being the months' names and the values the data in each row)
+  let obj = data.map(r => heads.reduce((o, k, i) => (o[k] = r[i] || 0, o), {})).filter(row => row["Premier contact"] != "");
+
+  // console.log
+  Logger.log(obj); Logger.log(heads);
+
+  display_LoadingScreen("Chargement des KPI..");
                                                                                                                                                                    
   // Final outputs (displaying the charts on screen & mail content)  
   let htmlOutput = HtmlService
-  .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'trebuchet ms', sans-serif;">Comme promis, voici les KPI tant attendus :<br/></span> </span> <br/>`)
-  .setWidth(800)
-  .setHeight(465);
+  .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'trebuchet ms', sans-serif;">KPI KPI KPI<br/></span> </span> <br/>`)
+  .setWidth(1015)
+  .setHeight(515);
   
-  let htmlMail = HtmlService.createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'trebuchet ms', sans-serif;">&nbsp; &nbsp; Bonjour, <br/><br/> Voici les diagrammes récapitulatifs des ${data.length} lignes de données.<br/> <br/>Bonne journée !</span> </span>`),
-      inlineImages = {},
-      attachments = [];
+  // Preparing the contents of the email
+  let htmlMail = HtmlService.createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'trebuchet ms', sans-serif;">&nbsp; &nbsp; Bonjour, <br/><br/>Voici les KPI tant attendus.<br/> <br/>Bonne journée !</span> </span>`),
+      attachments = [],
+      conversion_chart = [];
   
-  // Creating ColumnCharts (by month) of the following informations : "Nombre de contacts", "Contact: Sans Suite", "Conversion en Étude", "Nombre de devis réalisés"
-  [htmlOutput, attachments, inlineImages] = create_ColumnChart([heads[0], heads[1], heads[2], heads[3]], data1, htmlOutput, attachments, inlineImages, 750, 400);
-  
-  // Creating a LineChart (by month) of the foloowing information : "Taux de conversion"
-  [htmlOutput, attachments, inlineImages] = create_LineChart(heads[4], data1, htmlOutput, attachments, inlineImages, 750, 400);
+  // /!\ LE PROCHAIN MANDAT REMMETTEZ MAI JUIN JUILLET
+  let month_list = [7, 8, 9, 10, 11, 0, 1, 2, 3],
+    month_names = ["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
+    state_list = ["Premier RDV réalisé", "Devis rédigé et envoyé", "En négociation", "Etude obtenue"],
+    color_list = ["#8E3232", "#FFBE2B", "#404040", "#A29386"];
 
-  // Creating ColumnCharts (by month) of the following informations : "CA sur étude potentielle", "CA réalisé"
-  [htmlOutput, attachments, inlineImages] = create_ColumnChart([heads[5], heads[6]], data1, htmlOutput, attachments, inlineImages, 750, 400);
+  // Creating a DataTable (by month) of the following informations : "Nombre de contacts",  "Nombre de devis réalisés", "En négociation", "Contact: Sans Suite", "Conversion en Étude",
+  let dataTable1 = Charts.newDataTable();
+  // Adding the columns
+  dataTable1.addColumn(Charts.ColumnType.STRING, "Mois");
+  state_list.forEach(function(state) {dataTable1.addColumn(Charts.ColumnType.NUMBER, state);});
+  // Adding the corresponding rows
+  month_list.forEach(function(month) {let dataRow = [month_names[month]]; let conversion_chart_row = [];
+                                      state_list.forEach(function(state) {let val = obj.filter(row => parseInt(row["Premier contact"].getMonth(), 10) == month && state_list.indexOf(row["État"]) >= state_list.indexOf(state)).length;
+                                                                          if (state == "Devis rédigé et envoyé" || state == "En négociation") {
+                                                                            val += obj.filter(row => parseInt(row["Premier contact"].getMonth(), 10) == month && (row["État"] == "Sans suite" || row["État"] == "A relancer") && row["Devis réalisé"]).length
+                                                                          }
+                                                                          else if (state == "Premier RDV réalisé") {
+                                                                            val += obj.filter(row => parseInt(row["Premier contact"].getMonth(), 10) == month && (row["État"] == "Sans suite" || row["État"] == "A relancer")).length
+                                                                          }
+                                                                          conversion_chart_row.push(val);
+                                                                          dataRow.push(val);});
+                                      conversion_chart.push(conversion_chart_row);
+                                      dataTable1.addRow(dataRow);});
+  Logger.log(conversion_chart);
+  // Appending the corresponding ColumnChart
+  [htmlOutput, attachments] = create_ColumnChart(dataTable1, "Contacts", htmlOutput, attachments, 1000, 500);
   
-  // Creating PieCharts (classified by price range) of the following informations : "Pourcentage de devis acceptés", "Pourcentage de devis refusés"
-  heads2.forEach(function(info) {[htmlOutput, attachments, inlineImages] = create_PieChart(info, data2, htmlOutput, attachments, inlineImages, 750, 400);});
+  // Creating a DataTable of all 3 conversion rates for each month
+  let dataTable2 = Charts.newDataTable();
+  // Columns
+  dataTable2.addColumn(Charts.ColumnType.STRING, "Mois");
+  dataTable2.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${state_list[0]} et ${state_list[1]}`);
+  dataTable2.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${state_list[1]} et ${state_list[2]}`);
+  dataTable2.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${state_list[2]} et ${state_list[3]}`);
+  // Rows
+  const prcnt = (a, b) => (parseInt(b, 10) == 0) ? 0 : a/b*100;
+  for (let idx in month_list) {
+    Logger.log(`Taux de conversion : ${[prcnt(conversion_chart[idx][1], conversion_chart[idx][0]), prcnt(conversion_chart[idx][2], conversion_chart[idx][1]), prcnt(conversion_chart[idx][3], conversion_chart[idx][2])]}`);
+  }
+  month_list.forEach(function(month, idx) {dataTable2.addRow([month_names[month], prcnt(conversion_chart[idx][1], conversion_chart[idx][0]), prcnt(conversion_chart[idx][2], conversion_chart[idx][1]), prcnt(conversion_chart[idx][3], conversion_chart[idx][2])]);});
+  // Creating the corresponding LineChart
+  [htmlOutput, attachments] = create_LineChart(dataTable2, ["#8E3232", "#FFBE2B", "#404040"], "Taux de conversion", htmlOutput, attachments, 1000, 500);
+
+  // Creating a DataTable of the expected and signed turnover
+  let dataTable3 = Charts.newDataTable();
+  // Columns
+  dataTable3.addColumn(Charts.ColumnType.STRING, "Mois");
+  dataTable3.addColumn(Charts.ColumnType.NUMBER, "CA sur étude potentielle");
+  dataTable3.addColumn(Charts.ColumnType.NUMBER, "CA sur étude signée");
+  // Rows
+  month_list.forEach(function(month) {let ca_pot = 0, ca_sig = 0;
+                                      obj.filter(row => parseInt(row["Premier contact"].getMonth(), 10) == month && row["État"] != "Etude obtenue").forEach(function(row) {if (Object.keys(row).includes("Prix potentiel de l'étude  € (HT)")) {ca_pot += parseInt(row["Prix potentiel de l'étude  € (HT)"], 10) * ((parseInt(row["Pourcentage de confiance à la conversion en réelle étude"], 10) > 0) ? parseInt(row["Pourcentage de confiance à la conversion en réelle étude"], 10)/100 : 1);}});
+                                      obj.filter(row => parseInt(row["Premier contact"].getMonth(), 10) == month && row["État"] == "Etude obtenue").forEach(function(row) {if (Object.keys(row).includes("Prix potentiel de l'étude  € (HT)")) {ca_sig += parseInt(row["Prix potentiel de l'étude  € (HT)"], 10);}});
+                                      dataTable3.addRow([month_names[month], ca_pot, ca_sig]);});
+  // Creating the corresponding ColumnCharts
+  [htmlOutput, attachments] = create_ColumnChart(dataTable3, "Chiffre d'affaires", htmlOutput, attachments, 1000, 500);
+  
+  // Creating a PieChart of the repartition by type of contact
+  [htmlOutput, attachments] = create_PieChart_uniqueval("Type de contact ", obj, htmlOutput, attachments, 1000, 500);
 
   send_Mail(htmlMail, "KPI", attachments);
   save_onDrive(attachments);
