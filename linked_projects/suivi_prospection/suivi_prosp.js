@@ -216,7 +216,6 @@ function stats_KPI() {
       .setDataTable(dataTable)
       .setOption('legend', {textStyle: {font: 'trebuchet ms', fontSize: 11}})
       .setOption('colors', ["#8E3232", "#FFBE2B", "#404040", "#A29386"])
-      .setOption('dataOpacity', 0.7)
       .setTitle(title)
       .setDimensions(width, height)
       .build();
