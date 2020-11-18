@@ -288,7 +288,7 @@ function stats_KPI() {
       conversion_chart = [];
   
   // /!\ LE PROCHAIN MANDAT REMMETTEZ MAI JUIN JUILLET
-  let month_list = [7, 8, 9, 10, 11, 0, 1, 2, 3],
+  let month_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0],
     month_names = ["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
     state_list = ["Premier RDV réalisé", "Devis rédigé et envoyé", "En négociation", "Etude obtenue"],
     color_list = ["#8E3232", "#FFBE2B", "#404040", "#A29386"];
