@@ -1,4 +1,4 @@
-// Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022)
+/* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
 
 // Two parts in this script : synchronizing with "Suivi d'études" and producing some KPIs
 
