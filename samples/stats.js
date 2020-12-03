@@ -130,7 +130,6 @@ function stats_merged(filtered) {
   // Creating a PieChart
   function create_PieChart(question, data, htmlOutput, attachments, inlineImages, width, height) {
     try {
-      
       // Creating a DataTable with the proportion of responses for each unique response to question
       let dataTable = Charts.newDataTable();
       dataTable.addColumn(Charts.ColumnType.STRING, question);
