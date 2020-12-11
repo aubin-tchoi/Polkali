@@ -1,4 +1,4 @@
-/* Si vous avez des questions à propos de ce script, contactez Aubin Tchoï (Directeur Qualité 022)   */
+/* Si vous avez des questions à propos de ce script, contactez Aubin Tchoï (Directeur Qualité 022)  */
 
 /* Quand un mail arrive dans la boîte mail,
 - on extrait ses pièces jointes et on met le mail dans la corbeille   (retrieveMailAttachments)
@@ -6,7 +6,7 @@
 - on les ouvre au format Google Docs                                  (openAsDocs)
 - on en extrait les données utile pour la BDD                         (readData)
 - on enregistre ces données dans la BDD                               (writeOnSheet)
-- on supprime les pièces jointes                                      (deleteFiles)                  */
+- on supprime les pièces jointes                                      (deleteFiles)                 */
 
 function addToBdd() {
   

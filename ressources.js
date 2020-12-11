@@ -30,3 +30,11 @@ function add_spaces(x,n) {
     let regexp = new RegExp(`\\d{${n}}(?=.)`, "g");
     return x.toString().replace(regexp, "$& ");
 }
+
+// Couleurs de PEP
+let colors = {
+    Bordeaux: "#8E3232",
+    Jaune: "#FFBE2B",
+    Gris: "#404040",
+    Châtain: "#A29386"
+};
