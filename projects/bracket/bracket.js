@@ -17,6 +17,7 @@ function stinson() {
       let file = DriveApp.getFileById(fileId),
         copy = file.makeCopy(name, folder);
       file.setTrashed(true);
+      return copy;
     }
 
     const folder = DriveApp.getFolderById(folderId),
@@ -41,14 +42,14 @@ function stinson() {
         fillSection(forms, image);
       }
     }
-    moveFileToFolder(forms.getId(), "Bracket", folder);
-    let sheet = SpreadsheetApp.create("Bracket");
-    moveFileToFolder(sheet, "Bracket", folder);
-
-    formCopy.setDestination(FormApp.DestinationType.SPREADSHEET, ss.getId());
+    let spreadsheet = SpreadsheetApp.create("Bracket");
+    forms = moveFileToFolder(forms.getId(), "Bracket", folder);
+    spreadsheet = moveFileToFolder(spreadsheet.getId(), "Bracket", folder);
+    forms.setDestination(FormApp.DestinationType.SPREADSHEET, spreadsheet.getId());
   }
 
   const folderId = "1nHfPZR10ZCFx-Nro546WjRwAmih2_bfq";
   genForms(folderId);
   // mailLink();
+  // add a count (number in each pool) and add a triggerEvent onFormSubmit to compute the total (divided by the sum of the marks given)
 }
