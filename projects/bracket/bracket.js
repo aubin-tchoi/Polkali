@@ -51,7 +51,9 @@ function stinson() {
       .setBackground("#ffe599")
       .setHorizontalAlignments(poulValues.map(row => row.map(() => "center")))
       .merge();
-      sheet.getRange((startRow + 1), (startColumn + 1 + (poule - 1) * poulSize), 1, poulSize).setValues([Array.from(Array(poulSize).keys()).map(x => x + 1)]);
+      sheet.getRange((startRow + 1), (startColumn + 1 + (poule - 1) * poulSize), 1, poulSize)
+      .setValues([Array.from(Array(poulSize).keys()).map(x => x + 1)])
+      .setBackground("#fff2cc");
       sheet.setColumnWidths((startColumn + 1), poulNum * poulSize, 23);
     }
     return [startRow, startColumn];
@@ -252,3 +254,4 @@ function updateSheet() {
 }
 
 // Divide in each group to normalize
+// Display leading candidate in each group (color) /!\ equality case
