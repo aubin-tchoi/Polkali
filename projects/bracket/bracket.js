@@ -1,5 +1,15 @@
 /* Si vous avez des questions à propos de ce script, contactez Aubin Tchoï (Directeur Qualité 022)   */
 
+/* Must be bound to a spreadsheet that contains a sheet name "Dashboard" in which are given a list of mail adresses
+  beginning in cell B5 (1 row per adress). Cells B4 to E4 should contain this header : ["Date d'envoi", "Prénom", "Nom", "Adresse mail"]
+  This sheet must contain a cell "Total" next to which will be recorded the votes.
+  The name of the Gmail Draft used is read from cell B1 */
+
+/* There are only 2 variables to adapt : folderId and spreadsheetId, the folder to this Id must contain 1 folder for each group. */
+
+const folderId = "1nHfPZR10ZCFx-Nro546WjRwAmih2_bfq",
+    spreadsheetId = "11gnPSgy85927z95yxoXb_iS6B2YNoTZumkQooWndjgE";
+
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
   ui.createMenu('Bracket')
@@ -7,7 +17,14 @@ function onOpen() {
   .addToUi();
 }
 
-  function stinson() {
+// Detects the position of an element in a set of data
+function detectPos(data, element) {
+  let row = (data.indexOf(data.filter(r => r.includes(element))[0]) + 1),
+    column = (data[row - 1].indexOf(element) + 1);
+  return [row, column];
+}
+
+function stinson() {
   // Loading screen
   function displayLoadingScreen(msg) {
     let htmlLoading = HtmlService
@@ -15,13 +32,6 @@ function onOpen() {
     .setWidth(450)
     .setHeight(325);
     SpreadsheetApp.getUi().showModelessDialog(htmlLoading, msg);
-  }
-
-  // Detects the position of an element in a set of data
-  function detectPos(data, element) {
-    let row = (data.indexOf(data.filter(r => r.includes(element))[0]) + 1),
-      column = (data[row - 1].indexOf(element) + 1);
-    return [row, column];
   }
     
   // Adds a line to the dashboard
@@ -112,8 +122,8 @@ function onOpen() {
     }
 
     const sheet = spreadsheet.getSheetByName("Dashboard"),
-      templateName = sheet.getRange(1, 1, 1, 1).getValues()[0][0];
-    let data = sheet.getRange(3, 2, (sheet.getLastRow() - 2), 4).getValues(),
+      templateName = sheet.getRange(1, 2, 1, 1).getValues()[0][0];
+    let data = sheet.getRange(4, 2, (sheet.getLastRow() - 3), 4).getValues(),
       heads = data.shift(),
       output = [],
       nSent = data.filter(row => row[0] == "").length;
@@ -127,7 +137,7 @@ function onOpen() {
         output.push(sendMail(templateName, link, row));
     });
 
-    sheet.getRange(4, 2, output.length, 1).setValues(output);
+    sheet.getRange(5, 2, output.length, 1).setValues(output);
     return nSent;
   }
 
@@ -142,9 +152,11 @@ function onOpen() {
   // Generates a Google Forms representation of the bracket
   function genForms(folderId, spreadsheet) {
     // Adding an image+mark to the forms
-    function fillSection(forms, image) {
+    function fillSection(forms, image, poulNum, poulSize) {
       let imageItem = forms.addImageItem()
-        .setImage(image);
+        .setImage(image)
+        .setTitle(`${poulSize}${poulSize >= 2 ? "ème" : "er"} candidat de la poule ${poulNum}`)
+        .setWidth(300);
       let mark = forms.addTextItem()
         .setTitle('Votre note')
         .setRequired(true);
@@ -153,7 +165,9 @@ function onOpen() {
     // First questions
     const folder = DriveApp.getFolderById(folderId);
     let forms = FormApp.create("Bracket")
-      .setDescription("Bienvenue dans le bracket, pour chaque poule vous disposez de 10 points à répartir sur l'ensemble des candidats. Soyez avisés."),
+      .setDescription(`Bienvenue dans le bracket, pour chaque poule vous disposez de 10 points à répartir sur l'ensemble des candidats.
+      Votre vote ne sera pas pris en compte si vous dépensez plus de 10 points. Soyez avisés.`)
+      .setConfirmationMessage(`Merci pour votre participation, la direction du Bracket vous recontactera sous peu pour annoncer les résultats.`),
       firstName = forms.addTextItem().setTitle("Quel est votre prénom ?").setRequired(true),
       lastName = forms.addTextItem().setTitle("Quel est votre nom ?").setRequired(true);
 
@@ -167,12 +181,12 @@ function onOpen() {
         files = subFolder.getFiles(),
         section = forms.addPageBreakItem()
         .setTitle(`Poule ${++poulNum}`);
-      poulSize++;
+      poulSize = 0;
 
         // Looping on each file (adding the image + a question for each file)
       while (files.hasNext()) { 
         let image = files.next().getBlob();
-        fillSection(forms, image);
+        fillSection(forms, image, poulNum, ++poulSize);
       }
     }
 
@@ -185,42 +199,51 @@ function onOpen() {
   // Loading screen
   displayLoadingScreen("Génération du Forms ..")
 
-  const folderId = "1nHfPZR10ZCFx-Nro546WjRwAmih2_bfq",
-    spreadsheetId = "1C68xciVCymtPCM-DcHM_ZMx7o7oZ0ydi7vs5bT8I0Ns",
-    spreadsheet = SpreadsheetApp.openById(spreadsheetId),
+  const spreadsheet = SpreadsheetApp.openById(spreadsheetId),
     [editLink, publishedLink, poulNum, poulSize] = genForms(folderId, spreadsheet),
     [startRow, startColumn] = formatSheet(spreadsheet, poulNum, poulSize),
+    ui = SpreadsheetApp.getUi();
+  let nSent = 0;
+
+  if (ui.alert("Bracket", "Souhaitez-vous envoyer le lien du Google Form par mail aux participants ?", ui.ButtonSet.YES_NO) == ui.Button.YES) {
     nSent = mailLink(spreadsheet, publishedLink);
-
-  const updateSheet = () => {
-    const dataSheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet(),
-      data = dataSheet.getRange(2, 2, (dataSheet.getLastRow() - 1), (dataSheet.getLastColumn() - 1)).getValues(),
-      heads = data.shift(),
-      nVotes = data.length,
-      sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Dashboard"),
-      sumVotes = data[data.length - 1].reduce((sum, currentValue) => (sum += currentValue), 0);
-
-    Logger.log(`Number of groups : ${poulNum}`);
-    Logger.log(`Size of a group : ${poulSize}`);
-    Logger.log(`Sum of his votes : ${sumVotes}`);
-
-    if (sumVotes == 10 * poulNum * nVotes) {
-      // Adding the last vote to the dashboard
-      sheet.getRange((startRow + nVotes), (startColumn + 1), 1, poulNum * poulSize).setValues([data[data.length - 1]]).setBackground("white");
-      // The last row contains the sum of all vote for given candidate
-      let formulas = Array(poulNum * poulSize).map(() => `=SUM(R[-${nVotes}]C[0]:R[-1]C[0])`);
-      sheet.getRange((startRow + nVotes + 1), (startColumn + 1), 1, poulNum * poulSize).setFormulasR1C1([formulas]).setBackground("#d9ead3");
-    }
   }
 
+  // Adding a trigger to the dashboard to update it after each vote
   ScriptApp.newTrigger("updateSheet")
   .forSpreadsheet(spreadsheet)
   .onFormSubmit()
   .create();
 
+  // Confirmation message (also ends the loading screen)
   let htmlOutput = HtmlService.createHtmlOutput(`<span style="font-family: 'trebuchet ms', sans-serif;">Voci le lien éditeur : <a href = "${editLink}">éditer le Form</a>.<br/>
                                                 <br/> Voici le lien lecteur : <a href = "${publishedLink}">répondre au Form</a>.<br/>
                                                 <br/> Le lien lecteur a été envoyé à ${nSent} personne${nSent >= 2 ? "s" : ""}.</span>`);
   SpreadsheetApp.getUi().showModelessDialog(htmlOutput, "Succès de l'opération")
-  // Image size, description, confirmation message on Forms, date d'envoi du mail
 }
+
+function updateSheet() {
+  const dataSheet = SpreadsheetApp.openById(spreadsheetId).getSheets()[0],
+    data = dataSheet.getRange(2, 4, (dataSheet.getLastRow() - 1), (dataSheet.getLastColumn() - 3)).getValues(),
+    nVotes = data.length,
+    sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName("Dashboard"),
+    latestVote = data[data.length - 1],
+    sumVotes = latestVote.reduce((sum, currentValue) => (sum += currentValue), 0),
+    [startRow, startColumn] = detectPos(sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getValues(), "Total"),
+    poulNum = Math.max(...sheet.getRange(startRow, (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0].map(el => parseInt(el.replace(/[^0-9.]/gi, ""), 10))),
+    poulSize = Math.max(...sheet.getRange((startRow + 1), (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0]);
+  
+  Logger.log(`Number of groups : ${poulNum}`);
+  Logger.log(`Size of a group : ${poulSize}`);
+  Logger.log(`Sum of his votes : ${sumVotes}`);
+
+  if (sumVotes == 10 * poulNum * poulSize) {
+    // Adding the last vote to the dashboard
+    sheet.getRange((startRow + nVotes), (startColumn + 1), 1, poulNum * poulSize).setValues([latestVote]).setBackground("white");
+    // The last row contains the sum of all vote for given candidate
+    let formulas = Array(poulNum * poulSize).map(() => `=SUM(R[-${nVotes}]C[0]:R[-1]C[0])`);
+    sheet.getRange((startRow + nVotes + 1), (startColumn + 1), 1, poulNum * poulSize).setFormulasR1C1([formulas]).setBackground("#d9ead3");
+  }
+}
+
+// Divide in each group to normalize
