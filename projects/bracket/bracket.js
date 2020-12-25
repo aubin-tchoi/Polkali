@@ -166,8 +166,10 @@ function stinson() {
     const folder = DriveApp.getFolderById(folderId);
     let forms = FormApp.create("Bracket")
       .setDescription(`Bienvenue dans le bracket, pour chaque poule vous disposez de 10 points à répartir sur l'ensemble des candidats.
-      Votre vote ne sera pas pris en compte si vous dépensez plus de 10 points. Soyez avisés.`)
-      .setConfirmationMessage(`Merci pour votre participation, la direction du Bracket vous recontactera sous peu pour annoncer les résultats.`),
+    Votre vote ne sera pas pris en compte si vous dépensez plus de 10 points. Soyez avisés.`)
+      .setConfirmationMessage(`Merci pour votre participation, la direction du Bracket vous recontactera sous peu pour annoncer les résultats.`)
+      .setRequireLogin(false)
+      .setShowLinkToRespondAgain(false),
       firstName = forms.addTextItem().setTitle("Quel est votre prénom ?").setRequired(true),
       lastName = forms.addTextItem().setTitle("Quel est votre nom ?").setRequired(true);
 
@@ -206,6 +208,8 @@ function stinson() {
   let nSent = 0;
 
   if (ui.alert("Bracket", "Souhaitez-vous envoyer le lien du Google Form par mail aux participants ?", ui.ButtonSet.YES_NO) == ui.Button.YES) {
+    // Loading screen
+    displayLoadingScreen("Envoi du lien ..")
     nSent = mailLink(spreadsheet, publishedLink);
   }
 
@@ -230,19 +234,20 @@ function updateSheet() {
     latestVote = data[data.length - 1],
     sumVotes = latestVote.reduce((sum, currentValue) => (sum += currentValue), 0),
     [startRow, startColumn] = detectPos(sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getValues(), "Total"),
-    poulNum = Math.max(...sheet.getRange(startRow, (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0].map(el => parseInt(el.replace(/[^0-9.]/gi, ""), 10))),
+    poulNum = Math.max(...sheet.getRange(startRow, (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0].map(el => parseInt(el.replace(/[^0-9]+/gi, ""), 10) || 0)),
     poulSize = Math.max(...sheet.getRange((startRow + 1), (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0]);
   
   Logger.log(`Number of groups : ${poulNum}`);
   Logger.log(`Size of a group : ${poulSize}`);
-  Logger.log(`Sum of his votes : ${sumVotes}`);
+  Logger.log(`Sum of the points : ${sumVotes}`);
 
-  if (sumVotes == 10 * poulNum * poulSize) {
+  if (sumVotes <= 10 * poulNum * poulSize) {
     // Adding the last vote to the dashboard
-    sheet.getRange((startRow + nVotes), (startColumn + 1), 1, poulNum * poulSize).setValues([latestVote]).setBackground("white");
+    sheet.getRange((startRow + 1 + nVotes), (startColumn + 1), 1, poulNum * poulSize).setValues([latestVote]).setBackground("white");
     // The last row contains the sum of all vote for given candidate
-    let formulas = Array(poulNum * poulSize).map(() => `=SUM(R[-${nVotes}]C[0]:R[-1]C[0])`);
-    sheet.getRange((startRow + nVotes + 1), (startColumn + 1), 1, poulNum * poulSize).setFormulasR1C1([formulas]).setBackground("#d9ead3");
+    let formulas = Array.from(Array(poulNum * poulSize).keys()).map(() => `=SUM(R[-${nVotes}]C[0]:R[-1]C[0])`);
+    Logger.log(`Formulas : ${formulas}`);
+    sheet.getRange((startRow + 1 + nVotes + 1), (startColumn + 1), 1, poulNum * poulSize).setFormulasR1C1([formulas]).setBackground("#d9ead3");
   }
 }
 
