@@ -7,30 +7,48 @@ function onOpen() {
   .addToUi();
 }
 
-function stinson() {
+  function stinson() {
+  // Loading screen
+  function displayLoadingScreen(msg) {
+    let htmlLoading = HtmlService
+    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Kkooljem.gif" alt="Loading" width="442" height="249">`)
+    .setWidth(450)
+    .setHeight(325);
+    SpreadsheetApp.getUi().showModelessDialog(htmlLoading, msg);
+  }
+
+  // Detects the position of an element in a set of data
+  function detectPos(data, element) {
+    let row = (data.indexOf(data.filter(r => r.includes(element))[0]) + 1),
+      column = (data[row - 1].indexOf(element) + 1);
+    return [row, column];
+  }
+    
   // Adds a line to the dashboard
-  function formatSheet(spreadsheetId, poulNum, poulSize) {
-    const sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName("Dashboard"),
-      values = sheet.getRange(1, 1, shet.getLastRow(), sheet.getLastColumn()).getValues();
-    let startRow = values.indexOf(values.filter(row => row.includes("Total"))) + 1,
-      startColumn = values[startRow - 1].indexOf(values[startRow - 1].filter(el => el == "Total")) + 1;
+  function formatSheet(spreadsheet, poulNum, poulSize) {
+    const sheet = spreadsheet.getSheetByName("Dashboard"),
+        values = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getValues(),
+        [startRow, startColumn] = detectPos(values, "Total");
     
     Logger.log(`Row offset : ${startRow}`);
     Logger.log(`Column offset : ${startColumn}`);
 
     // First line
     for (let poule = 1; poule <= poulNum; poule++) {
-      sheet.getRange(startRow, (startColumn + (poule - 1) * poulSize), 1, poulSize)
-      .merge()
-      .setValues([[`Poule ${poule}`]])
-      .setBackground("#ffe599");
-      sheet.getRange((startRow + 1), (startColumn + (poule - 1) * poulSize, 1, poulSize)).setValues(Array.from({length: poulSize}, (_, i) => i + 1));
+      let poulValues = sheet.getRange(startRow, (startColumn + 1 + (poule - 1) * poulSize), 1, poulSize).getValues(); poulValues[0][0] = `Poule ${poule}`;
+      sheet.getRange(startRow, (startColumn + 1 + (poule - 1) * poulSize), 1, poulSize)
+      .setValues(poulValues)
+      .setBackground("#ffe599")
+      .setHorizontalAlignments(poulValues.map(row => row.map(() => "center")))
+      .merge();
+      sheet.getRange((startRow + 1), (startColumn + 1 + (poule - 1) * poulSize), 1, poulSize).setValues([Array.from(Array(poulSize).keys()).map(x => x + 1)]);
+      sheet.setColumnWidths((startColumn + 1), poulNum * poulSize, 23);
     }
-    return startRow, startColumn;
+    return [startRow, startColumn];
   }
 
   // Sends an email containing the link to every email adress found in the sheet
-  function mailLink(spreadsheetId, link) {
+  function mailLink(spreadsheet, link) {
     // Returns a boolean function meant to be used in a filter function
     function subjectFilter_(template){
       return function(element) {
@@ -57,40 +75,72 @@ function stinson() {
           inlineImages[cid] = imgblob;
         }
       }
-      return msgHtml, inlineImages;
+      return [msgHtml, inlineImages];
+    }
+    
+    function sendMail(templateName, link, row) {
+      if (row["Date d'envoi"] == "") {
+          try {
+          let msg = GmailApp.getDrafts().filter(subjectFilter_(templateName))[0].getMessage();
+            
+          // Inline images
+          let [msgHtml, inlineImages] = getInlineImages(msg);
+
+          // Customizing the model with data taken from row
+          heads.forEach(function(key) {
+            let regexp = new RegExp(`{${key}}|{${key.toLowerCase()}}|{${key.replace(/[éêè]/gi, "e")}}`, "gmi");
+            msgHtml = msgHtml.replace(regexp, row[key]);
+          });
+          
+          // Adding the form's link to the mail
+          msgHtml = msgHtml.replace(/{link}/gmi, `<a href = ${link}>Bracket</a>`);
+
+          // Sending the mail
+          let msgPlain = msgHtml.replace(/\<br\/\>/gmi, '\n').replace(/(<([^>]+)>)/gmi, "");
+          Logger.log(msgHtml); Logger.log(msgPlain);
+          GmailApp.sendEmail(row["Adresse mail"], "Participez au bracket !", msgPlain, {htmlBody:msgHtml, inlineImages:inlineImages});
+          return [new Date()];
+        }
+        catch(e) {
+          Logger.log(`Issue with row ${row} : ${e}`);
+          return [(e.message == "Cannot read property 'getMessage' of undefined") ? "Pas de modèle à ce nom" : e.message];
+        }
+      }
+      else {
+        return [row["Date d'envoi"]];
+      }
     }
 
-    const sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName("Dashboard"),
-      templateName = sheet.getRange(1, 1, 1, 1).getValues()[0][0]
-      data = sheet.getRange(3, 2, sheet.getLastRow(), 3).getValues(),
-      heads = data.shift();
-    data = data.map(row => heads.reduce((o, k, i) => (o[k] = (r[i] != "") ? row[i] : o[k] || '', o), {}));
+    const sheet = spreadsheet.getSheetByName("Dashboard"),
+      templateName = sheet.getRange(1, 1, 1, 1).getValues()[0][0];
+    let data = sheet.getRange(3, 2, (sheet.getLastRow() - 2), 4).getValues(),
+      heads = data.shift(),
+      output = [],
+      nSent = data.filter(row => row[0] == "").length;
+    data = data.map(row => heads.reduce((o, k, i) => (o[k] = (row[i] != "") ? row[i] : o[k] || '', o), {})).filter(row => row["Adresse mail"] != "");
 
-    Logger.log(`Data : ${data}`);
+    Logger.log(`Heads : ${heads}`);
+    Logger.log(`Template name : ${templateName}`);
 
+    // Sending a mail to each email adress
     data.forEach(function(row) {
-      let msg = GmailApp.getDrafts().filter(subjectFilter_(templateName))[0].getMessage(),
-      msgHtml = msg.getBody(),
-      inlineImages = {};
-        
-    // Inline images
-    msgHtml, inlineImages = getInlineImages(msgHtml);
+        output.push(sendMail(templateName, link, row));
+    });
 
-    // Customizing the model with data taken from row
-    heads.forEach(function(key) {
-      let regexp = new RegExp(`{(${key}|${key.toLowerCase()}|${key.replace(/[éêè]/gi, "e")}|${key.toLowerCase().replace(/[éêè]/gi, "e")})}`, "gi");
-      msgHtml.replace(regexp, row[key]);});
-    
-    msgHtml.replace("{link}", link);
+    sheet.getRange(4, 2, output.length, 1).setValues(output);
+    return nSent;
+  }
 
-    // Sending the mail
-    let msgPlain = msgHtml.replace(/\<br\/\>/gi, '\n').replace(/(<([^>]+)>)/gi, "");
-    GmailApp.sendEmail(row["Adresse mail"], subject, msgPlain, {htmlBody:msgHtml, inlineImages:inlineImages});
-    });  
+  // Pushing a file into folder and trashing it
+  function moveFileToFolder(fileId, name, folder) {
+    let file = DriveApp.getFileById(fileId),
+      copy = file.makeCopy(name, folder);
+    file.setTrashed(true);
+    return copy.getId();
   }
 
   // Generates a Google Forms representation of the bracket
-  function genForms(folderId, spreadsheetId) {
+  function genForms(folderId, spreadsheet) {
     // Adding an image+mark to the forms
     function fillSection(forms, image) {
       let imageItem = forms.addImageItem()
@@ -98,25 +148,17 @@ function stinson() {
       let mark = forms.addTextItem()
         .setTitle('Votre note')
         .setRequired(true);
-    }
-
-    // Pushing a file into folder and trashing it
-    function moveFileToFolder(fileId, name, folder) {
-      let file = DriveApp.getFileById(fileId),
-        copy = file.makeCopy(name, folder);
-      file.setTrashed(true);
-      return copy;
-    }
+    }    
 
     // First questions
-    const folder = DriveApp.getFolderById(folderId),
-      forms = FormApp.create("Bracket")
+    const folder = DriveApp.getFolderById(folderId);
+    let forms = FormApp.create("Bracket")
       .setDescription("Bienvenue dans le bracket, pour chaque poule vous disposez de 10 points à répartir sur l'ensemble des candidats. Soyez avisés."),
       firstName = forms.addTextItem().setTitle("Quel est votre prénom ?").setRequired(true),
       lastName = forms.addTextItem().setTitle("Quel est votre nom ?").setRequired(true);
 
     let folders = folder.getFolders(),
-      poulNum = 1,
+      poulNum = 0,
       poulSize = 0;
     
     // Looping on each folder (1 section for each folder, folder <=> poule)
@@ -124,7 +166,7 @@ function stinson() {
       let subFolder = folders.next(),
         files = subFolder.getFiles(),
         section = forms.addPageBreakItem()
-        .setTitle(`Poule ${poulNum++}`);
+        .setTitle(`Poule ${++poulNum}`);
       poulSize++;
 
         // Looping on each file (adding the image + a question for each file)
@@ -135,21 +177,23 @@ function stinson() {
     }
 
     // Setting my dashboard as a destination
-    let spreadsheet = SpreadsheetApp.getFileById(spreadsheetId);
-    forms = moveFileToFolder(forms.getId(), "Bracket", folder);
-    spreadsheet = moveFileToFolder(spreadsheet.getId(), "Bracket", folder);
+    forms = FormApp.openById(moveFileToFolder(forms.getId(), "Bracket", folder));
     forms.setDestination(FormApp.DestinationType.SPREADSHEET, spreadsheet.getId());
-    return forms.getPublishedUrl(), poulNum, poulSize;
+    return [forms.getEditUrl(), forms.getPublishedUrl(), poulNum, poulSize];
   }
+
+  // Loading screen
+  displayLoadingScreen("Génération du Forms ..")
 
   const folderId = "1nHfPZR10ZCFx-Nro546WjRwAmih2_bfq",
     spreadsheetId = "1C68xciVCymtPCM-DcHM_ZMx7o7oZ0ydi7vs5bT8I0Ns",
-    [link, poulNum, poulSize] = genForms(folderId, spreadsheetId),
-    [startRow, startColumn] = formatSheet(spreadsheetId, poulNum, poulSize);
-  mailLink(spreadsheetId, link);
+    spreadsheet = SpreadsheetApp.openById(spreadsheetId),
+    [editLink, publishedLink, poulNum, poulSize] = genForms(folderId, spreadsheet),
+    [startRow, startColumn] = formatSheet(spreadsheet, poulNum, poulSize),
+    nSent = mailLink(spreadsheet, publishedLink);
 
   const updateSheet = () => {
-    const dataSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Réponses au formulaire 1"),
+    const dataSheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet(),
       data = dataSheet.getRange(2, 2, (dataSheet.getLastRow() - 1), (dataSheet.getLastColumn() - 1)).getValues(),
       heads = data.shift(),
       nVotes = data.length,
@@ -170,8 +214,13 @@ function stinson() {
   }
 
   ScriptApp.newTrigger("updateSheet")
-  .forSpreadsheet(SpreadsheetApp.openById(spreadsheetId))
+  .forSpreadsheet(spreadsheet)
   .onFormSubmit()
   .create();
-  // Image size, description, confirmation message
+
+  let htmlOutput = HtmlService.createHtmlOutput(`<span style="font-family: 'trebuchet ms', sans-serif;">Voci le lien éditeur : <a href = "${editLink}">éditer le Form</a>.<br/>
+                                                <br/> Voici le lien lecteur : <a href = "${publishedLink}">répondre au Form</a>.<br/>
+                                                <br/> Le lien lecteur a été envoyé à ${nSent} personne${nSent >= 2 ? "s" : ""}.</span>`);
+  SpreadsheetApp.getUi().showModelessDialog(htmlOutput, "Succès de l'opération")
+  // Image size, description, confirmation message on Forms, date d'envoi du mail
 }

@@ -11,7 +11,7 @@ function ArrayToObj(arr, heads) {
 }
 
 // Écran de chargement
-function display_LoadingScreen(msg) {
+function displayLoadingScreen(msg) {
     let htmlLoading = HtmlService
     .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Kkooljem.gif" alt="Loading" width="885" height="498">`)
     .setWidth(900)
@@ -26,7 +26,7 @@ function properCase(phrase) {
 }
 
 // Formatage de mot pour leur ajouter 1 espace toutes les n lettres (par exemple : numéros de tel)
-function add_spaces(x,n) {
+function addSpaces(x,n) {
     let regexp = new RegExp(`\\d{${n}}(?=.)`, "g");
     return x.toString().replace(regexp, "$& ");
 }

@@ -38,7 +38,7 @@ function mailing() {
           inlineImages[cid] = imgblob;
         }
       }
-      return msgHtml, inlineImages;
+      return [msgHtml, inlineImages];
     }
 
     // Retrieving attachments inside of the html body
@@ -48,30 +48,28 @@ function mailing() {
       for (let j = 0; j < attachment_ids.length; j++) {
         attachments.push(DriveApp.getFileById(attachment_ids[j].match(/https:\/\/drive\.google\.com\/file\/d\/([^\/]+)/)[1]).getBlob());
       }
-      return msgHtml.replace(/{PJ=[^}]+}/g, ""), attachments;
+      return [msgHtml.replace(/{PJ=[^}]+}/g, ""), attachments];
     }
 
     // A mail is sent only if "Date d'envoi du mail" column is empty
     if (row["Date d'envoi du mail"] == "") {
       try {
         let msg = GmailApp.getDrafts().filter(subjectFilter_(template))[0].getMessage(),
-            msgHtml = msg.getBody(),
-            inlineImages = {},
             attachments = [];
         
         // Inline images
-        msgHtml, inlineImages = get_InlineImages(msgHtml);
+        let [msgHtml, inlineImages] = get_InlineImages(msg);
 
         // Attachments
-        msgHtml, attachments = get_Attachments(msgHtml);
+        [msgHtml, attachments] = get_Attachments(msgHtml);
 
         // Customizing the model with data taken from row
         Object.keys(row).forEach(function(key) {
-          let regexp = new RegExp(`{(${key}|${key.toLowerCase()}|${key.replace(/[éêè]/gi, "e")}|${key.toLowerCase().replace(/[éêè]/gi, "e")})}`, "gi");
+          let regexp = new RegExp(`{${key}}|{${key.toLowerCase()}}|{${key.replace(/[éêè]/gi, "e")}}`, "gim");
           msgHtml.replace(regexp, row[key]);});
 
         // Sending the mail
-        let msgPlain = msgHtml.replace(/\<br\/\>/gi, '\n').replace(/(<([^>]+)>)/gi, "");
+        let msgPlain = msgHtml.replace(/\<br\/\>/gim, '\n').replace(/(<([^>]+)>)/gim, "");
         GmailApp.sendEmail(row["Adresse mail"], subject, msgPlain, {htmlBody:msgHtml, attachments:attachments, inlineImages:inlineImages});
           
         // Keeping track of sent emails

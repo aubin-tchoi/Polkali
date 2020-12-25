@@ -1,6 +1,6 @@
 // Author : Pôle Qualité 022 (Aubin Tchoï)
 
-function import() {
+function importation() {
   function merge(sheetscr, sheetdst, columns, hdsidx) {
     const heads = sheetscr.getRange(hdsidx, 1, 1, sheetscr.getLastColumn()).getDisplayValues().shift();
     let data = sheetscr.getRange(hdsidx, 1, (sheetscr.getLastRow() + 1 - hdsidx), sheetscr.getLastColumn()).getValues()

@@ -1,7 +1,7 @@
 ## Samples
 
 Les scripts suivants sont classés (grossièrement) par difficulté croissante.
-Ils n'ont pas réellement pour vocation d'être utilisés en tant que tels (sauf `mailing.gs` et `formating.gs` éventuellement), mais peuvent servir de sample à compléter en fonction du besoin.
+Ils n'ont pas réellement pour vocation d'être utilisés en tant que tels.
 Dans ces scripts on trouve souvent en fin de fonction des variables vides, qui sont vouées à être remplies manuellement (il s'agit souvent des IDs des spreadsheets que l'on souhaite faire interagir).
 
 #### import.js
@@ -33,6 +33,9 @@ Elle se montrera proablement assez peu utile en tant que telle, mais vous notere
 #### stats.js
 Les deux fonctions `stats_merged_fetchAllSheets` et `stats_merged_filtered` permettent de construire des statistiques sur l'ensemble des données présentes dans les différents sheets du spreadsheet courant. Pour chaque type d'information un choix intelligent est fait par la fonction `question_type` pour décider comment sera traitée cette information; sachant qu'elle peut être traitée sous forme de PieChart, de ColumnChart ou présentée dans un tableau récapitulatif. Les diagrammes en question peuvent être ensuite envoyés par mail à une adresse spécifiée, et/ou enregistrés sur le Drive dans un dossier dont on spécifiera l'ID. Ils seront également présentés sur une fenêtre.
 /!\ Les headers sont supposés se trouver en première ligne de chaque sheet.
+
+#### genForms.js
+La fonction `gen_Forms` permet de générer un Google Forms à partir des données d'un Google Sheet, en créant des sections distinctes pour chaque ligne de données du Sheets. Un trigger `onFormSubmit` est automatiquement ajouté afin de mettre à jour le Google Forms lorsqu'une option est choisie en enlevant du Forms l'option choisie.
 
 #### mailing.js
 La fonction `mailing` permet d'envoyer des mails personnalisés à un grand nombre de personnes. Cette fonction repose sur différents prérequis :
