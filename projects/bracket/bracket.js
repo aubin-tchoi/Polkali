@@ -136,7 +136,7 @@ function stinson() {
     let data = sheet.getRange(4, 2, (sheet.getLastRow() - 3), 4).getValues(),
       heads = data.shift(),
       output = [],
-      nSent = data.filter(row => row[0] == "").length;
+      nSent = data.filter(row => row[0] == "" && row[1] != "").length;
     data = data.map(row => heads.reduce((o, k, i) => (o[k] = (row[i] != "") ? row[i] : o[k] || '', o), {})).filter(row => row["Adresse mail"] != "");
 
     Logger.log(`Heads : ${heads}`);
