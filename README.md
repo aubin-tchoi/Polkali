@@ -13,6 +13,7 @@ Vous trouverez différents fichiers ou dossiers dans ce respository :
 
 * `images` : quelques images/gif que j'utilise régulièrement.
 
+
 Quelques conventions que l'on s'efforcera de respecter dans chaque script :
 
 * Préciser le nom de la personne qui a écrit le script en cas de besoin
@@ -20,5 +21,3 @@ Quelques conventions que l'on s'efforcera de respecter dans chaque script :
 * Placer toutes les données hardcodées en début de script (les Ids de fichiers par exemple)
 
 * Écrire les noms de variables et fonctions en camelCase (tout attaché, minuscule puis majuscules au début des mots suivants)
-
-* Plus généralement, rédiger un code propre et relisible par d'autres personnes
