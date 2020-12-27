@@ -5,10 +5,17 @@
   This sheet must contain a cell "Total" next to which will be recorded the votes.
   The name of the Gmail Draft used is read from cell B1 */
 
-/* There are only 2 variables to adapt : folderId and spreadsheetId, the folder to this Id must contain 1 folder for each group. */
+/* There are only 3 consts variables : folderId, spreadsheetId and colors, the folder to this Id must contain 1 folder for each group. */
 
 const folderId = "1nHfPZR10ZCFx-Nro546WjRwAmih2_bfq",
-    spreadsheetId = "11gnPSgy85927z95yxoXb_iS6B2YNoTZumkQooWndjgE";
+    spreadsheetId = "11gnPSgy85927z95yxoXb_iS6B2YNoTZumkQooWndjgE",
+    colors = {
+      winner : "#00ff00",
+      duplicate : "#ea9999",
+      loser : "#d9ead3",
+      groups : "#ffe599",
+      contestants : "#fff2cc"
+    };
 
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
@@ -18,8 +25,9 @@ function onOpen() {
 }
 
 // Detects the position of an element in a set of data
-function detectPos(data, element) {
-  let row = (data.indexOf(data.filter(r => r.includes(element))[0]) + 1),
+function detectPos(sheet, element) {
+  let data = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getValues(),
+  row = (data.indexOf(data.filter(r => r.includes(element))[0]) + 1),
     column = (data[row - 1].indexOf(element) + 1);
   return [row, column];
 }
@@ -37,8 +45,7 @@ function stinson() {
   // Adds a line to the dashboard
   function formatSheet(spreadsheet, poulNum, poulSize) {
     const sheet = spreadsheet.getSheetByName("Dashboard"),
-        values = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getValues(),
-        [startRow, startColumn] = detectPos(values, "Total");
+        [startRow, startColumn] = detectPos(sheet, "Total");
     
     Logger.log(`Row offset : ${startRow}`);
     Logger.log(`Column offset : ${startColumn}`);
@@ -48,13 +55,14 @@ function stinson() {
       let poulValues = sheet.getRange(startRow, (startColumn + 1 + (poule - 1) * poulSize), 1, poulSize).getValues(); poulValues[0][0] = `Poule ${poule}`;
       sheet.getRange(startRow, (startColumn + 1 + (poule - 1) * poulSize), 1, poulSize)
       .setValues(poulValues)
-      .setBackground("#ffe599")
-      .setHorizontalAlignments(poulValues.map(row => row.map(() => "center")))
+      .setBackground(colors["groups"])
+      .setHorizontalAlignment("center")
       .merge();
       sheet.getRange((startRow + 1), (startColumn + 1 + (poule - 1) * poulSize), 1, poulSize)
       .setValues([Array.from(Array(poulSize).keys()).map(x => x + 1)])
-      .setBackground("#fff2cc");
-      sheet.setColumnWidths((startColumn + 1), poulNum * poulSize, 23);
+      .setBackground(colors["contestants"])
+      .setHorizontalAlignment("center");
+      sheet.setColumnWidths((startColumn + 1), poulNum * poulSize, 33);
     }
     return [startRow, startColumn];
   }
@@ -229,29 +237,54 @@ function stinson() {
 }
 
 function updateSheet() {
+  // Sets a different background color for the 2 biggest values in each group
+  function twoBiggest(targetRange, poulNum, poulSize) {
+    let targetValues = targetRange.getDisplayValues().shift(),
+      big1 = Array.from(Array(poulNum).keys()).map(poul => Math.max(...(targetValues.slice(poul * poulSize, (poul + 1) * poulSize).map(str => parseFloat(str.replace(",", ".")))))),
+      big2 = Array.from(Array(poulNum).keys()).map(poul => Math.max(...(targetValues.slice(poul * poulSize, (poul + 1) * poulSize).filter(value => parseFloat(value.replace(",", ".")) != big1[poul]).map(str => parseFloat(str.replace(",", ".")))))),
+      duplicate1 = Array.from(Array(poulNum).keys()).map(poul => (targetValues.slice(poul * poulSize, (poul + 1) * poulSize).filter(value => value == big1[poul]).length == 1 ? colors["winner"] : colors["duplicate"])),
+      duplicate2 = Array.from(Array(poulNum).keys()).map(poul => (targetValues.slice(poul * poulSize, (poul + 1) * poulSize).filter(value => value == big2[poul]).length == 1 ? colors["winner"] : colors["duplicate"])),
+      backgrounds = targetValues.map((value, index) => (value == big1[Math.floor(index/poulSize)] ? duplicate1[Math.floor(index/poulSize)] : value == big2[Math.floor(index/poulSize)] ? duplicate2[Math.floor(index/poulSize)] : colors["loser"]));
+
+  Logger.log(`Biggest values for each group : ${big1}`);
+  Logger.log(`Second biggest values for each group : ${big2}`);
+  Logger.log(`Backgound colors : ${backgrounds}`);
+
+  targetRange.setBackgrounds([backgrounds]);
+  }
+
+  // Retrieving useful data
   const dataSheet = SpreadsheetApp.openById(spreadsheetId).getSheets()[0],
-    data = dataSheet.getRange(2, 4, (dataSheet.getLastRow() - 1), (dataSheet.getLastColumn() - 3)).getValues(),
-    nVotes = data.length,
+    nVotes = (dataSheet.getLastRow() - 1),
     sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName("Dashboard"),
-    latestVote = data[data.length - 1],
-    sumVotes = latestVote.reduce((sum, currentValue) => (sum += currentValue), 0),
-    [startRow, startColumn] = detectPos(sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getValues(), "Total"),
+    [startRow, startColumn] = detectPos(sheet, "Total"),
     poulNum = Math.max(...sheet.getRange(startRow, (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0].map(el => parseInt(el.replace(/[^0-9]+/gi, ""), 10) || 0)),
-    poulSize = Math.max(...sheet.getRange((startRow + 1), (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0]);
+    poulSize = Math.max(...sheet.getRange((startRow + 1), (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0]),
+    targetRange = sheet.getRange((startRow + 1 + nVotes + 1), (startColumn + 1), 1, poulNum * poulSize);
+  
+  // Retrieving the most recent vote and normalizing it
+  let unnormalizedVote = dataSheet.getRange(dataSheet.getLastRow(), 4, 1, (dataSheet.getLastColumn() - 3)).getValues().shift(),
+    normalization = Array.from(Array(poulNum).keys()).map(poul => unnormalizedVote.slice(poul * poulSize, (poul + 1) * poulSize).reduce((a, b) => a + b, 0)),
+    normalizedVote = unnormalizedVote.map((value, index) => parseInt(value * 10 / normalization[Math.floor(index/poulSize)], 10));
   
   Logger.log(`Number of groups : ${poulNum}`);
   Logger.log(`Size of a group : ${poulSize}`);
-  Logger.log(`Sum of the points : ${sumVotes}`);
+  Logger.log(`Unnormalized most recent vote : ${unnormalizedVote}`);
+  Logger.log(`Normalized most recent vote : ${normalizedVote}`);
 
-  if (sumVotes <= 10 * poulNum * poulSize) {
-    // Adding the last vote to the dashboard
-    sheet.getRange((startRow + 1 + nVotes), (startColumn + 1), 1, poulNum * poulSize).setValues([latestVote]).setBackground("white");
-    // The last row contains the sum of all vote for given candidate
-    let formulas = Array.from(Array(poulNum * poulSize).keys()).map(() => `=SUM(R[-${nVotes}]C[0]:R[-1]C[0])`);
-    Logger.log(`Formulas : ${formulas}`);
-    sheet.getRange((startRow + 1 + nVotes + 1), (startColumn + 1), 1, poulNum * poulSize).setFormulasR1C1([formulas]).setBackground("#d9ead3");
+  // Adding the last vote to the dashboard
+  sheet.getRange((startRow + 1 + nVotes), (startColumn + 1), 1, poulNum * poulSize).setValues([normalizedVote]).setBackground("white").setHorizontalAlignment("center");
+  
+  // The last row contains the sum of all vote for given candidate
+  let formulas = Array.from(Array(poulNum * poulSize).keys()).map(() => `=SUM(R[-${nVotes}]C[0]:R[-1]C[0])`);
+  Logger.log(`Formulas : ${formulas}`);
+  targetRange.setFormulasR1C1([formulas]).setBackground(colors["loser"]).setHorizontalAlignment("center");
+
+  // Identifying the 2 leading contestants
+  twoBiggest(targetRange, poulNum, poulSize);
+
+  // Setting border for each group
+  for (let poul = 0; poul < poulNum; poul++) {
+    sheet.getRange(startRow, (startColumn + 1 + poul * poulSize), (nVotes + 3), (poulSize)).setBorder(true, true, true, true, false, false);
   }
 }
-
-// Divide in each group to normalize
-// Display leading candidate in each group (color) /!\ equality case
