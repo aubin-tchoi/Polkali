@@ -1,7 +1,7 @@
 ## Images
 
-Ddabong : 따봉
-- This one is actually a Messenger sticker
+따봉
+- Thumbs up
 
-Kkooljem : 꿀잼
-- I use this one as a loading screen
+꿀잼
+- Loading screen
