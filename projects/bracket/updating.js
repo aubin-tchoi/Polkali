@@ -3,7 +3,7 @@
 // onFormSubmit trigger function
 
 // Adds the most recent vote to our dahsboard
-function addLatestVote(sheet, row, groupNumber, groupSize) {
+function addLatestVote(sheet, row, groupNumber, groupSize, startColumn) {
   // Normalizes an array in each slice of size groupSize
   function normalize(array, groupSize) {
     let sum = 0,
@@ -16,7 +16,7 @@ function addLatestVote(sheet, row, groupNumber, groupSize) {
     return newArray;
   }
 
-  const reference = dashboard.getRange(dashboard.getLastRow(), (startColumn + 1), 1, groupNumber * groupSize);
+  const reference = sheet.getRange(sheet.getLastRow(), (startColumn + 1), 1, groupNumber * groupSize);
 
   Logger.log(`Unnormalized vote : ${row}`);
   row = normalize(row, groupSize);
@@ -26,8 +26,18 @@ function addLatestVote(sheet, row, groupNumber, groupSize) {
   sheet.getRange((sheet.getLastRow() + 1), (startColumn + 1), 1, (groupNumber * groupSize)).setValues([addLosers(row, reference)]);
 }
 
-function addSumFormula(sheet, position) {
-  
+function addSumFormula(sheet, row, groupNumber, groupSize, startColumn) {
+  const reference = sheet.getRange(sheet.getLastRow(), (startColumn + 1), 1, groupNumber * groupSize),
+    numberVotes = detectColor(sheet, MARKERS["nextRound"])[0] - detectColor(sheet, MARKERS["currentRound"]) - 1,
+    formulas = Array.from(Array(row.length).keys()).map((_, idx) => `=SUM(R[-${numberVotes}]C[0]:R[-1]C[0])`);
+
+  // Adding the formulas to the dashboard
+  sheet.getRange((sheet.getLastRow() + 1), (startColumn + 1), 1, (groupNumber * groupSize)).setValues([addLosers(formulas, reference)]);
+
+  // Writing on the left cells
+  sheet.getRange((sheet.getLastRow() - 1), startColumn, 2, 1)
+  .setValues([[""], [findRoundNumber(sheet)]])
+  .setBackgrounds([["white"], [MARKERS["nextRound"]]]);
 }
 
 // Sets a different background color for the 2 biggest values in each group + borders around each group
@@ -74,13 +84,13 @@ function borderGroups(sheet, position, groupNumber, groupSize) {
 function updateSheet() {
   const sheetsrc = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet(),
     data = sheetsrc.getRange(sheetsrc.getLastRow(), 3, 1, (sheetsrc.getLastColumn() - 2)).getValues()[0],
-    sheetdst = SpreadsheetApp.openById(IDS["dashboard"]).getSheetByName("Dashbord"),
+    sheetdst = SpreadsheetApp.openById(IDS["dashboard"]).getSheetByName("Dashboard"),
 
     [startRow, startColumn] = detectColor(sheetdst, MARKERS["currentRound"]),
     [groupNumber, groupSize] = findGroups(sheetdst);
 
-  addLatestVote(sheet, data, groupNumber, groupSize);
-  addSumFormula(sheet, [startRow + 1, startColumn + 1]);
+  addLatestVote(sheet, data, groupNumber, groupSize, startColumn);
+  addSumFormula(sheet, data, groupNumber, groupSize, startColumn);
   highlightWinners(sheet, data, groupNumber, groupSize);
   borderGroups(sheet, [startRow + 1, startColumn + 1], groupNumber, groupSize);
 }

@@ -19,7 +19,7 @@ function detectColor(sheet, color) {
 
 // Finds the number of the next round
 function findRoundNumber(sheet) {
-  const [row, col] = detectColor(sheet, MARKERS["round"]);
+  const [row, col] = detectColor(sheet, MARKERS["currentRound"]);
   return (parseInt(sheet.getRange(row, col).getValue().replace(/[^0-9]+/gi, ""), 10) + 1);
 }
 
