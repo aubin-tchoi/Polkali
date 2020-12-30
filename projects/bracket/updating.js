@@ -3,7 +3,7 @@
 // onFormSubmit trigger function
 
 // Adds the most recent vote to our dahsboard
-function addLatestVote(sheet, row, groupNumber, groupSize, startColumn) {
+function addLatestVote(sheet, row, voteNumber, groupNumber, groupSize, startRow, startColumn) {
   // Normalizes an array in each slice of size groupSize
   function normalize(array, groupSize) {
     let sum = 0,
@@ -15,30 +15,38 @@ function addLatestVote(sheet, row, groupNumber, groupSize, startColumn) {
     }
     return newArray;
   }
-
-  const reference = sheet.getRange(sheet.getLastRow(), (startColumn + 1), 1, groupNumber * groupSize);
+  
+  const reference = sheet.getRange((startRow + voteNumber), (startColumn + 1), 1, groupNumber * groupSize);
 
   Logger.log(`Unnormalized vote : ${row}`);
   row = normalize(row, groupSize);
   Logger.log(`Normalized vote : ${row}`);
 
   // Writing the new values on sheet
-  sheet.getRange((sheet.getLastRow() + 1), (startColumn + 1), 1, (groupNumber * groupSize)).setValues([addLosers(row, reference)]);
+  sheet.getRange((startRow + voteNumber + 1), (startColumn + 1), 1, (groupNumber * groupSize))
+    .setBackground("white")
+    .setValues([addLosers(row, reference)]);
 }
 
 // Adds a "Total Round n" line
-function addSumFormula(sheet, row, groupNumber, groupSize, startColumn) {
-  const reference = sheet.getRange(sheet.getLastRow(), (startColumn + 1), 1, groupNumber * groupSize),
-    numberVotes = detectColor(sheet, MARKERS["nextRound"])[0] - detectColor(sheet, MARKERS["currentRound"]) - 1,
-    formulas = Array.from(Array(row.length).keys()).map((_, idx) => `=SUM(R[-${numberVotes}]C[0]:R[-1]C[0])`);
+function addSumFormula(sheet, row, voteNumber, groupNumber, groupSize, startRow, startColumn) {
+  const reference = sheet.getRange((startRow + voteNumber), (startColumn + 1), 1, groupNumber * groupSize),
+    formulas = Array.from(Array(row.length).keys()).map((_, idx) => `=SUM(R[-${voteNumber + 1}]C[0]:R[-1]C[0])`);
 
   // Adding the formulas to the dashboard
-  sheet.getRange((sheet.getLastRow() + 1), (startColumn + 1), 1, (groupNumber * groupSize)).setValues([addLosers(formulas, reference)]);
+  sheet.getRange((startRow + voteNumber + 2), (startColumn + 1), 1, (groupNumber * groupSize)).setValues([addLosers(formulas, reference)]);
 
   // Writing on the left cells
-  sheet.getRange((sheet.getLastRow() - 1), startColumn, 2, 1)
-  .setValues([[""], [`Total R${findRoundNumber(sheet)}`]])
-  .setBackgrounds([["white"], [MARKERS["nextRound"]]]);
+  if (voteNumber > 0) {
+    sheet.getRange((startRow + voteNumber + 1), startColumn, 2, 1)
+      .setValues([[""], [`Total R${findRoundNumber(sheet)}`]])
+      .setBackgrounds([["white"], [MARKERS["nextRound"]]]);
+  }
+  else {
+    sheet.getRange((startRow + 2), startColumn, 1, 1)
+      .setValues([[`Total R${findRoundNumber(sheet)}`]])
+      .setBackgrounds([[MARKERS["nextRound"]]]);
+  }
 }
 
 // Sets a different background color for the 2 biggest values in each group
@@ -49,23 +57,28 @@ function highlightWinners(targetRange, groupNumber, groupSize) {
   // Slicing up the range by group
   for (let group = 0; group < groupNumber; group++) {
     let slice = targetValues.slice(group * groupSize, (group + 1) * groupSize),
-      backgroundSlice = Array.from(Array(groupSize).keys()),
+      backgroundSlice = Array.from(Array(groupSize).keys()).map(() => "white"),
       biggestValue = 0,
-      biggestIndex = groupSize;
+      absoluteIndex = groupSize,
+      offset = 1;
 
-    // Looking for the two biggest values
+    // Looking for the two biggest values (only works if there is no more than 2 winners bc of the "+ 1" in line 67)
     for (let k = 0; k < GAME_PARAMETERS["winnersNumber"]; k++) {
-      let newIdx = slice.indexOf(Math.max(...slice));
-      biggestIndex = newIdx >= biggestIndex ? newIdx + 1 : newIdx;
-      backgroundSlice[biggestIndex] = COLORS["winner"];
-      biggestValue = slice.splice(biggestIndex, 1);
+      let relativeIndex = slice.indexOf(Math.max(...slice).toString());
+      absoluteIndex = relativeIndex + offset > absoluteIndex ? relativeIndex + offset++ : relativeIndex;
+      backgroundSlice[absoluteIndex] = COLORS["winner"];
+      biggestValue = slice.splice(relativeIndex, 1);
     }
 
     // Checking for tie
-    if (Math.max(...slice) == biggestValue) {
-      let newIdx = slice.indexOf(biggestValue);
-      backgroundSlice[biggestIndex] = COLORS["tie"];
-      backgroundSlice[newIdx >= biggestIndex ? newIdx + 1 : newIdx] = COLORS["tie"];
+    for (let k = 0; k < groupSize - GAME_PARAMETERS["winnersNumber"]; k++) {
+      if (Math.max(...slice) == biggestValue) {
+        let relativeIndex = slice.indexOf(biggestValue.toString());
+        backgroundSlice[absoluteIndex] = COLORS["tie"];
+        absoluteIndex = relativeIndex + offset >= absoluteIndex ? relativeIndex + offset++ : relativeIndex;
+        backgroundSlice[absoluteIndex] = COLORS["tie"];
+        biggestValue = slice.splice(relativeIndex, 1);
+      }
     }
 
     // Adding the slice to backgrounds
@@ -75,9 +88,9 @@ function highlightWinners(targetRange, groupNumber, groupSize) {
 }
 
 // Sets borders around each group and centers numbers in their cells
-function borderGroups(sheet, position, groupNumber, groupSize) {
+function borderGroups(sheet, voteNumber, groupNumber, groupSize, startRow, startColumn) {
   for (let group = 0; group < groupNumber; group++) {
-    sheet.getRange(position[0], (position[1] + group * groupSize), (sheetdst.getLastRow() - position[0]), groupSize)
+    sheet.getRange(startRow, (startColumn + group * groupSize), (voteNumber + 2), groupSize)
       .setBorder(true, true, true, true, false, false)
       .setHorizontalAlignment("center");
   }
@@ -86,14 +99,15 @@ function borderGroups(sheet, position, groupNumber, groupSize) {
 // Updates the dashboard after each new vote
 function updateSheet() {
   const sheetsrc = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet(),
-    data = sheetsrc.getRange(sheetsrc.getLastRow(), 3, 1, (sheetsrc.getLastColumn() - 2)).getValues()[0],
+    data = sheetsrc.getRange(sheetsrc.getLastRow(), 4, 1, (sheetsrc.getLastColumn() - 3)).getValues()[0],
+    voteNumber = (sheetsrc.getLastRow() - 2),
     sheetdst = SpreadsheetApp.openById(IDS["dashboard"]).getSheetByName("Dashboard"),
 
     [startRow, startColumn] = detectColor(sheetdst, MARKERS["currentRound"]),
     [groupNumber, groupSize] = findGroups(sheetdst);
 
-  addLatestVote(sheet, data, groupNumber, groupSize, startColumn);
-  addSumFormula(sheet, data, groupNumber, groupSize, startColumn);
-  highlightWinners(sheet, data, groupNumber, groupSize);
-  borderGroups(sheet, [startRow + 1, startColumn + 1], groupNumber, groupSize);
+  addLatestVote(sheetdst, data, voteNumber, groupNumber, groupSize, startRow, startColumn);
+  addSumFormula(sheetdst, data, voteNumber, groupNumber, groupSize, startRow, startColumn);
+  highlightWinners(sheetdst.getRange((startRow + voteNumber + 2), (startColumn + 1), 1, groupNumber * groupSize), groupNumber, groupSize);
+  borderGroups(sheetdst, voteNumber, groupNumber, groupSize, (startRow + 1), (startColumn + 1));
 }

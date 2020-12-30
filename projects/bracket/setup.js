@@ -12,7 +12,8 @@ function helper() {
   sheet.getRange(mailPos[0], mailPos[1], 1, 4)
     .setBackground(MARKERS["mail"])
     .setValue("Mailing list")
-    .merge();
+    .merge()
+    .setHorizontalAlignment("center");
   sheet.getRange((mailPos[0] + 1), mailPos[1], 1, 4)
     .setBackground(COLORS["contestants"])
     .setValues(mailHeader);

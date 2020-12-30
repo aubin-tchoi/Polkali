@@ -20,22 +20,22 @@ function detectColor(sheet, color) {
 // Finds the number of the next round
 function findRoundNumber(sheet) {
   const [row, col] = detectColor(sheet, MARKERS["currentRound"]);
-  return (parseInt(sheet.getRange(row, col).getValue().replace(/[^0-9]+/gi, ""), 10) + 1);
+  return ((parseInt(sheet.getRange(row, col).getValue().replace(/[^0-9]+/gi, ""), 10) + 1) || 1);
 }
 
 // Finds groupNumber and groupSize (only works with a formated sheet)
 function findGroups(sheet) {
   const [startRow, startColumn] = detectColor(sheet, MARKERS["groups"]),
-    groupNumber = Math.max(...sheet.getRange(startRow, (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0].map(el => parseInt(el.replace(/[^0-9]+/gi, ""), 10) || 0)),
+    groupNumber = Math.max(...(sheet.getRange(startRow, (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0].map(el => parseInt(el.toString().replace(/[^0-9]+/gi, ""), 10) || 0))),
     groupSize = Math.max(...sheet.getRange((startRow + 1), (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0]);
   return [groupNumber, groupSize];
 }
 
 // Creating a new array with blanks for eliminated contestants
 function addLosers(row, reference) {
-  let filterLosers = (idx => reference.getValues()[0][idx] == "" || [COLORS["loser"], COLORS["contestants"]].includes(reference.getBackgrounds()[0][idx])),
+  let filterLosers = (idx => reference.getValues()[0][idx].toString() == "" || reference.getBackgrounds()[0][idx] == COLORS["loser"]),
     newRow = [];
-  for (let idx = 0; idx < reference.length; idx++) {
+  for (let idx = 0; idx < reference.getValues()[0].length; idx++) {
     newRow.push(filterLosers(idx) ? "" : row.shift());
   }
   return newRow;

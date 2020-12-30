@@ -14,9 +14,9 @@ const GAME_PARAMETERS = {
     winnersNumber: 2
   },
   IDS = {
-    folder: "15CM8Q2M8t4PhRyjZqFLq8bCg4J0iU6ik",
-    trash: "16_JRrlTut5prU1z6hpi1pSy42BOMR-t1",
-    dashboard: "11gnPSgy85927z95yxoXb_iS6B2YNoTZumkQooWndjgE",
+    folder: "19dgq90QYZjM4EXeA0v3_PFVvJjNtKzit",
+    trash: "1hdngkIZuyAcsIoCjanOGlQOwgtauYG82",
+    dashboard: "15RZWg0COZ10Z2W2refqF_8kWiEQ5gV24Ql5jdAwSRwU",
   },
   MARKERS = {
     oldRound: "#ffe589",
@@ -54,9 +54,8 @@ function newRound() {
     ui = SpreadsheetApp.getUi(),
     roundNumber = findRoundNumber(sheet);
 
-  updateMarkers(sheet);
-
   if (roundNumber > 1) {
+    updateMarkers(sheet);
     removeLosers(sheet, IDS["folder"], IDS["trash"]);
   }
 

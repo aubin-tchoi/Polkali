@@ -2,23 +2,23 @@
 
 // Adds a line to the dashboard
 function formatSheet(sheet, groupNumber, groupSize) {
-    const [startRow, startColumn] = detectPos(sheet, MARKERS["groups"]);
+    const [startRow, startColumn] = detectColor(sheet, MARKERS["groups"]);
     sheet.getRange((startRow + 1), startColumn).setValue("Numéro").setBackground(MARKERS["currentRound"]);
 
     // First line
     for (let group = 0; group < groupNumber; group++) {
         let firstLine = [Array.from(Array(groupSize).keys()).map(idx => (idx == 0) ? `Poule ${group + 1}` : "")],
             secondLine = [Array.from(Array(groupSize).keys()).map(x => x + 1)];
-        sheet.getRange((startRow - 1), (startColumn + 1 + group * poulSize), 1, poulSize)
+        sheet.getRange(startRow, (startColumn + 1 + group * groupSize), 1, groupSize)
             .setValues(firstLine)
             .setBackground(COLORS["groups"])
             .setHorizontalAlignment("center")
             .merge();
-        sheet.getRange(startRow, (startColumn + 1 + group * poulSize), 1, poulSize)
+        sheet.getRange((startRow + 1), (startColumn + 1 + group * groupSize), 1, groupSize)
             .setValues(secondLine)
             .setBackground(COLORS["contestants"])
             .setHorizontalAlignment("center");
-        sheet.setColumnWidths((startColumn + 1), poulNum * poulSize, 33);
+        sheet.setColumnWidths((startColumn + 1), groupNumber * groupSize, 33);
     }
 }
 
@@ -88,7 +88,7 @@ function generateForms(folderId, roundNumber) {
     displayLoadingScreen("Génération du Forms ..")
 
     const folder = DriveApp.getFolderById(folderId),
-        roundName = `Round ${roundNumber + 1}`,
+        roundName = `Round ${roundNumber}`,
         destination = SpreadsheetApp.create(roundName);
 
     // First questions & configuration
@@ -122,7 +122,7 @@ function generateForms(folderId, roundNumber) {
     DriveApp.getFileById(destination.getId()).moveTo(folder);
 
     // Setting destination as forms' destination
-    forms.setDestination(FormApp.DestinationType.SPREADSHEET, destination);
+    forms.setDestination(FormApp.DestinationType.SPREADSHEET, destination.getId());
 
     // Setting a trigger on the destination sheet
     ScriptApp.newTrigger("updateSheet")
@@ -163,7 +163,7 @@ function mailLink(sheet, link) {
     }
 
     // Sends a mail based on a template using the data stored in row
-    function sendMail(data, templateName, link) {
+    function sendMail(data, heads, templateName, link) {
         try {
             let msg = GmailApp.getDrafts().filter(subjectFilter_(templateName))[0].getMessage();
 
@@ -189,10 +189,12 @@ function mailLink(sheet, link) {
             });
             return [new Date()];
         } catch (e) {
-            Logger.log(`Issue with row ${row} : ${e}`);
+            Logger.log(`Issue with row ${data} : ${e}`);
             return [(e.message == "Cannot read property 'getMessage' of undefined") ? "Pas de modèle à ce nom" : e.message];
         }
     }
+
+    const ui = SpreadsheetApp.getUi();
 
     if (ui.alert("Bracket", "Souhaitez-vous envoyer le lien du Google Form par mail aux participants ?", ui.ButtonSet.YES_NO) == ui.Button.YES) {
         const templateName = sheet.getRange(detectColor(sheet, MARKERS["template"])[0], (detectColor(sheet, MARKERS["template"])[1] + 1)).getValue(),
@@ -205,7 +207,7 @@ function mailLink(sheet, link) {
 
         // Sending a mail to each email adress
         data.forEach(function (row) {
-            output.push(sendMail(row, templateName, link));
+            output.push(sendMail(row, heads, templateName, link));
         });
 
         // Writing on column "Date d'envoi"
