@@ -1,4 +1,4 @@
-/* Si vous avez des questions à propos de ce script, contactez Aubin Tchoï (Directeur Qualité 022)   */
+/* For any further question, please contact Aubin Tchoï */
 
 // Loading screen
 function displayLoadingScreen(msg) {
@@ -26,8 +26,8 @@ function findRoundNumber(sheet) {
 // Finds groupNumber and groupSize (only works with a formated sheet)
 function findGroups(sheet) {
   const [startRow, startColumn] = detectColor(sheet, MARKERS["groups"]),
-  groupNumber = Math.max(...sheet.getRange(startRow, (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0].map(el => parseInt(el.replace(/[^0-9]+/gi, ""), 10) || 0)),
-  groupSize = Math.max(...sheet.getRange((startRow + 1), (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0]);
+    groupNumber = Math.max(...sheet.getRange(startRow, (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0].map(el => parseInt(el.replace(/[^0-9]+/gi, ""), 10) || 0)),
+    groupSize = Math.max(...sheet.getRange((startRow + 1), (startColumn + 1), 1, (sheet.getLastColumn() - startColumn)).getValues()[0]);
   return [groupNumber, groupSize];
 }
 

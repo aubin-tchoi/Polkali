@@ -1,7 +1,11 @@
-/* Si vous avez des questions à propos de ce script, contactez Aubin Tchoï (Directeur Qualité 022)   */
+/* For any further question, please contact Aubin Tchoï */
 
 /* Must be bound to a spreadsheet that contains a sheet name "Dashboard" in which are given a list of mail adresses
   The script uses specific colors called markers to locate important cells */
+
+/* The given template will be read and completed : use the header's keys in it,
+  writing {headersKey} in the template will get it replaced by the information under this key.
+  Only the headers "Date d'envoi" and "Adresse mail" should remain exactly the same (no additional capital letter nor space) */
 
 /* There should be 1 folder for each group */
 
@@ -14,9 +18,8 @@ const GAME_PARAMETERS = {
     trash = "16_JRrlTut5prU1z6hpi1pSy42BOMR-t1",
     dashboard = "11gnPSgy85927z95yxoXb_iS6B2YNoTZumkQooWndjgE",
   },
-
   MARKERS = {
-    oldRound = "#ff01ff",
+    oldRound = "#ffe589",
     currentRound = "#ff00ff",
     nextRound = "#d150dd",
     groups = "#f1c232",

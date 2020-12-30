@@ -1,4 +1,4 @@
-/* Si vous avez des questions à propos de ce script, contactez Aubin Tchoï (Directeur Qualité 022)   */
+/* For any further question, please contact Aubin Tchoï */
 
 // onFormSubmit trigger function
 
@@ -74,11 +74,12 @@ function highlightWinners(targetRange, groupNumber, groupSize) {
   targetRange.setBackgrounds([backgrounds]);
 }
 
-// Sets borders around each group
+// Sets borders around each group and centers numbers in their cells
 function borderGroups(sheet, position, groupNumber, groupSize) {
   for (let group = 0; group < groupNumber; group++) {
     sheet.getRange(position[0], (position[1] + group * groupSize), (sheetdst.getLastRow() - position[0]), groupSize)
-      .setBorder(true, true, true, true, false, false);
+      .setBorder(true, true, true, true, false, false)
+      .setHorizontalAlignment("center");
   }
 }
 

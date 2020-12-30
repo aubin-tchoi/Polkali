@@ -1,4 +1,4 @@
-/* Si vous avez des questions à propos de ce script, contactez Aubin Tchoï (Directeur Qualité 022)   */
+/* For any further question, please contact Aubin Tchoï */
 
 // Adds a line to the dashboard
 function formatSheet(sheet, groupNumber, groupSize) {
@@ -66,71 +66,71 @@ function removeLosers(sheet, folderId, trashId) {
 
 // New becomes old
 function updateMarkers(sheet) {
-  let oldPos = detectColor(sheet, MARKERS["currentRound"]),
-    newPos = detectColor(sheet, MARKERS["nextRound"]);
-  sheet.getRange(oldPos[0], oldPos[1]).setBackground(MARKERS["oldRound"]);
-  sheet.getRange(newPos[0], newPos[1]).setBackground(MARKERS["currentRound"]);
+    let oldPos = detectColor(sheet, MARKERS["currentRound"]),
+        newPos = detectColor(sheet, MARKERS["nextRound"]);
+    sheet.getRange(oldPos[0], oldPos[1]).setBackground(MARKERS["oldRound"]);
+    sheet.getRange(newPos[0], newPos[1]).setBackground(MARKERS["currentRound"]);
 }
 
 // Generates a Google Forms representation of the bracket, links it to a spreadsheet and installs and onFormSubmit trigger
 function generateForms(folderId, roundNumber) {
-  // Adding a contestant to the Form
-  function addContestant(forms, image, group, contestant) {
-    forms.addImageItem()
-      .setImage(image)
-      .setTitle(`${contestant}${contestant >= 2 ? "ème" : "er"} candidat de la poule ${group}`)
-      .setWidth(FORMS_PARAMETERS["imageSize"]);
-    forms.addTextItem()
-      .setTitle('Votre note')
-      .setRequired(true);
-  }
-
-  displayLoadingScreen("Génération du Forms ..")
-
-  const folder = DriveApp.getFolderById(folderId),
-    roundName = `Round ${roundNumber + 1}`,
-    destination = SpreadsheetApp.create(roundName);
-
-  // First questions & configuration
-  let forms = FormApp.create(roundName)
-    .setDescription(FORMS_PARAMETERS["description"])
-    .setConfirmationMessage(FORMS_PARAMETERS["confirmationMessage"])
-    .setRequireLogin(false)
-    .setShowLinkToRespondAgain(false);
-  forms.addTextItem().setTitle("Quel est votre prénom ?").setRequired(true);
-  forms.addTextItem().setTitle("Quel est votre nom ?").setRequired(true);
-
-  // Looping on each folder (1 section for each folder)
-  let folders = folder.getFolders(),
-    groupIdx = 0,
-    groupSize = 0;
-
-  while (folders.hasNext()) {
-    let subFolder = folders.next(),
-      files = subFolder.getFiles();
-    forms.addPageBreakItem().setTitle(`Poule ${++groupIdx}`);
-    groupSize = 0;
-    // Looping on each file (adding the image + a question for each file)
-    while (files.hasNext()) {
-      let image = files.next().getBlob();
-      addContestant(forms, image, groupIdx, ++groupSize);
+    // Adding a contestant to the Form
+    function addContestant(forms, image, group, contestant) {
+        forms.addImageItem()
+            .setImage(image)
+            .setTitle(`${contestant}${contestant >= 2 ? "ème" : "er"} candidat de la poule ${group}`)
+            .setWidth(FORMS_PARAMETERS["imageSize"]);
+        forms.addTextItem()
+            .setTitle('Votre note')
+            .setRequired(true);
     }
-  }
 
-  // Moving both the forms and its destination to folder
-  DriveApp.getFileById(forms.getId()).moveTo(folder);
-  DriveApp.getFileById(destination.getId()).moveTo(folder);
+    displayLoadingScreen("Génération du Forms ..")
 
-  // Setting destination as forms' destination
-  forms.setDestination(FormApp.DestinationType.SPREADSHEET, destination);
+    const folder = DriveApp.getFolderById(folderId),
+        roundName = `Round ${roundNumber + 1}`,
+        destination = SpreadsheetApp.create(roundName);
 
-  // Setting a trigger on the destination sheet
-  ScriptApp.newTrigger("updateSheet")
-    .forSpreadsheet(destination)
-    .onFormSubmit()
-    .create();
+    // First questions & configuration
+    let forms = FormApp.create(roundName)
+        .setDescription(FORMS_PARAMETERS["description"])
+        .setConfirmationMessage(FORMS_PARAMETERS["confirmationMessage"])
+        .setRequireLogin(false)
+        .setShowLinkToRespondAgain(false);
+    forms.addTextItem().setTitle("Quel est votre prénom ?").setRequired(true);
+    forms.addTextItem().setTitle("Quel est votre nom ?").setRequired(true);
 
-  return [forms.getEditUrl(), forms.getPublishedUrl(), groupIdx, groupSize];
+    // Looping on each folder (1 section for each folder)
+    let folders = folder.getFolders(),
+        groupIdx = 0,
+        groupSize = 0;
+
+    while (folders.hasNext()) {
+        let subFolder = folders.next(),
+            files = subFolder.getFiles();
+        forms.addPageBreakItem().setTitle(`Poule ${++groupIdx}`);
+        groupSize = 0;
+        // Looping on each file (adding the image + a question for each file)
+        while (files.hasNext()) {
+            let image = files.next().getBlob();
+            addContestant(forms, image, groupIdx, ++groupSize);
+        }
+    }
+
+    // Moving both the forms and its destination to folder
+    DriveApp.getFileById(forms.getId()).moveTo(folder);
+    DriveApp.getFileById(destination.getId()).moveTo(folder);
+
+    // Setting destination as forms' destination
+    forms.setDestination(FormApp.DestinationType.SPREADSHEET, destination);
+
+    // Setting a trigger on the destination sheet
+    ScriptApp.newTrigger("updateSheet")
+        .forSpreadsheet(destination)
+        .onFormSubmit()
+        .create();
+
+    return [forms.getEditUrl(), forms.getPublishedUrl(), groupIdx, groupSize];
 }
 
 // Sends an email containing the link to every email adress found in the sheet
