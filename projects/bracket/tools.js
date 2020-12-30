@@ -20,12 +20,12 @@ function detectColor(sheet, color) {
 // Finds the size of a column
 function findColumnDepth(sheet, begin, column) {
   const values = sheet.getRange(begin, column, sheet.getLastRow(), 1).getValues(); 
-  for (let depth = 0; depth < sheet.getLastRow - begin + 2; depth++) {
+  for (let depth = 0; depth < sheet.getLastRow() - begin + 2; depth++) {
     if (values[depth][0] == "") {
       return depth;
     }
   }
-  return sheet.getLastRow();
+  return (sheet.getLastRow() - begin + 2);
 }
 
 // Finds the number of the next round

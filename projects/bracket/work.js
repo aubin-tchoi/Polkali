@@ -197,7 +197,7 @@ function mailLink(sheet, link) {
     const ui = SpreadsheetApp.getUi();
 
     if (ui.alert("Bracket", "Souhaitez-vous envoyer le lien du Google Form par mail aux participants ?", ui.ButtonSet.YES_NO) == ui.Button.YES) {
-        const templateName = sheet.getRange(detectColor(sheet, MARKERS["template"])[0], (detectColor(sheet, MARKERS["template"])[1] + 1)).getValue(),
+        const templateName = sheet.getRange(detectColor(sheet, MARKERS["template"])[0], detectColor(sheet, MARKERS["template"])[1]).getValue(),
             [startRow, startColumn] = detectColor(sheet, MARKERS["mail"]);
 
         let data = sheet.getRange((startRow + 1), startColumn, findColumnDepth(sheet, (startRow + 1), startColumn), 4).getValues(),

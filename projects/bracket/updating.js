@@ -40,12 +40,14 @@ function addSumFormula(sheet, row, voteNumber, groupNumber, groupSize, startRow,
   if (voteNumber > 0) {
     sheet.getRange((startRow + voteNumber + 1), startColumn, 2, 1)
       .setValues([[""], [`Total R${findRoundNumber(sheet)}`]])
-      .setBackgrounds([["white"], [MARKERS["nextRound"]]]);
+      .setBackgrounds([["white"], [MARKERS["nextRound"]]])
+      .setHorizontalAlignment("center");
   }
   else {
     sheet.getRange((startRow + 2), startColumn, 1, 1)
       .setValues([[`Total R${findRoundNumber(sheet)}`]])
-      .setBackgrounds([[MARKERS["nextRound"]]]);
+      .setBackgrounds([[MARKERS["nextRound"]]])
+      .setHorizontalAlignment("center");
   }
 }
 
