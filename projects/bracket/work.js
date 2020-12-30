@@ -41,7 +41,7 @@ function removeLosers(sheet, folderId, trashId) {
     while (folders.hasNext()) {
         let subFolder = folders.next(),
             files = subFolder.getFiles();
-        Logger.log(`Removing losers in file : ${subFolder.getName()}.`);
+        Logger.log(`Removing losers in folder : ${subFolder.getName()}.`);
         while (files.hasNext()) {
             let file = files.next();
             if (losers[fileIdx++]) {
@@ -200,7 +200,7 @@ function mailLink(sheet, link) {
         const templateName = sheet.getRange(detectColor(sheet, MARKERS["template"])[0], (detectColor(sheet, MARKERS["template"])[1] + 1)).getValue(),
             [startRow, startColumn] = detectColor(sheet, MARKERS["mail"]);
 
-        let data = sheet.getRange((startRow + 1), startColumn, (sheet.getLastRow() - startRow), 4).getValues(),
+        let data = sheet.getRange((startRow + 1), startColumn, findColumnDepth(sheet, (startRow + 1), startColumn), 4).getValues(),
             heads = data.shift(),
             output = [];
         data = data.map(row => heads.reduce((o, k, i) => (o[k] = (row[i] != "") ? row[i] : o[k] || '', o), {}));

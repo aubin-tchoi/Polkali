@@ -57,7 +57,7 @@ function highlightWinners(targetRange, groupNumber, groupSize) {
   // Slicing up the range by group
   for (let group = 0; group < groupNumber; group++) {
     let slice = targetValues.slice(group * groupSize, (group + 1) * groupSize),
-      backgroundSlice = Array.from(Array(groupSize).keys()).map(() => "white"),
+      backgroundSlice = Array.from(Array(groupSize).keys()).map(() => COLORS["loser"]),
       biggestValue = 0,
       absoluteIndex = groupSize,
       offset = 1;

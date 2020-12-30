@@ -17,9 +17,26 @@ function detectColor(sheet, color) {
   return [row, column];
 }
 
+// Finds the size of a column
+function findColumnDepth(sheet, begin, column) {
+  const values = sheet.getRange(begin, column, sheet.getLastRow(), 1).getValues(); 
+  for (let depth = 0; depth < sheet.getLastRow - begin + 2; depth++) {
+    if (values[depth][0] == "") {
+      return depth;
+    }
+  }
+  return sheet.getLastRow();
+}
+
 // Finds the number of the next round
 function findRoundNumber(sheet) {
-  const [row, col] = detectColor(sheet, MARKERS["currentRound"]);
+  let [row, col] = [0, 0];
+  try {
+    [row, col] = detectColor(sheet, MARKERS["nextRound"]);
+  }
+  catch(e) {
+    [row, col] = detectColor(sheet, MARKERS["currentRound"]);
+  }
   return ((parseInt(sheet.getRange(row, col).getValue().replace(/[^0-9]+/gi, ""), 10) + 1) || 1);
 }
 
