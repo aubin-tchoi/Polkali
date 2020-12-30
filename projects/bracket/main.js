@@ -34,7 +34,7 @@ const GAME_PARAMETERS = {
     contestants: "#fff2cc"
   },
   FORMS_PARAMETERS = {
-    description: `Bienvenue dans le bracket, pour chaque poule vous disposez de ${POINTS_POOL} points à répartir sur l'ensemble des candidats. Soyez avisés.`,
+    description: `Bienvenue dans le bracket, pour chaque poule vous disposez de ${GAME_PARAMETERS["pointsPool"]} points à répartir sur l'ensemble des candidats. Soyez avisés.`,
     confirmationMessage: `Merci pour votre participation, la direction du Bracket vous recontactera sous peu pour annoncer les résultats.`,
     imageSize: 300
   };
