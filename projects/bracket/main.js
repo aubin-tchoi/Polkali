@@ -10,21 +10,21 @@
 /* There should be 1 folder for each group */
 
 const GAME_PARAMETERS = {
-    pointsPool = 10,
-    winnersNumber = 2
+    pointsPool: 10,
+    winnersNumber: 2
   },
   IDS = {
-    folder = "15CM8Q2M8t4PhRyjZqFLq8bCg4J0iU6ik",
-    trash = "16_JRrlTut5prU1z6hpi1pSy42BOMR-t1",
-    dashboard = "11gnPSgy85927z95yxoXb_iS6B2YNoTZumkQooWndjgE",
+    folder: "15CM8Q2M8t4PhRyjZqFLq8bCg4J0iU6ik",
+    trash: "16_JRrlTut5prU1z6hpi1pSy42BOMR-t1",
+    dashboard: "11gnPSgy85927z95yxoXb_iS6B2YNoTZumkQooWndjgE",
   },
   MARKERS = {
-    oldRound = "#ffe589",
-    currentRound = "#ff00ff",
-    nextRound = "#d150dd",
-    groups = "#f1c232",
-    mail = "#9900ff",
-    template = "#c27ba0"
+    oldRound: "#ffe589",
+    currentRound: "#ff00ff",
+    nextRound: "#d150dd",
+    groups: "#f1c232",
+    mail: "#9900ff",
+    template: "#c27ba0"
   },
   COLORS = {
     winner: "#00ff00",
@@ -34,9 +34,9 @@ const GAME_PARAMETERS = {
     contestants: "#fff2cc"
   },
   FORMS_PARAMETERS = {
-    description = `Bienvenue dans le bracket, pour chaque poule vous disposez de ${POINTS_POOL} points à répartir sur l'ensemble des candidats. Soyez avisés.`,
-    confirmationMessage = `Merci pour votre participation, la direction du Bracket vous recontactera sous peu pour annoncer les résultats.`,
-    imageSize = 300
+    description: `Bienvenue dans le bracket, pour chaque poule vous disposez de ${POINTS_POOL} points à répartir sur l'ensemble des candidats. Soyez avisés.`,
+    confirmationMessage: `Merci pour votre participation, la direction du Bracket vous recontactera sous peu pour annoncer les résultats.`,
+    imageSize: 300
   };
 
 function onOpen() {
