@@ -26,6 +26,7 @@ function addLatestVote(sheet, row, groupNumber, groupSize, startColumn) {
   sheet.getRange((sheet.getLastRow() + 1), (startColumn + 1), 1, (groupNumber * groupSize)).setValues([addLosers(row, reference)]);
 }
 
+// Adds a "Total Round n" line
 function addSumFormula(sheet, row, groupNumber, groupSize, startColumn) {
   const reference = sheet.getRange(sheet.getLastRow(), (startColumn + 1), 1, groupNumber * groupSize),
     numberVotes = detectColor(sheet, MARKERS["nextRound"])[0] - detectColor(sheet, MARKERS["currentRound"]) - 1,
@@ -36,11 +37,11 @@ function addSumFormula(sheet, row, groupNumber, groupSize, startColumn) {
 
   // Writing on the left cells
   sheet.getRange((sheet.getLastRow() - 1), startColumn, 2, 1)
-  .setValues([[""], [findRoundNumber(sheet)]])
+  .setValues([[""], [`Total R${findRoundNumber(sheet)}`]])
   .setBackgrounds([["white"], [MARKERS["nextRound"]]]);
 }
 
-// Sets a different background color for the 2 biggest values in each group + borders around each group
+// Sets a different background color for the 2 biggest values in each group
 function highlightWinners(targetRange, groupNumber, groupSize) {
   let targetValues = targetRange.getDisplayValues()[0],
     backgrounds = [];
@@ -81,6 +82,7 @@ function borderGroups(sheet, position, groupNumber, groupSize) {
   }
 }
 
+// Updates the dashboard after each new vote
 function updateSheet() {
   const sheetsrc = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet(),
     data = sheetsrc.getRange(sheetsrc.getLastRow(), 3, 1, (sheetsrc.getLastColumn() - 2)).getValues()[0],

@@ -16,6 +16,7 @@ const GAME_PARAMETERS = {
   },
 
   MARKERS = {
+    oldRound = "#ff01ff",
     currentRound = "#ff00ff",
     nextRound = "#d150dd",
     groups = "#f1c232",
@@ -50,11 +51,13 @@ function newRound() {
     ui = SpreadsheetApp.getUi(),
     roundNumber = findRoundNumber(sheet);
 
+  updateMarkers(sheet);
+
   if (roundNumber > 1) {
     removeLosers(sheet, IDS["folder"], IDS["trash"]);
   }
 
-  const [editUrl, publishedUrl, groupNumber, groupSize] = generateForms(IDS["folder"], roundNumber, triggeredFunction),
+  const [editUrl, publishedUrl, groupNumber, groupSize] = generateForms(IDS["folder"], roundNumber),
     mailSentNumber = mailLink(sheet, publishedUrl);
 
   if (roundNumber == 1) {
