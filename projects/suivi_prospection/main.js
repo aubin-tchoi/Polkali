@@ -1,6 +1,5 @@
 /* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
 
-
 // Main file (triggers + main function for KPI and synchronization)
 
 const ui = SpreadsheetApp.getUi(),
@@ -50,7 +49,7 @@ function onEdit(e) {
 } */
 
 /* ------ KPI ----- */
-function generateKPI(mailResults, saveResults, displayResults) {
+function generateKPI(mailResults, saveResults, folderId, displayResults) {
   // Initialization
   const sheet = SpreadsheetApp.openById(SHEETS["id"]).getSheetByName(SHEETS["name"]),
     data = sheet.getRange(4, 2, (manuallyGetLastRow(sheet) - 3), 12).getValues(),
@@ -174,8 +173,11 @@ function generateKPI(mailResults, saveResults, displayResults) {
   }
   // Saving graphs in a Drive folder
   if (saveResults) {
-    let folderId = ui.prompt("Enregistrement des images sur le Drive", "Entrez l'id du dossier de destination :", ui.ButtonSet.OK).getResponseText();
-    saveOnDrive(attachments, folderId);
+    if (folderId != "") {
+      saveOnDrive(attachments, folderId);
+    } else {
+      saveOnDrive(attachments);
+    }
   }
   // Displaying the charts on screen
   if (displayResults) {
@@ -185,10 +187,11 @@ function generateKPI(mailResults, saveResults, displayResults) {
 
 function displayKPI() {
   let mailResults = ui.alert("Envoi des diagrammes par mail", "Souhaitez vous recevoir les diagrammes par mail ?", ui.ButtonSet.YES_NO) == ui.Button.YES,
-    saveResults = ui.alert("Enregistrement des images sur le Drive", "Souhaitez vous enregistrer les images sur le Drive ?", ui.ButtonSet.YES_NO) == ui.Button.YES;
-  generateKPI(mailResults, saveResults, true);
+    saveResults = ui.alert("Enregistrement des images sur le Drive", "Souhaitez vous enregistrer les images sur le Drive ?", ui.ButtonSet.YES_NO) == ui.Button.YES,
+    folderId = ui.prompt("Enregistrement des images sur le Drive", "Entrez l'id du dossier de destination :", ui.ButtonSet.OK).getResponseText();
+  generateKPI(mailResults, saveResults, folderId, true);
 }
 
 function autoSaveKPI() {
-  generateKPI(false, true, false);
+  generateKPI(false, true, "", false);
 }

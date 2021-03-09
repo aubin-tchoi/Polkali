@@ -88,7 +88,7 @@ function syncOnSelec() {
     });
 
     // Confirmation
-    let imgUrl = "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Ddabong.png",
+    let imgUrl = "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/thumbsUp.png",
         sheetUrl = "https://docs.google.com/spreadsheets/d/1gmJLAKvUOYFeS32raOiSTYiE_ozr7YSk26Y0t0blm04/edit#gid=0",
         operationSuccess = HtmlService
         .createHtmlOutput(`<span style='font-size: 16pt;'> <span style="font-family: 'roboto', sans-serif;">L'opération a été effectuée avec succès, veuillez remplir manuellement le nom de l'étude dans le <a href="${sheetUrl}">suivi des études</a>.<br/><br/> La bise</span></span><p style="text-align:center;"><img src="${imgUrl}" alt="C'est la PEP qui régale !" width="130" height="131"></p>`);

@@ -22,7 +22,7 @@ function formations() {
 
   try {
   // Thank you message
-  let img_url = "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Ddabong.png",
+  let img_url = "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/thumbsUp.png",
       thankyou = HtmlService
   .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">Le pôle Qualité a été notifié de votre demande.<br/><br/> &nbsp; La bise.</span></span><p style="text-align:center;"><img src="${img_url}" alt="Thumbs up" width="130" height="131"></p>`)
   .setHeight(230)

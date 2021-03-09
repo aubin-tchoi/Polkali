@@ -3,7 +3,7 @@
 // Loading screen
 function displayLoadingScreen(msg) {
   let htmlLoading = HtmlService
-    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Kkooljem.gif" alt="Loading" width="442" height="249">`)
+    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/loadingScreen.gif" alt="Loading" width="442" height="249">`)
     .setWidth(450)
     .setHeight(325);
   SpreadsheetApp.getUi().showModelessDialog(htmlLoading, msg);
