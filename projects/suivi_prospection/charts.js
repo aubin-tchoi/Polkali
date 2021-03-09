@@ -1,3 +1,7 @@
+/* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
+
+// Creating charts using a data table as input
+
 // Creating a ColumnChart
 function createColumnChart(dataTable, title, htmlOutput, attachments, width, height) {
     try {

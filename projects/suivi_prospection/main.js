@@ -1,5 +1,8 @@
 /* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
 
+
+// Main file (triggers + main function for KPI and synchronization)
+
 const ui = SpreadsheetApp.getUi(),
   COLORS = {
     burgundy: "#8E3232",
@@ -8,6 +11,7 @@ const ui = SpreadsheetApp.getUi(),
     lightGrey: "#A29386"
   },
   SHEETS = {
+    id: "1lJhJuZxUt_8_mVLXe5tazXPrb2Z3wr0M49rho974sNQ",
     name: "Suivi"
   },
   HEADS = {
@@ -23,7 +27,10 @@ const ui = SpreadsheetApp.getUi(),
     display: `<span style='font-size: 12pt;'> <span style="font-family: 'trebuchet ms', sans-serif;">KPI KPI KPI<br/></span> </span> <br/>`,
     mail: `<span style='font-size: 12pt;'> <span style="font-family: 'trebuchet ms', sans-serif;">&nbsp; &nbsp; Bonjour, <br/><br/>Voici les KPI portant sur la prospection.<br/> <br/>Bonne journée !</span> </span>`
   },
-  monthNames = ["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
+  DRIVE = {
+    folderId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy"
+  }
+monthNames = ["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
   stateList = ["Premier RDV réalisé", "Devis rédigé et envoyé", "En négociation", "Etude obtenue"];
 
 /* ----- Triggers ----- */
@@ -45,7 +52,7 @@ function onEdit(e) {
 /* ------ KPI ----- */
 function generateKPI(mailResults, saveResults, displayResults) {
   // Initialization
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEETS["name"]),
+  const sheet = SpreadsheetApp.openById(SHEETS["id"]).getSheetByName(SHEETS["name"]),
     data = sheet.getRange(4, 2, (manuallyGetLastRow(sheet) - 3), 12).getValues(),
     heads = sheet.getRange(1, 2, 1, 12).getValues().shift();
 
@@ -70,7 +77,7 @@ function generateKPI(mailResults, saveResults, displayResults) {
   // /!\ LE PROCHAIN MANDAT REMMETTEZ MAI JUIN JUILLET (ou mettez mois + année pour couvrir plusieurs années)
   let monthList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0];
 
-  
+
   /* ------------ KPI (Contacts par mois) ------------ */
   let dataTable1 = Charts.newDataTable();
   // Columns
@@ -97,7 +104,7 @@ function generateKPI(mailResults, saveResults, displayResults) {
   });
   Logger.log(conversionChart);
   // Appending the corresponding ColumnChart
-  [htmlOutput, attachments] = createColumnChart(dataTable1, "Contacts", htmlOutput, attachments, DIMS[width], DIMS[height]);
+  [htmlOutput, attachments] = createColumnChart(dataTable1, "Contacts", htmlOutput, attachments, DIMS["width"], DIMS["height"]);
 
   /* ------------ KPI (Taux de conversion) ------------ */
   let dataTable2 = Charts.newDataTable();
@@ -115,7 +122,7 @@ function generateKPI(mailResults, saveResults, displayResults) {
     dataTable2.addRow([monthNames[month], prcnt(conversionChart[idx][1], conversionChart[idx][0]), prcnt(conversionChart[idx][2], conversionChart[idx][1]), prcnt(conversionChart[idx][3], conversionChart[idx][2])]);
   });
   // Creating the corresponding LineChart
-  [htmlOutput, attachments] = createLineChart(dataTable2, ["#8E3232", "#FFBE2B", "#404040"], "Taux de conversion", htmlOutput, attachments, 1000, 500);
+  [htmlOutput, attachments] = createLineChart(dataTable2, ["#8E3232", "#FFBE2B", "#404040"], "Taux de conversion", htmlOutput, attachments, DIMS["width"], DIMS["height"]);
 
   /* ------------ KPI (CA) ------------ */
   let dataTable3 = Charts.newDataTable();
@@ -140,10 +147,10 @@ function generateKPI(mailResults, saveResults, displayResults) {
     dataTable3.addRow([monthNames[month], ca_pot, ca_sig]);
   });
   // Creating the corresponding ColumnCharts
-  [htmlOutput, attachments] = createColumnChart(dataTable3, "Chiffre d'affaires", htmlOutput, attachments, 1000, 500);
+  [htmlOutput, attachments] = createColumnChart(dataTable3, "Chiffre d'affaires", htmlOutput, attachments, DIMS["width"], DIMS["height"]);
 
   /* ------------ KPI (Type de contact) ------------ */
-  [htmlOutput, attachments] = createPieChartUniqueval("Type de contact", obj, htmlOutput, attachments, 1000, 500);
+  [htmlOutput, attachments] = createPieChartUniqueval("Type de contact", obj, htmlOutput, attachments, DIMS["width"], DIMS["height"]);
 
   /* ------------ KPI (Taux de conversion par type de contact) ------------ */
   let dataTable4 = Charts.newDataTable();
@@ -158,7 +165,7 @@ function generateKPI(mailResults, saveResults, displayResults) {
     dataTable4.addRow([value, objFiltered.length, conversionRate]);
   });
   // Creating the corresponding ColumnCharts
-  [htmlOutput, attachments] = createColumnChart(dataTable4, "Taux de conversion par type de contact", htmlOutput, attachments, 1000, 500);
+  [htmlOutput, attachments] = createColumnChart(dataTable4, "Taux de conversion par type de contact", htmlOutput, attachments, DIMS["width"], DIMS["height"]);
 
 
   // Sending graphs by mail (mail adress will be prompted)
