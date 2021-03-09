@@ -54,7 +54,7 @@ function stats_merged(filtered) {
   // Loading screen
   function display_LoadingScreen(msg) {
     let htmlLoading = HtmlService
-    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Kkooljem.gif" alt="Loading" width="885" height="498">`)
+    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/loadingScreen.gif" alt="Loading" width="885" height="498">`)
     .setWidth(900)
     .setHeight(500);
     ui.showModelessDialog(htmlLoading, msg);

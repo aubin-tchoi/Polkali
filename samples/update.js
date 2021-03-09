@@ -13,7 +13,7 @@ function update_onSelec() {
   // Displaying a loading screen
   function display_LoadingScreen() {
     let htmlLoading = HtmlService
-    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Kkooljem.gif" alt="Loading" width="531" height="299">`)
+    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/loadingScreen.gif" alt="Loading" width="531" height="299">`)
     .setWidth(540)
     .setHeight(350);
     ui.showModelessDialog(htmlLoading, "Synchronisation des données.."); // Not clean bc ui is not defined here but who cares
@@ -45,7 +45,7 @@ function update_onSelec() {
   });
   
   // Confirmation
-  let img_url = "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/Ddabong.png",
+  let img_url = "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/thumbsUp.png",
       sheet_url = "",
       operation_success = HtmlService
   .createHtmlOutput(`<span style='font-size: 16pt;'> <span style="font-family: 'roboto', sans-serif;">Le <a href="${sheet_url}">sheets</a> a été complété avec succès.<br/><br/> La bise</span></span><p style="text-align:center;"><img src="${img_url}" alt="Thumbs up" width="130" height="131"></p>`);

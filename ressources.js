@@ -13,7 +13,7 @@ function ArrayToObj(arr, heads) {
 // Écran de chargement
 function displayLoadingScreen(msg) {
     let htmlLoading = HtmlService
-    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/Kkooljem.gif" alt="Loading" width="885" height="498">`)
+    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/loadingScreen.gif" alt="Loading" width="885" height="498">`)
     .setWidth(900)
     .setHeight(500);
     SpreadsheetApp.getUi().showModelessDialog(htmlLoading, msg);
