@@ -1,15 +1,8 @@
-// Author : Pôle Qualité 022 (Aubin Tchoï)
+/* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
+
+// Uses function displayLoadingScreen taken from ressources.js
 
 function mailing() {
-  // Displays a loading screen
-  function display_LoadingScreen(msg) {
-    let htmlLoading = HtmlService
-    .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/loadingScreen.gif" alt="Loading" width="885" height="498">`)
-    .setWidth(900)
-    .setHeight(520);
-    ui.showModelessDialog(htmlLoading, msg);
-  }
-
   // Sends mails with subject subject using template template 
   function send_Emails(subject, row) {
     // Returns a boolean function meant to be used in a filter function

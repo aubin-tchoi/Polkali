@@ -1,4 +1,4 @@
-// Auteur : Pôle Qualité 022 (Aubin Tchoï)
+/* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
 
 // Voici quelques lignes que j'ai utilisées de manière récurrente dans différents scripts .gs
 // Rappels importants : toutes les fonctions ne peuvent être appelées à partir de n'importe quel contexte (ex : SpreadsheetApp.getUi)
@@ -38,3 +38,23 @@ let colors = {
     Gris: "#404040",
     Châtain: "#A29386"
 };
+
+// Retrouve toutes les valeurs uniques dans un array d'objets et les renvoie dans un array
+function uniqueValues(str, data) {
+    let val = [];
+    for (let row = 0; row < data.length; row++) {
+        if (data[row][str] != "") {
+            if (val.indexOf(data[row][str]) == -1) {
+                val.push(data[row][str]);
+            }
+        }
+    }
+    return val;
+}
+
+// Returns true if str can be converted into a float
+function isNumeric(str) {
+    if (typeof str != "string") {return false;} // Only processes strings
+    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+      !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+  }
