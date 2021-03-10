@@ -6,7 +6,7 @@ function syncOnEdit(rowidx) {
     // Updating sheet sheet with row row
     function update(sheet, row) {
         // Checking whether PEP actually did obtain the mission or not
-        if (row[HEADS["état"]] != stateList[3]) {
+        if (row[HEADS["état"]] != STATE_LIST[3]) {
             return;
         }
 
@@ -39,7 +39,7 @@ function syncOnSelec() {
     // Updating sheet sheet with row row
     function update(sheet, row) {
         // Checking whether PEP actually did obtain the mission or not
-        if (row[HEADS["état"]] != stateList[3]) {
+        if (row[HEADS["état"]] != STATE_LIST[3]) {
             ui.alert("Entrée invalide", `L'étude confiée par l'entreprise ${row[HEADS["entreprise"]]} ne correspond pas à une étude obtenue.`, ui.ButtonSet.OK);
             return;
         }

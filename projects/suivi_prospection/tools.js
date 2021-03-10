@@ -15,7 +15,7 @@ function manuallyGetLastRow(sheet) {
 // Loading screen
 function displayLoadingScreen(msg) {
     let htmlLoading = HtmlService
-        .createHtmlOutput(`<img src="https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/loadingScreen.gif" alt="Loading" width="442" height="249">`)
+        .createHtmlOutput(`<img src="${IMGS["loadingScreen"]}" alt="Loading" width="442" height="249">`)
         .setWidth(450)
         .setHeight(280);
     ui.showModelessDialog(htmlLoading, msg);
@@ -33,3 +33,6 @@ function uniqueValues(str, data) {
     }
     return val;
 }
+
+// Computes a / b * 100 if b !=0, and returns 0 otherwise
+const prcnt = (a, b) => (parseInt(b, 10) == 0) ? 0 : a / b * 100;
