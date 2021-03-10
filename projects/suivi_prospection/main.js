@@ -17,10 +17,11 @@ const ui = SpreadsheetApp.getUi(),
   },
   // Data sheet's header
   HEADS = {
-    état: "État",
-    devis: "Devis réalisé",
     entreprise: "Entreprise",
     premierContact: "Premier contact",
+    typeContact: "Type de contact",
+    état: "État",
+    devis: "Devis réalisé",
     caPot: "Prix potentiel de l'étude  € (HT)",
     confiance: "Pourcentage de confiance à la conversion en réelle étude"
   },
@@ -45,7 +46,16 @@ const ui = SpreadsheetApp.getUi(),
   // How months are spelled
   MONTH_NAMES = ["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
   // Different states a mission can go through
-  STATE_LIST = ["Premier RDV réalisé", "Devis rédigé et envoyé", "En négociation", "Etude obtenue"],
+  STATES = {
+    rdv: "Premier RDV réalisé",
+    devis: "Devis rédigé et envoyé",
+    negoc: "En négociation",
+    etude: "Etude obtenue"
+  },
+  // States corresponding to a contact that didn't lead to a mission
+  STATES_BIS = {
+    sansSuite: "Sans suite",
+    aRelancer:"A relancer",}
   // Indexes of months (/!\ LE PROCHAIN MANDAT REMMETTEZ MAI JUIN JUILLET (ou mettez mois + année pour couvrir plusieurs années)
   MONTH_LIST = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0];
 
@@ -61,7 +71,7 @@ function onOpen() {
 /*
 function onEdit(e) {
   let range = e.range;
-  if (range.getNumColumns() == 1 && range.getNumRows() == 1 && e.value == STATE_LIST[3]) {
+  if (range.getNumColumns() == 1 && range.getNumRows() == 1 && e.value == STATES["etude"]) {
     syncOnEdit(range.getRow());
   }
 } */
@@ -98,7 +108,7 @@ function generateKPI(mailResults, saveResults, folderId, displayResults) {
     attachments = [];
 
   // KPI : Contacts par mois
-  let [contactTable, conversionChart] = contacts(obj);
+  let [contactTable, conversionChart] = contacts(obj); // conversionChart is a 2D array : [month][number of contact in a given state]
   [htmlOutput, attachments] = createColumnChart(contactTable, "Contacts", htmlOutput, attachments, DIMS["width"], DIMS["height"]);
 
   // KPI : Taux de conversion

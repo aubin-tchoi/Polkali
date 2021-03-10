@@ -6,7 +6,7 @@ function syncOnEdit(rowidx) {
     // Updating sheet sheet with row row
     function update(sheet, row) {
         // Checking whether PEP actually did obtain the mission or not
-        if (row[HEADS["état"]] != STATE_LIST[3]) {
+        if (row[HEADS["état"]] != STATES["etude"]) {
             return;
         }
 
@@ -16,7 +16,7 @@ function syncOnEdit(rowidx) {
             ref = `'20e${Math.floor(sheet.getRange(lastRow, 2, 1, 1).getValues()[0][0].toString().match(/([0-9]+)/gi)[1]) + 1}`;
 
         // Creating a new row with the destination sheet's header's informations
-        let rnew = [row["Entreprise"]];
+        let rnew = [row[HEADS["entreprise"]]];
         heads.forEach(function (el) {
             rnew.push(el == "Référence de l'étude" ? ref : (el == "État") ? "Devis accepté" : row[el]);
         });
@@ -39,7 +39,7 @@ function syncOnSelec() {
     // Updating sheet sheet with row row
     function update(sheet, row) {
         // Checking whether PEP actually did obtain the mission or not
-        if (row[HEADS["état"]] != STATE_LIST[3]) {
+        if (row[HEADS["état"]] != STATES["etude"]) {
             ui.alert("Entrée invalide", `L'étude confiée par l'entreprise ${row[HEADS["entreprise"]]} ne correspond pas à une étude obtenue.`, ui.ButtonSet.OK);
             return;
         }

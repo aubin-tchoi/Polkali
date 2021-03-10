@@ -36,3 +36,6 @@ function uniqueValues(str, data) {
 
 // Computes a / b * 100 if b !=0, and returns 0 otherwise
 const prcnt = (a, b) => (parseInt(b, 10) == 0) ? 0 : a / b * 100;
+
+// Checks if row was written in month month or not
+const sameMonth = (row, month) => parseInt(row[HEADS["premierContact"]].getMonth(), 10) == month;
