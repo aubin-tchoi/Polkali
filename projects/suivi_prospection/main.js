@@ -52,12 +52,13 @@ const ui = SpreadsheetApp.getUi(),
     negoc: "En négociation",
     etude: "Etude obtenue"
   },
-  // States corresponding to a contact that didn't lead to a mission
+  // States corresponding to a contact that wasn't converted into a mission
   STATES_BIS = {
     sansSuite: "Sans suite",
-    aRelancer:"A relancer",}
-  // Indexes of months (/!\ LE PROCHAIN MANDAT REMMETTEZ MAI JUIN JUILLET (ou mettez mois + année pour couvrir plusieurs années)
-  MONTH_LIST = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0];
+    aRelancer: "A relancer",
+  }
+// Indexes of months (/!\ LE PROCHAIN MANDAT REMMETTEZ MAI JUIN JUILLET (ou mettez mois + année pour couvrir plusieurs années)
+MONTH_LIST = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0];
 
 
 /* ----- Triggers ----- */
