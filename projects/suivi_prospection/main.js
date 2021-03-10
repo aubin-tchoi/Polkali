@@ -86,6 +86,9 @@ function installTrigger() {
 
 /* ------ KPI ----- */
 function generateKPI(mailResults, saveResults, folderId, displayResults) {
+
+  displayLoadingScreen("Chargement des KPI..");
+
   // Initialization
   const sheet = SpreadsheetApp.openById(SHEETS["id"]).getSheetByName(SHEETS["name"]),
     data = sheet.getRange(4, 2, (manuallyGetLastRow(sheet) - 3), 12).getValues(),
@@ -93,11 +96,6 @@ function generateKPI(mailResults, saveResults, folderId, displayResults) {
 
   // I chose to keep the data as an array of objects (other possibility : object of objects, the keys being the months' names and the values the data in each row)
   let obj = data.map(r => heads.reduce((o, k, i) => (o[k] = r[i] || 0, o), {})).filter(row => row["Premier contact"] != "");
-
-  // console.log
-  Logger.log(heads);
-
-  displayLoadingScreen("Chargement des KPI..");
 
   // Final outputs (displaying the charts on screen & mail content)
   let htmlOutput = HtmlService
@@ -120,7 +118,8 @@ function generateKPI(mailResults, saveResults, folderId, displayResults) {
   [htmlOutput, attachments] = createColumnChart(turnoverTable, "Chiffre d'affaires", htmlOutput, attachments, DIMS["width"], DIMS["height"]);
 
   // KPI : Type de contact
-  [htmlOutput, attachments] = createPieChartUniqueval("Type de contact", obj, htmlOutput, attachments, DIMS["width"], DIMS["height"]);
+  let contactTypeTable = contactType(obj);
+  [htmlOutput, attachments] = createPieChart(contactTypeTable, "Type de contact", htmlOutput, attachments, DIMS["width"], DIMS["height"]);
 
   // KPI : Taux de conversion par type de contact
   let conversionTableContact = conversionRateByContact(obj);

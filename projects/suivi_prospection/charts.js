@@ -35,18 +35,9 @@ function createColumnChart(dataTable, title, htmlOutput, attachments, width, hei
     }
 }
 
-// Creating a PieChart with unique values
-function createPieChartUniqueval(title, data, htmlOutput, attachments, width, height) {
+// Creating a PieChart
+function createPieChart(dataTable, title, htmlOutput, attachments, width, height) {
     try {
-        // Creating a DataTable with the proportion of each contact type
-        let dataTable = Charts.newDataTable();
-        dataTable.addColumn(Charts.ColumnType.STRING, title);
-        dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion");
-        Logger.log(`Valeurs uniques : ${uniqueValues(title, data)}`);
-        uniqueValues(title, data).forEach(function (val) {
-            dataTable.addRow([val, data.filter(row => row[title] == val).length / data.length]);
-        });
-
         // Creating a PieChart with data from dataTable
         let chart = Charts.newPieChart()
             .setDataTable(dataTable)
