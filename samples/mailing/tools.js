@@ -36,3 +36,12 @@ function getAttachments(msgHtml) {
     }
     return [msgHtml.replace(/{PJ=[^}]+}/g, ""), attachments];
 }
+
+// Converting an array into a (multi+indexed)-line str
+function listToQuery(arr) {
+    let query = "";
+    arr.forEach(function (el, idx) {
+        query += `\n ${idx + 1}. ${el}`
+    });
+    return query;
+}
