@@ -65,7 +65,8 @@ function pullDraft() {
     }
 
     // Creating a folder to store the Draft's data
-    poule(getFolderByName(sharedDraftsNames[pulledDraft - 1]));
+    let dataFolder = getFolderByName(sharedDraftsNames[pulledDraft - 1]);
+    poule(dataFolder);
 }
 
 // Moving a draft from the repo to the trash
