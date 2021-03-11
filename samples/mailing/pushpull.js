@@ -20,15 +20,8 @@ function onOpen() {
 function pushDraft() {
     let drafts = GmailApp.getDrafts(),
         folder = DriveApp.getFolderById(REPO_ID),
-        subFolders = folder.getFolders(),
         myDraftsNames = drafts.map(d => d.getMessage().getSubject()),
-        sharedDraftsNames = [];
-
-    // sharedDraftsNames contains the names of all Drafts stored in the repo
-    while (subFolders.hasNext()) {
-        let subFolder = folders.next();
-        sharedDraftsNames.push(subFolder.getName());
-    }
+        sharedDraftsNames = getSubFoldersNames(folder);
 
     // User input
     let pushedDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez push : ${listToQuery(drafts.map(d => d.getMessage().getSubject()))}`), 10) || 0;
@@ -37,15 +30,10 @@ function pushDraft() {
         return;
     }
 
-    // There is already a Draft in the repo to the same name
+    // Checking whether there is already a Draft in the repo to the same name or not
     if (sharedDraftsNames.includes(myDraftsNames[pushedDraft - 1])) {
-        ui.alert("POUCHE-POULE", "Un Draft à ce nom existe déjà, souhaitez vous l'écraser ?", ui.ButtonSet.YES_NO);
-        subFolders = folder.getFolders();
-        while (subFolders.hasNext()) {
-            let subFolder = folders.next();
-            if (subFolder.getName() == myDraftsNames[pushedDraft - 1]) {
-                subFolder.setTrashed(true);
-            }
+        if (ui.alert("POUCHE-POULE", "Un Draft à ce nom existe déjà, souhaitez vous l'écraser ?", ui.ButtonSet.YES_NO) == ui.Button.YES) {
+            trashFolder(folder, myDraftsNames[pushedDraft - 1], trash)
         }
     }
 

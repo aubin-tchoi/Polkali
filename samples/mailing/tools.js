@@ -45,3 +45,26 @@ function listToQuery(arr) {
     });
     return query;
 }
+
+// Putting the subfolder of folder that has the name folderName in the trash
+function trashFolder(folder, folderName, trash) {
+    let folders = folder.getFolders();
+    while (folders.hasNext()) {
+        let subFolder = folders.next();
+        if (subFolder.getName() == folderName) {
+            subFolder.moveTo(trash);
+        }
+    }
+}
+
+
+// Retrieving an array of the names of the subfolders in folder
+function getSubFoldersNames(folder) {
+    let subFolders = folder.getFolders(),
+        names = [];
+    while (subFolders.hasNext()) {
+        let subFolder = folders.next();
+        names.push(subFolder.getName());
+    }
+    return names;
+}
