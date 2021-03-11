@@ -47,7 +47,6 @@ function pushDraft() {
 function pullDraft() {
     let drafts = GmailApp.getDrafts(),
         folder = DriveApp.getFolderById(REPO_ID),
-        trash = DriveApp.getFolderById(TRASH_ID),
         myDraftsNames = drafts.map(d => d.getMessage().getSubject()),
         sharedDraftsNames = getSubFoldersNames(folder);
 
@@ -66,7 +65,7 @@ function pullDraft() {
     }
 
     // Creating a folder to store the Draft's data
-    poule(sharedDraftsNames[pulledDraft - 1], folder);
+    poule(getFolderByName(sharedDraftsNames[pulledDraft - 1]));
 }
 
 // Moving a draft from the repo to the trash

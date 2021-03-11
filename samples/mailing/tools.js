@@ -68,3 +68,14 @@ function getSubFoldersNames(folder) {
     }
     return names;
 }
+
+// Retrieving a subfolder of folder with its name
+function getFolderByName(folder, folderName) {
+    let folders = folder.getFolders();
+    while (folders.hasNext()) {
+        let subFolder = folders.next();
+        if (subFolder.getName() == folderName) {
+            return subFolder;
+        }
+    }
+}
