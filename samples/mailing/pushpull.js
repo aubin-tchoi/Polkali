@@ -4,6 +4,9 @@
 
 const REPO_ID = {},
     TRASH_ID = {},
+    IMAGES = {
+        thumbsUp: "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/thumbsUp.png"
+    },
     ui = SpreadsheetApp.getUi();
 
 function onOpen() {
@@ -34,7 +37,7 @@ function pushDraft() {
     // Checking whether there is already a Draft in the repo to the same name or not
     if (sharedDraftsNames.includes(myDraftsNames[pushedDraft - 1])) {
         if (ui.alert("POUCHE-POULE", "Un Draft à ce nom existe déjà, souhaitez vous l'écraser ?", ui.ButtonSet.YES_NO) == ui.Button.YES) {
-            trashFolder(folder, myDraftsNames[pushedDraft - 1], trash)
+            trashFolder(folder, myDraftsNames[pushedDraft - 1], trash);
         }
     }
 
@@ -71,10 +74,44 @@ function pullDraft() {
 
 // Moving a draft from the repo to the trash
 function removeDraft() {
+    let folder = DriveApp.getFolderById(REPO_ID),
+        sharedDraftsNames = getSubFoldersNames(folder);
 
+    // User input
+    let trashedDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez mettre à la poubelle : ${listToQuery(sharedDraftsNames)}`), 10) || 0;
+    if (trashedDraft == 0 || trashedDraft > sharedDraftsNames.length) {
+        ui.alert("Entrée non valide", "Veuillez recommencer.", ui.ButtonSet.OK);
+        return;
+    }
+
+    // Trashing a folder based on its name
+    if (myDraftsNames.includes(sharedDraftsNames[trashedDraft - 1])) {
+        trashFolder(folder, sharedDraftsNames[trashedDraft - 1], trash);
+        // Confirmation
+        let operationSuccess = HtmlService
+            .createHtmlOutput(`<span style='font-size: 16pt;'> <span style="font-family: 'roboto', sans-serif;">Le draft ${sharedDraftsNames[trashedDraft - 1]} a été placé dans la poubelle.</a>.<br/><br/> La bise</span></span><p style="text-align:center;"><img src="${IMAGES["thumsbUp"]}" alt="C'est la PEP qui régale !" width="130" height="131"></p>`);
+        ui.showModalDialog(operationSuccess, "POUCHE-POULE");
+    }
 }
 
 // Moving a draft from the trash to the repo
 function recoverDraft() {
+    let trash = DriveApp.getFolderById(TRASH_ID),
+        trashedDraftsNames = getSubFoldersNames(trash);
 
+    // User input
+    let recoveredDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez récupérer : ${listToQuery(trashedDraftsNames)}`), 10) || 0;
+    if (recoveredDraft == 0 || recoveredDraft > trashedDraftsNames.length) {
+        ui.alert("Entrée non valide", "Veuillez recommencer.", ui.ButtonSet.OK);
+        return;
+    }
+
+    // Trashing a folder based on its name
+    if (myDraftsNames.includes(trashedDraftsNames[recoveredDraft - 1])) {
+        trashFolder(trash, trashedDraftsNames[recoveredDraft - 1], folder);
+        // Confirmation
+        let operationSuccess = HtmlService
+            .createHtmlOutput(`<span style='font-size: 16pt;'> <span style="font-family: 'roboto', sans-serif;">Le draft ${trashedDraftsNames[recoveredDraft - 1]} a été récupéré.</a>.<br/><br/> La bise</span></span><p style="text-align:center;"><img src="${IMAGES["thumsbUp"]}" alt="C'est la PEP qui régale !" width="130" height="131"></p>`);
+        ui.showModalDialog(operationSuccess, "POUCHE-POULE");
+    }
 }
