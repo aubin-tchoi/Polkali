@@ -25,7 +25,7 @@ function getSubFoldersNames(folder) {
     let subFolders = folder.getFolders(),
         names = [];
     while (subFolders.hasNext()) {
-        let subFolder = folders.next();
+        let subFolder = subFolders.next();
         names.push(subFolder.getName());
     }
     return names;

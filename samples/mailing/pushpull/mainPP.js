@@ -2,8 +2,8 @@
 
 // Name is used as a unique key to chose which draft should be pushed or pulled
 
-const REPO_ID = {},
-    TRASH_ID = {},
+const REPO_ID = "",
+    TRASH_ID = "",
     IMAGES = {
         thumbsUp: "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/thumbsUp.png"
     },
@@ -28,7 +28,7 @@ function pushDraft() {
         sharedDraftsNames = getSubFoldersNames(folder);
 
     // User input
-    let pushedDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez push : ${listToQuery(myDraftsNames)}`), 10) || 0;
+    let pushedDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez push : ${listToQuery(myDraftsNames)}`, ui.ButtonSet.OK).getResponseText(), 10) || 0;
     if (pushedDraft == 0 || pushedDraft > myDraftsNames.length) {
         ui.alert("Entrée non valide", "Veuillez recommencer.", ui.ButtonSet.OK);
         return;
@@ -38,8 +38,12 @@ function pushDraft() {
     if (sharedDraftsNames.includes(myDraftsNames[pushedDraft - 1])) {
         if (ui.alert("POUCHE-POULE", "Un Draft à ce nom existe déjà, souhaitez vous l'écraser ?", ui.ButtonSet.YES_NO) == ui.Button.YES) {
             trashFolder(folder, myDraftsNames[pushedDraft - 1], trash);
+        } else {
+            return;
         }
     }
+
+    // displayLoadingScreen("Enregistrement du Draft...");
 
     // Creating a folder to store the Draft's data
     let draftFolder = folder.createFolder(myDraftsNames[pushedDraft - 1]);
@@ -54,7 +58,7 @@ function pullDraft() {
         sharedDraftsNames = getSubFoldersNames(folder);
 
     // User input
-    let pulledDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez pull : ${listToQuery(sharedDraftsNames)}`), 10) || 0;
+    let pulledDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez pull : ${listToQuery(sharedDraftsNames)}`, ui.ButtonSet.OK).getResponseText(), 10) || 0;
     if (pulledDraft == 0 || pulledDraft > sharedDraftsNames.length) {
         ui.alert("Entrée non valide", "Veuillez recommencer.", ui.ButtonSet.OK);
         return;
@@ -67,6 +71,8 @@ function pullDraft() {
         }
     }
 
+    // displayLoadingScreen("Chargement du Draft...");
+
     // Creating a folder to store the Draft's data
     let dataFolder = getFolderByName(sharedDraftsNames[pulledDraft - 1]);
     pullDraftFromFolder(dataFolder);
@@ -78,11 +84,13 @@ function removeDraft() {
         sharedDraftsNames = getSubFoldersNames(folder);
 
     // User input
-    let trashedDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez mettre à la poubelle : ${listToQuery(sharedDraftsNames)}`), 10) || 0;
+    let trashedDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez mettre à la poubelle : ${listToQuery(sharedDraftsNames)}`, ui.ButtonSet.OK).getResponseText(), 10) || 0;
     if (trashedDraft == 0 || trashedDraft > sharedDraftsNames.length) {
         ui.alert("Entrée non valide", "Veuillez recommencer.", ui.ButtonSet.OK);
         return;
     }
+
+    // displayLoadingScreen("Suppression du Draft...")
 
     // Trashing a folder based on its name
     if (myDraftsNames.includes(sharedDraftsNames[trashedDraft - 1])) {
@@ -100,11 +108,13 @@ function recoverDraft() {
         trashedDraftsNames = getSubFoldersNames(trash);
 
     // User input
-    let recoveredDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez récupérer : ${listToQuery(trashedDraftsNames)}`), 10) || 0;
+    let recoveredDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez récupérer : ${listToQuery(trashedDraftsNames)}`, ui.ButtonSet.OK).getResponseText(), 10) || 0;
     if (recoveredDraft == 0 || recoveredDraft > trashedDraftsNames.length) {
         ui.alert("Entrée non valide", "Veuillez recommencer.", ui.ButtonSet.OK);
         return;
     }
+
+    // displayLoadingScreen("Récupération du Draft...")
 
     // Trashing a folder based on its name
     if (myDraftsNames.includes(trashedDraftsNames[recoveredDraft - 1])) {
