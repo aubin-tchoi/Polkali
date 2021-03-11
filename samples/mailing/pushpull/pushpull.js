@@ -43,7 +43,7 @@ function pushDraft() {
 
     // Creating a folder to store the Draft's data
     let draftFolder = folder.createFolder(myDraftsNames[pushedDraft - 1]);
-    pouche(drafts[pushedDraft - 1], draftFolder);
+    pushDraftIntoFolder(drafts[pushedDraft - 1], draftFolder);
 }
 
 // Pulling a draft from the repo
@@ -69,7 +69,7 @@ function pullDraft() {
 
     // Creating a folder to store the Draft's data
     let dataFolder = getFolderByName(sharedDraftsNames[pulledDraft - 1]);
-    poule(dataFolder);
+    pullDraftFromFolder(dataFolder);
 }
 
 // Moving a draft from the repo to the trash

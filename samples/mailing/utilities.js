@@ -1,3 +1,5 @@
+// Core function
+
 // Sends mails with subject subject using template template 
 function sendEmails(subject, row) {
     // A mail is sent only if "Date d'envoi du mail" column is empty
