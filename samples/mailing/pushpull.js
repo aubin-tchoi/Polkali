@@ -20,11 +20,12 @@ function onOpen() {
 function pushDraft() {
     let drafts = GmailApp.getDrafts(),
         folder = DriveApp.getFolderById(REPO_ID),
+        trash = DriveApp.getFolderById(TRASH_ID),
         myDraftsNames = drafts.map(d => d.getMessage().getSubject()),
         sharedDraftsNames = getSubFoldersNames(folder);
 
     // User input
-    let pushedDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez push : ${listToQuery(drafts.map(d => d.getMessage().getSubject()))}`), 10) || 0;
+    let pushedDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez push : ${listToQuery(myDraftsNames)}`), 10) || 0;
     if (pushedDraft == 0 || pushedDraft > myDraftsNames.length) {
         ui.alert("Entrée non valide", "Veuillez recommencer.", ui.ButtonSet.OK);
         return;
@@ -44,7 +45,28 @@ function pushDraft() {
 
 // Pulling a draft from the repo
 function pullDraft() {
+    let drafts = GmailApp.getDrafts(),
+        folder = DriveApp.getFolderById(REPO_ID),
+        trash = DriveApp.getFolderById(TRASH_ID),
+        myDraftsNames = drafts.map(d => d.getMessage().getSubject()),
+        sharedDraftsNames = getSubFoldersNames(folder);
 
+    // User input
+    let pulledDraft = parseInt(ui.prompt("POUCHE-POULE", `Veuillez entrer le numéro du Draft que vous souhaitez pull : ${listToQuery(sharedDraftsNames)}`), 10) || 0;
+    if (pulledDraft == 0 || pulledDraft > sharedDraftsNames.length) {
+        ui.alert("Entrée non valide", "Veuillez recommencer.", ui.ButtonSet.OK);
+        return;
+    }
+
+    // Checking whether there is already a Draft in drafts to the same name or not
+    if (myDraftsNames.includes(sharedDraftsNames[pulledDraft - 1])) {
+        if (ui.alert("POUCHE-POULE", "Un Draft à ce nom existe déjà, souhaitez vous l'écraser ?", ui.ButtonSet.YES_NO) == ui.Button.YES) {
+            drafts[pulledDraft - 1].deleteDraft();
+        }
+    }
+
+    // Creating a folder to store the Draft's data
+    poule(sharedDraftsNames[pulledDraft - 1], folder);
 }
 
 // Moving a draft from the repo to the trash
