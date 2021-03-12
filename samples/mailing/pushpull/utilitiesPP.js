@@ -11,6 +11,8 @@ function pushDraftIntoFolder(draft, folder) {
     pdfBlob.setName(folder.getName() + ".pdf");
     folder.createFile(pdfBlob);
 
+    // Supprimer le pdf
+
     for (let j = 0; j < msgAttachments.length; j++) {
         let attachmentName = msgAttachments[j].getName(),
             attachmentContentType = msgAttachments[j].getContentType(),

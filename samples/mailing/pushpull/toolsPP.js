@@ -1,5 +1,15 @@
 // Basic functions used in other scripts in the same folder
 
+// Displaying a loading screen
+function displayLoadingScreen(msg) {
+    let htmlLoading = HtmlService
+    .createHtmlOutput(`<img src="${IMAGES["loadingScreen"]}" alt="Loading" width="885" height="498">`)
+    .setWidth(900)
+    .setHeight(500);
+    SpreadsheetApp.getUi().showModelessDialog(htmlLoading, msg);
+}
+
+
 // Converting an array into a (multi+indexed)-line str
 function listToQuery(arr) {
     let query = "";

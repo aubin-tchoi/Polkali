@@ -5,6 +5,7 @@
 const REPO_ID = "",
     TRASH_ID = "",
     IMAGES = {
+        loadingScreen: "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/loadingScreen.gif",
         thumbsUp: "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/thumbsUp.png"
     },
     ui = SpreadsheetApp.getUi();
@@ -43,7 +44,7 @@ function pushDraft() {
         }
     }
 
-    // displayLoadingScreen("Enregistrement du Draft...");
+    displayLoadingScreen("Enregistrement du Draft...");
 
     // Creating a folder to store the Draft's data
     let draftFolder = folder.createFolder(myDraftsNames[pushedDraft - 1]);
@@ -71,7 +72,7 @@ function pullDraft() {
         }
     }
 
-    // displayLoadingScreen("Chargement du Draft...");
+    displayLoadingScreen("Chargement du Draft...");
 
     // Creating a folder to store the Draft's data
     let dataFolder = getFolderByName(sharedDraftsNames[pulledDraft - 1]);
@@ -90,7 +91,7 @@ function removeDraft() {
         return;
     }
 
-    // displayLoadingScreen("Suppression du Draft...")
+    displayLoadingScreen("Suppression du Draft...")
 
     // Trashing a folder based on its name
     if (myDraftsNames.includes(sharedDraftsNames[trashedDraft - 1])) {
