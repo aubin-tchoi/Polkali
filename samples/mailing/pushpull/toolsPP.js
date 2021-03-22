@@ -45,3 +45,16 @@ function getSubFoldersNames(folder) {
 function getFolderByName(folder, folderName) {
     return folder.getFoldersByName(folderName).next();
 }
+
+// Retrieving an array of the attachments inside of a folder
+function getData(folder) {
+    let attachments = [],
+        files = folder.getFiles();
+    while (files.hasNext()) {
+        let currentFile = files.next();
+        if (currentFile.getName() != "body.html") {
+            attachments.push(currentFile.getBlob());
+        }
+    }
+    return attachments;
+}

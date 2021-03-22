@@ -6,22 +6,21 @@ function pushDraftIntoFolder(draft, folder) {
         msgAttachments = draft.getMessage().getAttachments();
 
     // Create the message PDF inside the new folder
-    let htmlBodyFile = folder.createFile('body.html', msgBody, "text/html"),
-        pdfBlob = htmlBodyFile.getAs('application/pdf');
-    pdfBlob.setName(folder.getName() + ".pdf");
-    folder.createFile(pdfBlob);
+    let htmlBodyFile = folder.createFile('body.html', msgBody, "text/html");
 
-    // Supprimer le pdf
+    // Attachments should be separated from inlineImages
 
     for (let j = 0; j < msgAttachments.length; j++) {
-        let attachmentName = msgAttachments[j].getName(),
-            attachmentContentType = msgAttachments[j].getContentType(),
-            attachmentBlob = msgAttachments[j].copyBlob();
+        let attachmentBlob = msgAttachments[j].copyBlob();
         folder.createFile(attachmentBlob);
     }
 }
 
 // Pulling data from folder and using it to create and save a GmailDraft
 function pullDraftFromFolder(folder) {
-
+    let blob = folder.getFilesByName("body.html").next(),
+        body = blob.getDataAsString(),
+        subject = folder.getName(),
+        attachments = getData(folder);
+    GmailApp.createDraft("", subject, body, {attachments: attachments});
 }
