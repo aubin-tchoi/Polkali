@@ -41,7 +41,7 @@ function getSubFoldersNames(folder) {
     return names;
 }
 
-// Retrieving a subfolder of folder with its name
+// Retrieving a subfolder of folder with its name (assuming there is only 1 folder to that name)
 function getFolderByName(folder, folderName) {
     return folder.getFoldersByName(folderName).next();
 }
