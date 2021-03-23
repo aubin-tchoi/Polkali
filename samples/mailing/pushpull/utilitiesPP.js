@@ -18,9 +18,10 @@ function pushDraftIntoFolder(draft, folder) {
 
 // Pulling data from folder and using it to create and save a GmailDraft
 function pullDraftFromFolder(folder) {
-    let blob = folder.getFilesByName("body.html").next(),
-        body = blob.getDataAsString(),
+    let blob = folder.getFilesByName("body.html").next().getAs("text/html"),
+        htmlBody = blob.getDataAsString(),
         subject = folder.getName(),
-        attachments = getData(folder);
-    GmailApp.createDraft("", subject, body, {attachments: attachments});
+        attachments = getData(folder),
+        msgPlain = htmlBody.replace(/\<br\/\>/gim, '\n').replace(/(<([^>]+)>)/gim, "");;
+    GmailApp.createDraft("", subject, msgPlain, {htmlBody: htmlBody, attachments: attachments});
 }

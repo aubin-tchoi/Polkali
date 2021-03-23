@@ -49,6 +49,8 @@ function pushDraft() {
     // Creating a folder to store the Draft's data
     let draftFolder = folder.createFolder(myDraftsNames[pushedDraft - 1]);
     pushDraftIntoFolder(drafts[pushedDraft - 1], draftFolder);
+
+    // Confirmation message
 }
 
 // Pulling a draft from the repo
@@ -75,7 +77,7 @@ function pullDraft() {
     displayLoadingScreen("Chargement du Draft...");
 
     // Creating a folder to store the Draft's data
-    let dataFolder = getFolderByName(sharedDraftsNames[pulledDraft - 1]);
+    let dataFolder = getFolderByName(folder, sharedDraftsNames[pulledDraft - 1]);
     pullDraftFromFolder(dataFolder);
 }
 
