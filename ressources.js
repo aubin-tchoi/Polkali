@@ -7,7 +7,7 @@
 // Utile pour traiter un tableau de données (combiné avec un map)
 // Pas sensible au fait que le header peut présenter plusieurs fois la même valeur (utile pour un GForms)
 function ArrayToObj(arr, heads) {
-    return heads.reduce((o, k, i) => (o[k] = (r[i] != "") ? arr[i] : o[k] || '', o), {});
+    return heads.reduce((o, k, i) => (o[k] = (arr[i] != "") ? arr[i] : o[k] || '', o), {});
 }
 
 // Écran de chargement

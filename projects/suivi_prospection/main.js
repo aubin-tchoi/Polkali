@@ -58,7 +58,7 @@ const ui = SpreadsheetApp.getUi(),
     aRelancer: "A relancer",
   }
 // Indexes of months (/!\ LE PROCHAIN MANDAT REMMETTEZ MAI JUIN JUILLET (ou mettez mois + année pour couvrir plusieurs années)
-MONTH_LIST = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0];
+MONTH_LIST = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1];
 
 
 /* ----- Triggers ----- */
