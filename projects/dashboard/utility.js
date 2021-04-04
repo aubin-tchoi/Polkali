@@ -26,7 +26,6 @@ function saveOnDrive(imageBlobs, folderId) {
         imageBlobs.forEach(function (f) {
             folder.createFile(f);
         });
-        ui.alert("Enregistrement des images sur le Drive", `Les images ont été enregistrées à ladresse suivante : ${folder.getUrl()}`, ui.ButtonSet.OK);
     } catch (e) {
         Logger.log(`Erreur lors de l'enregistrement des images sur le Drive : ${e}.`);
         ui.alert("Erreur lors de l'enregistrement des images sur le Drive.");

@@ -187,6 +187,8 @@ function autoSaveKPI() {
 // Saving the graphs + creating slides to present them (through a menu in the sheet)
 function prepCA() {
   let KPI = generateKPI();
-  KPI.save();
   KPI.slides();
+  KPI.save();
 }
+
+// Message du save à refaire
