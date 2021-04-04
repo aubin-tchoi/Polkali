@@ -6,6 +6,6 @@ function generateSlides(template, charts, folderId) {
     today = `Point KPI du ${(today.getDate() < 9) ? "0" : ""}${today.getDate()}/${(today.getMonth() < 9) ? "0" : ""}${today.getMonth() + 1}/${today.getFullYear()}`;
     let presentation = SlidesApp.openById(DriveApp.getFileById(template).makeCopy(today, DriveApp.getFolderById(folderId)).getId());
 
-    charts.forEach(c => {presentation.appendSlide().insertSheetsChart(c);});
+    charts.forEach(c => {presentation.appendSlide().insertImage(c);});
     // Htmoutput to give the link
 }

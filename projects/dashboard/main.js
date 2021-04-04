@@ -148,7 +148,7 @@ function generateKPI() {
       sendMail(htmlMail, "KPI", attachments);
     },
     slides: function () {
-      generateSlides(TEMPLATES["PEPinkDarker"], charts, folderId = DRIVE["folderId"]);
+      generateSlides(TEMPLATES["PEPinkDarker"], attachments, folderId = DRIVE["folderId"]);
     }
   }
 }
