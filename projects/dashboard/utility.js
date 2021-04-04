@@ -16,13 +16,13 @@ function sendMail(htmlOutput, subject, attachments) {
 
 
 // Save data in designated Drive folder
-function saveOnDrive(imageBlobs, folderId = DRIVE["folderId"]) {
+function saveOnDrive(imageBlobs, folderId) {
     try {
         displayLoadingScreen("Enregistrement des images sur le Drive..");
         // Folder will be dated with current date
         let today = new Date();
-        today = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
-        let folder = DriveApp.getFolderById(folderId).createFolder(`KPI ${today}`);
+        today = `KPI ${(today.getDate() < 9) ? "0" : ""}${today.getDate()}/${(today.getMonth() < 9) ? "0" : ""}${today.getMonth() + 1}/${today.getFullYear()}`;
+        let folder = DriveApp.getFolderById(folderId).createFolder(today);
         imageBlobs.forEach(function (f) {
             folder.createFile(f);
         });

@@ -5,6 +5,11 @@
 const ui = SpreadsheetApp.getUi(),
   // Colors found in PEP's graphic chart
   COLORS = {
+    plum: "#934683",
+    wildOrchid: "#D66BA0",
+    silverPink: "#C9ADA1",
+    pine: "#72A98F",
+    blueBell: "#A997DF",
     burgundy: "#8E3232",
     gold: "#FFBE2B",
     grey: "#404040",
@@ -56,15 +61,24 @@ const ui = SpreadsheetApp.getUi(),
   STATES_BIS = {
     sansSuite: "Sans suite",
     aRelancer: "A relancer",
-  }
-// Indexes of months (/!\ LE PROCHAIN MANDAT REMMETTEZ MAI JUIN JUILLET (ou mettez mois + année pour couvrir plusieurs années)
-MONTH_LIST = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0];
+  },
+  // Templates used to generate new slides
+  TEMPLATES = {
+    PEPinkDarker: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU",
+    PEPurgundy: "14tV2k5zPEf3atYbiAlbhICwxPDBiMe21WHFJ-S4Cl9Q",
+    PEPinkLighter: "1Fz7jm0ee3EJhOc83bO5vtYIN6poapPWggHhxcN2M5ec"
+  },
+  // Indexes of months (/!\ LE PROCHAIN MANDAT REMMETTEZ MAI JUIN JUILLET (ou mettez mois + année pour couvrir plusieurs années)
+  MONTH_LIST = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1];
 
 
 /* ----- Triggers ----- */
 function onOpen() {
   ui.createMenu('KPI')
     .addItem("Affichage des KPI", "displayKPI")
+    .addItem("Enregistrement des KPI", "saveKPI")
+    .addSeparator()
+    .addItem("Préparation du CA", "prepCA")
     .addToUi();
 }
 
@@ -77,7 +91,7 @@ function installTrigger() {
 }
 
 /* ------ KPI ----- */
-function generateKPI(mailResults, saveResults, folderId, displayResults) {
+function generateKPI() {
 
   displayLoadingScreen("Chargement des KPI..");
 
@@ -95,51 +109,54 @@ function generateKPI(mailResults, saveResults, folderId, displayResults) {
     .setWidth(1015)
     .setHeight(515),
     htmlMail = HtmlService.createHtmlOutput(HTML_CONTENT["mail"]),
-    attachments = [];
+    attachments = [],
+    charts = [];
 
   // KPI : Contacts par mois
-  let [contactTable, conversionChart] = contacts(obj); // conversionChart is a 2D array : [month][number of contact in a given state]
-  [htmlOutput, attachments] = createColumnChart(contactTable, "Contacts", htmlOutput, attachments, DIMS["width"], DIMS["height"]);
+  let [contactsTable, conversionChart] = contacts(obj); // conversionChart is a 2D array : [month][number of contact in a given state]
+  charts.push(createColumnChart(contactsTable, "Contacts", DIMS["width"], DIMS["height"]));
 
   // KPI : Taux de conversion
-  let conversionTable = conversionRate(conversionChart);
-  [htmlOutput, attachments] = createLineChart(conversionTable, [COLORS["burgundy"], COLORS["gold"], COLORS["grey"]], "Taux de conversion", htmlOutput, attachments, DIMS["width"], DIMS["height"]);
+  let conversionRateTable = conversionRate(conversionChart);
+  charts.push(createLineChart(conversionRateTable, [COLORS["burgundy"], COLORS["gold"], COLORS["grey"]], "Taux de conversion", DIMS["width"], DIMS["height"]));
 
   // KPI : CA
   let turnoverTable = turnover(obj);
-  [htmlOutput, attachments] = createColumnChart(turnoverTable, "Chiffre d'affaires", htmlOutput, attachments, DIMS["width"], DIMS["height"]);
+  charts.push(createColumnChart(turnoverTable, "Chiffre d'affaires", DIMS["width"], DIMS["height"]));
 
   // KPI : Type de contact
   let contactTypeTable = contactType(obj);
-  [htmlOutput, attachments] = createPieChart(contactTypeTable, "Type de contact", htmlOutput, attachments, DIMS["width"], DIMS["height"]);
+  charts.push(createPieChart(contactTypeTable, Object.values(COLORS), "Type de contact", DIMS["width"], DIMS["height"]));
 
   // KPI : Taux de conversion par type de contact
-  let conversionTableContact = conversionRateByContact(obj);
-  [htmlOutput, attachments] = createColumnChart(conversionTableContact, "Taux de conversion par type de contact", htmlOutput, attachments, DIMS["width"], DIMS["height"]);
+  let conversionRateByContactTable = conversionRateByContact(obj);
+  charts.push(createColumnChart(conversionRateByContactTable, "Taux de conversion par type de contact", DIMS["width"], DIMS["height"]));
 
-  // Sending graphs by mail (mail adress will be prompted)
-  if (mailResults) {
-    sendMail(htmlMail, "KPI", attachments);
-  }
+  // Adding the charts to the htmlOutput and the list of attachments
+  charts.forEach(c => {
+    convertChart(c, c.getOptions().get("title"), htmlOutput, attachments);
+  });
 
-  // Saving graphs in a Drive folder
-  if (saveResults) {
-    if (folderId != "") {
+  return {
+    display: function () {
+      ui.showModalDialog(htmlOutput, "KPI");
+    },
+    save: function (folderId = DRIVE["folderId"]) {
       saveOnDrive(attachments, folderId);
-    } else {
-      saveOnDrive(attachments);
+    },
+    mail: function () {
+      sendMail(htmlMail, "KPI", attachments);
+    },
+    slides: function () {
+      generateSlides(TEMPLATES["PEPinkDarker"], charts, folderId = DRIVE["folderId"]);
     }
-  }
-
-  // Displaying the charts on screen
-  if (displayResults) {
-    ui.showModalDialog(htmlOutput, "KPI");
   }
 }
 
 // Displaying the graphs (through a menu in the sheet)
 function displayKPI() {
-  generateKPI(false, false, "", true);
+  let KPI = generateKPI();
+  KPI.display();
 }
 
 // Saving the graphs (through a menu in the sheet)
@@ -151,10 +168,25 @@ function saveKPI() {
   if (saveResults) {
     folderId = ui.prompt("Enregistrement des images sur le Drive", "Entrez l'id du dossier de destination :", ui.ButtonSet.OK).getResponseText();
   }
-  generateKPI(mailResults, saveResults, folderId, false);
+  let KPI = generateKPI();
+  if (mailResults) {
+    KPI.mail();
+  }
+  if (saveResults) {
+    KPI.save(folderId);
+  }
+  KPI.display();
 }
 
-// Saving the graphs automatically (with a monthly trigger)
+// Saving the graphs automatically (linked to a monthly trigger)
 function autoSaveKPI() {
-  generateKPI(false, true, "", false);
+  let KPI = generateKPI();
+  KPI.save();
+}
+
+// Saving the graphs + creating slides to present them (through a menu in the sheet)
+function prepCA() {
+  let KPI = generateKPI();
+  KPI.save();
+  KPI.slides();
 }
