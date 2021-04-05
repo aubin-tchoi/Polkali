@@ -28,7 +28,7 @@ function saveOnDrive(imageBlobs, folderId) {
         });
         let confirm = HtmlService
             .createHtmlOutput(HTML_CONTENT["saveConfirm"](folder.getUrl()))
-            .setHeight(250)
+            .setHeight(225)
             .setWidth(600);
         ui.showModelessDialog(confirm, "KPIs enregistrés !");
     } catch (e) {
