@@ -26,6 +26,11 @@ function saveOnDrive(imageBlobs, folderId) {
         imageBlobs.forEach(function (f) {
             folder.createFile(f);
         });
+        let confirm = HtmlService
+            .createHtmlOutput(HTML_CONTENT["saveConfirm"](folder.getUrl()))
+            .setHeight(250)
+            .setWidth(600);
+        ui.showModelessDialog(confirm, "KPIs enregistrés !");
     } catch (e) {
         Logger.log(`Erreur lors de l'enregistrement des images sur le Drive : ${e}.`);
         ui.alert("Erreur lors de l'enregistrement des images sur le Drive.");
