@@ -37,7 +37,6 @@ function saveOnDrive(imageBlobs, folderId) {
     }
 }
 
-
 // Converting a chart object into an image
 function convertChart(chart, title, htmlOutput, attachments) {
     // Adding the chart to the HtmlOutput
