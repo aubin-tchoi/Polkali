@@ -70,8 +70,72 @@ const ui = SpreadsheetApp.getUi(),
     PEPurgundy: "14tV2k5zPEf3atYbiAlbhICwxPDBiMe21WHFJ-S4Cl9Q",
     PEPinkLighter: "1Fz7jm0ee3EJhOc83bO5vtYIN6poapPWggHhxcN2M5ec"
   },
-  // Indexes of months (/!\ LE PROCHAIN MANDAT REMMETTEZ MAI JUIN JUILLET (ou mettez mois + année pour couvrir plusieurs années)
-  MONTH_LIST = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1];
+  // Indexes of months
+  MONTH_LIST = [{
+      month: 1,
+      year: 2020
+    },
+    {
+      month: 2,
+      year: 2020
+    },
+    {
+      month: 3,
+      year: 2020
+    },
+    {
+      month: 4,
+      year: 2020
+    },
+    {
+      month: 5,
+      year: 2020
+    },
+    {
+      month: 6,
+      year: 2020
+    },
+    {
+      month: 7,
+      year: 2020
+    },
+    {
+      month: 8,
+      year: 2020
+    },
+    {
+      month: 9,
+      year: 2020
+    },
+    {
+      month: 10,
+      year: 2020
+    },
+    {
+      month: 11,
+      year: 2020
+    },
+    {
+      month: 0,
+      year: 2021
+    },
+    {
+      month: 1,
+      year: 2021
+    },
+    {
+      month: 2,
+      year: 2021
+    },
+    {
+      month: 3,
+      year: 2021
+    },
+    {
+      month: 4,
+      year: 2021
+    }
+  ];
 
 
 /* ----- Triggers ----- */

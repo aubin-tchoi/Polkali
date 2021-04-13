@@ -1,8 +1,7 @@
 ## Samples
 
-Les scripts suivants sont classés (grossièrement) par difficulté croissante.
-Ils n'ont pas réellement pour vocation d'être utilisés en tant que tels.
-Dans ces scripts on trouve souvent en fin de fonction des variables vides, qui sont vouées à être remplies manuellement (il s'agit souvent des IDs des spreadsheets que l'on souhaite faire interagir).
+Les scripts suivants sont classés par difficulté croissante.
+En début de script vous trouverez des variables vides, qui sont vouées à être remplies manuellement (les ID de spreadsheet par exemple).
 
 #### import.js
 

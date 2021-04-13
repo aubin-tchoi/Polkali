@@ -1,6 +1,6 @@
 /* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
 
-// Lets you make a copy of current spreadsheet in a given folder for archiving or backuping purposes
+// Making a copy of current spreadsheet in a given folder for archiving or backup-ing purposes
 function archiving() {
   const ssOld = SpreadsheetApp.getActiveSpreadsheet(),
     ssNew = SpreadsheetApp.create(ssOld.getName()),
@@ -11,14 +11,22 @@ function archiving() {
     s.copyTo(ssNew);
   });
 
-  // Retrieving destination folder ID
-  let drive_id = ui.prompt("Archivage",
-    "Entrez l'ID du dossier Drive de destination.",
-    ui.ButtonSet.OK_CANCEL).getResponseText();
+  while (true) {
+    try {
+    // Retrieving destination folder ID
+    let drive_id = ui.prompt("Archivage",
+      "Entrez l'ID du dossier Drive de destination.",
+      ui.ButtonSet.OK_CANCEL).getResponseText();
 
-  // Moving ssNew to the folder with drive_id
-  var file = DriveApp.getFileById(ssNew.getId());
-  DriveApp.getFolderById(drive_id).addFile(file);
+    // Moving ssNew to the folder with drive_id
+    var file = DriveApp.getFileById(ssNew.getId());
+    DriveApp.getFolderById(drive_id).addFile(file);
+    break;
+    }
+    catch(e) {
+      ui.alert("L'ID entré est invalide, veuillez recommencer.");
+    }
+  }
 
   // Removing initial sheet in ssNew and renaming its sheets
   ssNew.deleteSheet(ssNew.getSheetByName("Feuille 1"));
