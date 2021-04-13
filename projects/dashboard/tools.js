@@ -34,6 +34,19 @@ function uniqueValues(str, data) {
     return val;
 }
 
+// Converting a chart object into an image
+function convertChart(chart, title, htmlOutput, attachments) {
+    // Adding the chart to the HtmlOutput
+    let imageData = Utilities.base64Encode(chart.getAs('image/png').getBytes()),
+        imageUrl = "data:image/png;base64," + encodeURI(imageData);
+    htmlOutput.append("<img border=\"1\" src=\"" + imageUrl + "\">");
+
+    // Adding the chart to the attachments
+    let imageDatamail = chart.getAs('image/png').getBytes(),
+        imgblob = Utilities.newBlob(imageDatamail, "image/png", title);
+    attachments.push(imgblob);
+}
+
 // Computes a / b * 100 if b !=0, and returns 0 otherwise
 const prcnt = (a, b) => (parseInt(b, 10) == 0) ? 0 : a / b * 100;
 
