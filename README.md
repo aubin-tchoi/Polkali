@@ -21,3 +21,4 @@ Quelques conventions que l'on s'efforcera de respecter dans chaque script :
 * Placer toutes les données hardcodées en début de script (les IDs de fichiers par exemple)
 
 * Écrire les noms de variables et fonctions en camelCase (tout attaché, minuscule puis majuscules au début des mots suivants)
+pepepepepepeep
