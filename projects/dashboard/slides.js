@@ -22,7 +22,7 @@ function generateSlides(template, chartImages, folderId) {
         box.getBorder().getLineFill().setSolidFill('#FFFFFF');
         box.getFill().setSolidFill('#FFFFFF');
         // Inserting the image
-        slide.insertImage(img).alignOnPage(SlidesApp.AlignmentPosition.CENTER).setTop(650 - DIMS["height"]);
+        slide.insertImage(img).alignOnPage(SlidesApp.AlignmentPosition.CENTER).setTop(450 - DIMS["height"]);
         // Writing a title
         let text = slide.insertTextBox(img.getName()).setTop(65).setWidth(300).alignOnPage(SlidesApp.AlignmentPosition.HORIZONTAL_CENTER).getText();
         text.getTextStyle().setFontSize(28).setForegroundColor(COLORS["burgundy"]);

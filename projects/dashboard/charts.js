@@ -74,16 +74,3 @@ function createLineChart(dataTable, colors, title, dims) {
         Logger.log(`Could not create graph for info : ${title},, error : ${e}`);
     }
 }
-
-// Converting a chart object into an image
-function convertChart(chart, title, htmlOutput, attachments) {
-    // Adding the chart to the HtmlOutput
-    let imageData = Utilities.base64Encode(chart.getAs('image/png').getBytes()),
-        imageUrl = "data:image/png;base64," + encodeURI(imageData);
-    htmlOutput.append("<img border=\"1\" src=\"" + imageUrl + "\">");
-
-    // Adding the chart to the attachments
-    let imageDatamail = chart.getAs('image/png').getBytes(),
-        imgblob = Utilities.newBlob(imageDatamail, "image/png", title);
-    attachments.push(imgblob);
-}

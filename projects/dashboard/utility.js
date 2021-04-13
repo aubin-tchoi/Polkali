@@ -35,5 +35,18 @@ function saveOnDrive(imageBlobs, folderId) {
         Logger.log(`Erreur lors de l'enregistrement des images sur le Drive : ${e}.`);
         ui.alert("Erreur lors de l'enregistrement des images sur le Drive.");
     }
+}
 
+
+// Converting a chart object into an image
+function convertChart(chart, title, htmlOutput, attachments) {
+    // Adding the chart to the HtmlOutput
+    let imageData = Utilities.base64Encode(chart.getAs('image/png').getBytes()),
+        imageUrl = "data:image/png;base64," + encodeURI(imageData);
+    htmlOutput.append("<img border=\"1\" src=\"" + imageUrl + "\">");
+
+    // Adding the chart to the attachments
+    let imageDatamail = chart.getAs('image/png').getBytes(),
+        imgblob = Utilities.newBlob(imageDatamail, "image/png", title);
+    attachments.push(imgblob);
 }
