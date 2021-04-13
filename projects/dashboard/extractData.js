@@ -96,8 +96,8 @@ function contactType(data) {
     dataTable.addColumn(Charts.ColumnType.STRING, "Type de contact");
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion");
     Logger.log(`Valeurs uniques : ${uniqueValues(HEADS["typeContact"], data)}`);
-    uniqueValues(HEADS["typeContact"], data).forEach(function (val) {
-        dataTable.addRow([val, data.filter(row => row[HEADS["typeContact"]] == val).length / data.length]);
+    uniqueValues(HEADS["typeContact"], data).forEach(function (type) {
+        dataTable.addRow([type, data.filter(row => row[HEADS["typeContact"]] == type).length / data.length]);
     });
     return dataTable;
 }
