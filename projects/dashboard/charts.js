@@ -3,20 +3,22 @@
 // Creating charts using a data table as input
 
 // Creating a ColumnChart
-function createColumnChart(dataTable, title, width, height) {
+function createColumnChart(dataTable, colors, title, dims, percent = false) {
     try {
         // Creating a ColumnChart with data from dataTable
         let chart = Charts.newColumnChart()
             .setDataTable(dataTable)
             .setOption('legend', {
                 textStyle: {
-                    font: 'trebuchet ms',
+                    font: 'roboto',
                     fontSize: 11
                 }
             })
-            .setOption('colors', Object.values(COLORS))
+            .setOption('colors', colors)
+            .setOption('vAxis.minValue', percent ? 0 : 'automatic')
+            .setOption('vAxis.maxValue', percent ? 100 : 'automatic')
             .setTitle(title)
-            .setDimensions(width, height)
+            .setDimensions(dims.width, dims.height)
             .build();
 
         return chart;
@@ -26,20 +28,20 @@ function createColumnChart(dataTable, title, width, height) {
 }
 
 // Creating a PieChart
-function createPieChart(dataTable, colors, title, width, height) {
+function createPieChart(dataTable, colors, title, dims) {
     try {
         // Creating a PieChart with data from dataTable
         let chart = Charts.newPieChart()
             .setDataTable(dataTable)
             .setOption('legend', {
                 textStyle: {
-                    font: 'trebuchet ms',
+                    font: 'roboto',
                     fontSize: 11
                 }
             })
             .setOption('colors', colors)
             .setTitle(title)
-            .setDimensions(width, height)
+            .setDimensions(dims.width, dims.height)
             .build();
 
         return chart;
@@ -49,21 +51,21 @@ function createPieChart(dataTable, colors, title, width, height) {
 }
 
 // Creating a LineChart
-function createLineChart(dataTable, colors, title, width, height) {
+function createLineChart(dataTable, colors, title, dims) {
     try {
         // Creating a LineChart with data from dataTable
         let chart = Charts.newLineChart()
             .setDataTable(dataTable)
             .setOption('legend', {
                 textStyle: {
-                    font: 'trebuchet ms',
+                    font: 'roboto',
                     fontSize: 11
                 }
             })
             .setOption('curveType', 'function')
             .setOption('pointShape', 'square')
             .setTitle(title)
-            .setDimensions(width, height)
+            .setDimensions(dims.width, dims.height)
             .setColors(colors)
             .build();
 
@@ -73,6 +75,7 @@ function createLineChart(dataTable, colors, title, width, height) {
     }
 }
 
+// Converting a chart object into an image
 function convertChart(chart, title, htmlOutput, attachments) {
     // Adding the chart to the HtmlOutput
     let imageData = Utilities.base64Encode(chart.getAs('image/png').getBytes()),

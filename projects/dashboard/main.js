@@ -33,7 +33,7 @@ const ui = SpreadsheetApp.getUi(),
   // Graphs' dimensions
   DIMS = {
     width: 1000,
-    height: 500
+    height: 400
   },
   // Links to every image used in this project
   IMGS = {
@@ -180,23 +180,27 @@ function generateKPI() {
 
   // KPI : Contacts par mois
   let [contactsTable, conversionChart] = contacts(obj); // conversionChart is a 2D array : [month][number of contact in a given state]
-  charts.push(createColumnChart(contactsTable, "Contacts", DIMS["width"], DIMS["height"]));
+  charts.push(createColumnChart(contactsTable, Object.values(COLORS), "Contacts", DIMS));
 
-  // KPI : Taux de conversion
+  // KPI : Taux de conversion global par mois
   let conversionRateTable = conversionRate(conversionChart);
-  charts.push(createLineChart(conversionRateTable, [COLORS["burgundy"], COLORS["gold"], COLORS["grey"]], "Taux de conversion", DIMS["width"], DIMS["height"]));
+  charts.push(createLineChart(conversionRateTable, [COLORS["burgundy"]], "Taux de conversion global", DIMS));
 
+  // KPI : Taux de conversion entre chaque étape
+  let conversionRateByTypeTable = conversionRateByType(conversionChart);
+  charts.push(createColumnChart(conversionRateByTypeTable, [COLORS["burgundy"]], "Taux de conversion sur chaque étape", DIMS, true));
+ 
   // KPI : CA
   let turnoverTable = turnover(obj);
-  charts.push(createColumnChart(turnoverTable, "Chiffre d'affaires", DIMS["width"], DIMS["height"]));
+  charts.push(createColumnChart(turnoverTable, Object.values(COLORS), "Chiffre d'affaires", DIMS));
 
   // KPI : Type de contact
   let contactTypeTable = contactType(obj);
-  charts.push(createPieChart(contactTypeTable, Object.values(COLORS), "Type de contact", DIMS["width"], DIMS["height"]));
+  charts.push(createPieChart(contactTypeTable, Object.values(COLORS), "Type de contact", DIMS));
 
   // KPI : Taux de conversion par type de contact
   let conversionRateByContactTable = conversionRateByContact(obj);
-  charts.push(createColumnChart(conversionRateByContactTable, "Taux de conversion par type de contact", DIMS["width"], DIMS["height"]));
+  charts.push(createColumnChart(conversionRateByContactTable, Object.values(COLORS), "Taux de conversion par type de contact", DIMS, true));
 
   // Adding the charts to the htmlOutput and the list of attachments
   charts.forEach(c => {

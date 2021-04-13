@@ -13,7 +13,7 @@ function contacts(data) {
     });
     // Rows
     MONTH_LIST.forEach(function (month) {
-        let dataRow = [MONTH_NAMES[month]],
+        let dataRow = [`${MONTH_NAMES[month["month"]]} ${month["year"]}`],
             conversionChartRow = [];
         Object.values(STATES).forEach(function (state) {
             // Counting first every contact who find themselves in a more advanced state than state
@@ -40,13 +40,27 @@ function conversionRate(conversionChart) {
     let dataTable = Charts.newDataTable();
     // Columns : month, all 3 conversion rates
     dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion global`);
+    // Rows
+    MONTH_LIST.forEach(function (month, idx) {
+        dataTable.addRow([`${MONTH_NAMES[month["month"]]} ${month["year"]}`, prcnt(conversionChart[idx][1], conversionChart[idx][0]) / 100 * prcnt(conversionChart[idx][2], conversionChart[idx][1]) / 100 * prcnt(conversionChart[idx][3], conversionChart[idx][2])]);
+    });
+    return dataTable;
+}
+
+// Taux de conversion
+function conversionRateByType(conversionChart) {
+    let dataTable = Charts.newDataTable();
+    // Columns : month, all 3 conversion rates
+    dataTable.addColumn(Charts.ColumnType.STRING, "Étape de la conversion");
     dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${STATES["rdv"]} et ${STATES["devis"]}`);
     dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${STATES["devis"]} et ${STATES["negoc"]}`);
     dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${STATES["negoc"]} et ${STATES["etude"]}`);
     // Rows
-    MONTH_LIST.forEach(function (month, idx) {
-        dataTable.addRow([MONTH_NAMES[month], prcnt(conversionChart[idx][1], conversionChart[idx][0]), prcnt(conversionChart[idx][2], conversionChart[idx][1]), prcnt(conversionChart[idx][3], conversionChart[idx][2])]);
-    });
+    dataTable.addRow([`${STATES["rdv"]} -> ${STATES["devis"]}`, prcnt(conversionChart.reduce((acc, val) => acc += val[1], 0), conversionChart.reduce((acc, val) => acc += val[0], 0))]);
+    dataTable.addRow([`${STATES["devis"]} -> ${STATES["negoc"]}`, prcnt(conversionChart.reduce((acc, val) => acc += val[2], 0), conversionChart.reduce((acc, val) => acc += val[1], 0))]);
+    dataTable.addRow([`${STATES["negoc"]} -> ${STATES["etude"]}`, prcnt(conversionChart.reduce((acc, val) => acc += val[3], 0), conversionChart.reduce((acc, val) => acc += val[2], 0))]);
+    
     return dataTable;
 }
 
@@ -70,7 +84,7 @@ function turnover(data) {
         data.filter(row => sameMonth(row, month) && row[HEADS["état"]] == STATES["etude"]).forEach(function (row) {
             ca_sig += parseInt(row[HEADS["caPot"]], 10) || 0;
         });
-        dataTable.addRow([MONTH_NAMES[month], ca_pot, ca_sig]);
+        dataTable.addRow([`${MONTH_NAMES[month["month"]]} ${month["year"]}`, ca_pot, ca_sig]);
     });
     return dataTable;
 }
