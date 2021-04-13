@@ -75,14 +75,15 @@ function turnover(data) {
     MONTH_LIST.forEach(function (month) {
         let ca_pot = 0,
             ca_sig = 0;
-        // Potential turnover is the sum of every expected gain
         data.filter(row => sameMonth(row, month)).forEach(function (row) {
             // /!\ row[HEADS["confiance"]] isn't actually a percentage since we used method getValues on the range instead of getDisplayValues
+            // Potential turnover is the sum of every expected gain
             ca_pot += (parseInt(row[HEADS["caPot"]], 10) * row[HEADS["confiance"]]) || 0;
-        });
-        // Contractualized turnover is computed based on missions who are state STATES["study"]
-        data.filter(row => sameMonth(row, month) && row[HEADS["état"]] == STATES["etude"]).forEach(function (row) {
-            ca_sig += parseInt(row[HEADS["caPot"]], 10) || 0;
+            // Contractualized turnover is computed based on missions who are state STATES["study"]
+            if (row[HEADS["état"]] == STATES["etude"]) {
+                ca_sig += parseInt(row[HEADS["caPot"]], 10) || 0;
+            }
+            Logger.log(row);
         });
         dataTable.addRow([`${MONTH_NAMES[month["month"]]} ${month["year"]}`, ca_pot, ca_sig]);
     });

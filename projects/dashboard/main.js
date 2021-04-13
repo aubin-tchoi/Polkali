@@ -163,8 +163,8 @@ function generateKPI() {
 
   // Initialization
   const sheet = SpreadsheetApp.openById(SHEETS["id"]).getSheetByName(SHEETS["name"]),
-    data = sheet.getRange(4, 2, (manuallyGetLastRow(sheet) - 3), 12).getValues(),
-    heads = sheet.getRange(1, 2, 1, 12).getValues().shift();
+    data = sheet.getRange(4, 2, (manuallyGetLastRow(sheet) - 3), (sheet.getLastColumn() - 1)).getValues(),
+    heads = sheet.getRange(1, 2, 1, (sheet.getLastColumn() - 1)).getValues().shift();
 
   // I chose to keep the data as an array of objects (other possibility : object of objects, the keys being the months' names and the values the data in each row)
   let obj = data.map(r => heads.reduce((o, k, i) => (o[k] = r[i] || 0, o), {})).filter(row => row["Premier contact"] != "");
