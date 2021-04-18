@@ -28,7 +28,9 @@ const ui = SpreadsheetApp.getUi(),
     état: "État",
     devis: "Devis réalisé",
     caPot: "Prix potentiel de l'étude  € (HT)",
-    confiance: "Pourcentage de confiance à la conversion en réelle étude"
+    confiance: "Pourcentage de confiance à la conversion en réelle étude",
+    prix: "Prix en € (HT)",
+    durée: "Durée (semaines)"
   },
   // Graphs' dimensions
   DIMS = {
@@ -42,9 +44,17 @@ const ui = SpreadsheetApp.getUi(),
   },
   // Html content of what is displayed and what is sent in a mail
   HTML_CONTENT = {
-    display: `<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">KPI KPI KPI<br/></span> </span> <br/>`,
-    mail: `<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">&nbsp; &nbsp; Bonjour, <br/><br/>Voici les KPI portant sur la prospection.<br/> <br/>Bonne journée !</span> </span>`,
-    saveConfirm: (url) => `<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">Les KPIs ont été enregistrés, pouce pour ouvrir le lien (cliquez sur Boris).<br/><br/> &nbsp; &nbsp; La bise.</span></span><p style="text-align:center;"><a href=${url} target="_blank"><img src="${IMGS["thumbsUp"]}" alt="Thumbs up" width="130" height="131"></a></p>`
+    display: HtmlService
+      .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">KPI KPI KPI<br/></span> </span> <br/>`)
+      .setWidth(1015)
+      .setHeight(515),
+    mail: HtmlService.createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">&nbsp; &nbsp; Bonjour, <br/><br/>Voici les KPI portant sur la prospection.<br/> <br/>Bonne journée !</span> </span>`),
+    saveConfirm: (url) => `<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">Les KPIs ont été enregistrés, pouce pour ouvrir le lien (cliquez sur Boris).<br/><br/> &nbsp; &nbsp; La bise.</span></span><p style="text-align:center;"><a href=${url} target="_blank"><img src="${IMGS["thumbsUp"]}" alt="Thumbs up" width="130" height="131"></a></p>`,
+    loadingScreen: HtmlService
+        .createHtmlOutput(`<img src="${IMGS["loadingScreen"]}" alt="Loading" width="442" height="249">`)
+        .setWidth(450)
+        .setHeight(280)
+  
   },
   // Drive folder's id
   DRIVE = {
@@ -162,24 +172,25 @@ function generateKPI() {
   displayLoadingScreen("Chargement des KPI..");
 
   // Initialization
-  const sheet = SpreadsheetApp.openById(SHEETS["id"]).getSheetByName(SHEETS["name"]),
-    data = sheet.getRange(4, 2, (manuallyGetLastRow(sheet) - 3), (sheet.getLastColumn() - 1)).getValues(),
-    heads = sheet.getRange(1, 2, 1, (sheet.getLastColumn() - 1)).getValues().shift();
-
-  // I chose to keep the data as an array of objects (other possibility : object of objects, the keys being the months' names and the values the data in each row)
-  let obj = data.map(r => heads.reduce((o, k, i) => (o[k] = r[i] || 0, o), {})).filter(row => row["Premier contact"] != "");
+  let dataProspection = extractSheetData(SHEETS["id"], SHEETS["name"], {
+    data: {
+      x: 4,
+      y: 2
+    },
+    header: {
+      x: 1,
+      y: 2
+    }
+  }).filter(row => row[HEADS["premierContact"]] != "");
 
   // Final outputs (displaying the charts on screen & mail content)
-  let htmlOutput = HtmlService
-    .createHtmlOutput(HTML_CONTENT["display"])
-    .setWidth(1015)
-    .setHeight(515),
-    htmlMail = HtmlService.createHtmlOutput(HTML_CONTENT["mail"]),
+  let htmlOutput = HTML_CONTENT["display"],
+    htmlMail = HTML_CONTENT["mail"],
     attachments = [],
     charts = [];
 
   // KPI : Contacts par mois
-  let [contactsTable, conversionChart] = contacts(obj); // conversionChart is a 2D array : [month][number of contact in a given state]
+  let [contactsTable, conversionChart] = contacts(dataProspection); // conversionChart is a 2D array : [month][number of contact in a given state]
   charts.push(createColumnChart(contactsTable, Object.values(COLORS), "Contacts", DIMS));
 
   // KPI : Taux de conversion global par mois
@@ -189,17 +200,17 @@ function generateKPI() {
   // KPI : Taux de conversion entre chaque étape
   let conversionRateByTypeTable = conversionRateByType(conversionChart);
   charts.push(createColumnChart(conversionRateByTypeTable, [COLORS["burgundy"]], "Taux de conversion sur chaque étape", DIMS, true));
- 
+
   // KPI : CA
-  let turnoverTable = turnover(obj);
+  let turnoverTable = turnover(dataProspection);
   charts.push(createColumnChart(turnoverTable, Object.values(COLORS), "Chiffre d'affaires", DIMS));
 
   // KPI : Type de contact
-  let contactTypeTable = contactType(obj);
+  let contactTypeTable = contactType(dataProspection);
   charts.push(createPieChart(contactTypeTable, Object.values(COLORS), "Type de contact", DIMS));
 
   // KPI : Taux de conversion par type de contact
-  let conversionRateByContactTable = conversionRateByContact(obj);
+  let conversionRateByContactTable = conversionRateByContact(dataProspection);
   charts.push(createColumnChart(conversionRateByContactTable, Object.values(COLORS), "Taux de conversion par type de contact", DIMS, true));
 
   // Adding the charts to the htmlOutput and the list of attachments

@@ -5,7 +5,7 @@
 // Returning the last non-empty row of a sheet (not possible with getLastRow for this particular sheet bc of data validation)
 function manuallyGetLastRow(sheet) {
     let data = sheet.getRange(1, 1, sheet.getLastRow(), 5).getValues();
-    for (let row = 4; row < sheet.getLastRow(); row++) {
+    for (let row = 4, lastRow = sheet.getLastRow(); row < lastRow; row++) {
         if ((data[row][0] == "" && data[row][1] == "" && data[row][2] == "" && data[row][4] == "") || row > 200) {
             return row;
         }
@@ -14,11 +14,7 @@ function manuallyGetLastRow(sheet) {
 
 // Loading screen
 function displayLoadingScreen(msg) {
-    let htmlLoading = HtmlService
-        .createHtmlOutput(`<img src="${IMGS["loadingScreen"]}" alt="Loading" width="442" height="249">`)
-        .setWidth(450)
-        .setHeight(280);
-    ui.showModelessDialog(htmlLoading, msg);
+    ui.showModelessDialog(HTML_CONTENT["loadingScreen"], msg);
 }
 
 // Getting an array of all unique values inside of a set of data for 1 information

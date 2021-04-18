@@ -2,6 +2,14 @@
 
 // Extracting data from an array of Objects and returning a dataTable
 
+// I chose to keep the data as an array of objects (other possibility : object of objects, the keys being the months' names and the values the data in each row)
+function extractSheetData(spreadsheetId, sheetName, pos) {
+    const sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName(sheetName),
+        data = sheet.getRange(pos.data.x, pos.data.y, (manuallyGetLastRow(sheet) - pos.data.x + 1), (sheet.getLastColumn() - pos.data.y + 1)).getValues(),
+        heads = sheet.getRange(pos.header.x, pos.header.y, 1, (sheet.getLastColumn() - pos.header.y + 1)).getValues().shift();
+    return data.map(row => heads.reduce((obj, key, idx) => (obj[key] = (row[idx] != "") ? row[idx] : obj[key] || '', obj), {}));
+}
+
 // Répartition des contacts par mois
 function contacts(data) {
     let dataTable = Charts.newDataTable(),
