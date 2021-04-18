@@ -63,17 +63,27 @@ const ui = SpreadsheetApp.getUi(),
   },
   // How months are spelled
   MONTH_NAMES = ["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
-  // Different states a mission can go through
-  STATES = {
+  // Different states a mission can go through during the prospection phase
+  ETAT_PROSP = {
     rdv: "Premier RDV réalisé",
     devis: "Devis rédigé et envoyé",
     negoc: "En négociation",
     etude: "Etude obtenue"
   },
   // States corresponding to a contact that wasn't converted into a mission
-  STATES_BIS = {
+  ETAT_PROSP_BIS = {
     sansSuite: "Sans suite",
     aRelancer: "A relancer",
+  },
+  // Different states a mission can go through
+  ETAT_ETUDE = {
+    negoc: "En négociation",
+    redac: "En rédaction",
+    enAttente: "En attente",
+    enCours: "En cours",
+    terminée: "Terminée",
+    cloturée: "Clôturée",
+    sanSuite: "Sans suite"
   },
   // Indexes of months
   MONTH_LIST = [{
@@ -217,7 +227,7 @@ function generateKPI() {
   // KPI : Taux de conversion par type de contact
   let conversionRateByContactTable = conversionRateByContact(dataProspection);
   charts.push(createColumnChart(conversionRateByContactTable, Object.values(COLORS), "Taux de conversion par type de contact", DIMS, true));
-
+  
   // Adding the charts to the htmlOutput and the list of attachments
   charts.forEach(c => {
     convertChart(c, c.getOptions().get("title"), htmlOutput, attachments);
