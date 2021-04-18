@@ -22,9 +22,7 @@ function displayLoadingScreen(msg) {
 }
 
 // Getting an array of all unique values inside of a set of data for 1 information
-function uniqueValues(str, data) {
-    return data.map((row) => row[str]).filter((val, idx, arr) => arr.indexOf(val) == idx);
-}
+const uniqueValues = (key, data) => data.map((row) => row[key]).filter((val, idx, arr) => arr.indexOf(val) == idx);
 
 // Converting a chart object into an image
 function convertChart(chart, title, htmlOutput, attachments) {
