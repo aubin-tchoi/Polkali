@@ -7,7 +7,7 @@
 // Utile pour traiter un tableau de données (combiné avec un map)
 // Pas sensible au fait que le header peut présenter plusieurs fois la même valeur (utile pour un GForms)
 function ArrayToObj(arr, heads) {
-    return heads.reduce((o, k, i) => (o[k] = (arr[i] != "") ? arr[i] : o[k] || '', o), {});
+    return heads.reduce((obj, key, idx) => (obj[key] = (arr[idx] != "") ? arr[idx] : obj[key] || '', obj), {});
 }
 
 // Écran de chargement
@@ -40,19 +40,9 @@ let colors = {
 };
 
 // Retrouve toutes les valeurs uniques dans un array d'objets et les renvoie dans un array
-function uniqueValues(str, data) {
-    let val = [];
-    for (let row = 0; row < data.length; row++) {
-        if (data[row][str] != "") {
-            if (val.indexOf(data[row][str]) == -1) {
-                val.push(data[row][str]);
-            }
-        }
-    }
-    return val;
-}
+const uniqueValues = (key, data) => data.map((row) => row[key]).filter((val, idx, arr) => arr.indexOf(val) == idx);
 
-// Returns true if str can be converted into a float
+// Renvoie true ssi str peut être converti en flottant
 function isNumeric(str) {
     if (typeof str != "string") {return false;} // Only processes strings
     return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...

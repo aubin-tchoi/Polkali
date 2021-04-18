@@ -1,5 +1,5 @@
 pushall:
-	git push && find . -maxdepth 1 -type d \( ! -name . ! -name .git \) -exec bash -c "cd '{}' && clasp push" \;
+	find . -maxdepth 1 -type d \( ! -name . ! -name .git \) -exec bash -c "cd '{}' && clasp push" \;
 
 push:
 	git push && cd ${dir} && clasp push && cd ..

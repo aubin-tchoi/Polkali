@@ -15,10 +15,14 @@ const ui = SpreadsheetApp.getUi(),
     grey: "#404040",
     lightGrey: "#A29386"
   },
-  // Sheet and spreadsheet adresses
-  SHEETS = {
-    id: "1lJhJuZxUt_8_mVLXe5tazXPrb2Z3wr0M49rho974sNQ",
-    name: "Suivi"
+  // Sheet, spreadsheet and Drive folders addresses
+  ADDRESSES = {
+    prospectionId: "1lJhJuZxUt_8_mVLXe5tazXPrb2Z3wr0M49rho974sNQ",
+    prospectionName: "Suivi",
+    etudesId: "1gmJLAKvUOYFeS32raOiSTYiE_ozr7YSk26Y0t0blm04",
+    etudesName: "Suivi",
+    driveId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy",
+    slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU"
   },
   // Data sheet's header
   HEADS = {
@@ -30,7 +34,8 @@ const ui = SpreadsheetApp.getUi(),
     caPot: "Prix potentiel de l'étude  € (HT)",
     confiance: "Pourcentage de confiance à la conversion en réelle étude",
     prix: "Prix en € (HT)",
-    durée: "Durée (semaines)"
+    durée: "Durée (semaines)",
+    alumni: "Alumni"
   },
   // Graphs' dimensions
   DIMS = {
@@ -51,14 +56,10 @@ const ui = SpreadsheetApp.getUi(),
     mail: HtmlService.createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">&nbsp; &nbsp; Bonjour, <br/><br/>Voici les KPI portant sur la prospection.<br/> <br/>Bonne journée !</span> </span>`),
     saveConfirm: (url) => `<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">Les KPIs ont été enregistrés, pouce pour ouvrir le lien (cliquez sur Boris).<br/><br/> &nbsp; &nbsp; La bise.</span></span><p style="text-align:center;"><a href=${url} target="_blank"><img src="${IMGS["thumbsUp"]}" alt="Thumbs up" width="130" height="131"></a></p>`,
     loadingScreen: HtmlService
-        .createHtmlOutput(`<img src="${IMGS["loadingScreen"]}" alt="Loading" width="442" height="249">`)
-        .setWidth(450)
-        .setHeight(280)
-  
-  },
-  // Drive folder's id
-  DRIVE = {
-    folderId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy"
+      .createHtmlOutput(`<img src="${IMGS["loadingScreen"]}" alt="Loading" width="442" height="249">`)
+      .setWidth(450)
+      .setHeight(280)
+
   },
   // How months are spelled
   MONTH_NAMES = ["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -73,12 +74,6 @@ const ui = SpreadsheetApp.getUi(),
   STATES_BIS = {
     sansSuite: "Sans suite",
     aRelancer: "A relancer",
-  },
-  // Templates used to generate new slides
-  TEMPLATES = {
-    PEPinkDarker: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU",
-    PEPurgundy: "14tV2k5zPEf3atYbiAlbhICwxPDBiMe21WHFJ-S4Cl9Q",
-    PEPinkLighter: "1Fz7jm0ee3EJhOc83bO5vtYIN6poapPWggHhxcN2M5ec"
   },
   // Indexes of months
   MONTH_LIST = [{
@@ -171,17 +166,27 @@ function generateKPI() {
 
   displayLoadingScreen("Chargement des KPI..");
 
-  // Initialization
-  let dataProspection = extractSheetData(SHEETS["id"], SHEETS["name"], {
-    data: {
-      x: 4,
-      y: 2
-    },
-    header: {
-      x: 1,
-      y: 2
-    }
-  }).filter(row => row[HEADS["premierContact"]] != "");
+  // Initialization (names in franglish because why not)
+  let dataProspection = extractSheetData(ADDRESSES["prospectionId"], ADDRESSES["prospectionName"], {
+      data: {
+        x: 4,
+        y: 2
+      },
+      header: {
+        x: 1,
+        y: 2
+      }
+    }).filter(row => row[HEADS["premierContact"]] != ""),
+    dataEtudes = extractSheetData(ADDRESSES["etudesId"], ADDRESSES["etudesName"], {
+      data: {
+        x: 5,
+        y: 3
+      },
+      header: {
+        x: 1,
+        y: 3
+      }
+    });
 
   // Final outputs (displaying the charts on screen & mail content)
   let htmlOutput = HTML_CONTENT["display"],
@@ -200,11 +205,11 @@ function generateKPI() {
   // KPI : Taux de conversion entre chaque étape
   let conversionRateByTypeTable = conversionRateByType(conversionChart);
   charts.push(createColumnChart(conversionRateByTypeTable, [COLORS["burgundy"]], "Taux de conversion sur chaque étape", DIMS, true));
-
+  /*
   // KPI : CA
   let turnoverTable = turnover(dataProspection);
   charts.push(createColumnChart(turnoverTable, Object.values(COLORS), "Chiffre d'affaires", DIMS));
-
+  */
   // KPI : Type de contact
   let contactTypeTable = contactType(dataProspection);
   charts.push(createPieChart(contactTypeTable, Object.values(COLORS), "Type de contact", DIMS));
@@ -222,14 +227,14 @@ function generateKPI() {
     display: function () {
       ui.showModalDialog(htmlOutput, "KPI");
     },
-    save: function (folderId = DRIVE["folderId"]) {
+    save: function (folderId = ADDRESSES["driveId"]) {
       saveOnDrive(attachments, folderId);
     },
     mail: function () {
       sendMail(htmlMail, "KPI", attachments);
     },
     slides: function () {
-      generateSlides(TEMPLATES["PEPinkDarker"], attachments, folderId = DRIVE["folderId"]);
+      generateSlides(ADDRESSES["slidesTemplate"], attachments, folderId = ADDRESSES["driveId"]);
     }
   }
 }
@@ -247,7 +252,17 @@ function saveKPI() {
     saveResults = ui.alert("Enregistrement des images sur le Drive", "Souhaitez vous enregistrer les images sur le Drive ?", ui.ButtonSet.YES_NO) == ui.Button.YES,
     folderId = "";
   if (saveResults) {
-    folderId = ui.prompt("Enregistrement des images sur le Drive", "Entrez l'id du dossier de destination :", ui.ButtonSet.OK).getResponseText();
+    // Retrieving a user input
+    while (true) {
+      try {
+        folderId = ui.prompt("Enregistrement des images sur le Drive", "Entrez l'id du dossier de destination :", ui.ButtonSet.OK).getResponseText();
+        // Checking whether the input is valid or not
+        DriveApp.getFolderById(folderId);
+        break;
+      } catch(e) {
+        ui.alert("Enregistrement des images sur le Drive", "L'ID entré est invalide, veuillez recommencer.", ui.ButtonSet.OK);
+      }
+    }
   }
   let KPI = generateKPI();
   if (mailResults) {

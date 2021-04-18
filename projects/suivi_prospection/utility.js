@@ -16,7 +16,7 @@ function sendMail(htmlOutput, subject, attachments) {
 
 
 // Save data in designated Drive folder
-function saveOnDrive(imageBlobs, folderId = DRIVE["folderId"]) {
+function saveOnDrive(imageBlobs, folderId = ADDRESSES["driveId"]) {
     try {
         displayLoadingScreen("Enregistrement des images sur le Drive..");
         // Folder will be dated with current date
