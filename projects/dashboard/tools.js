@@ -23,15 +23,7 @@ function displayLoadingScreen(msg) {
 
 // Getting an array of all unique values inside of a set of data for 1 information
 function uniqueValues(str, data) {
-    let val = [];
-    for (let row = 0; row < data.length; row++) {
-        if (data[row][str] != "") {
-            if (val.indexOf(data[row][str]) == -1) {
-                val.push(data[row][str]);
-            }
-        }
-    }
-    return val;
+    return data.map((row) => row[str]).filter((val, idx, arr) => arr.indexOf(val) == idx);
 }
 
 // Converting a chart object into an image
