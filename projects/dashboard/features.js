@@ -43,7 +43,7 @@ function generateSlides(template, chartImages, folderId) {
     let today = new Date();
     today = `Point KPI du ${(today.getDate() < 9) ? "0" : ""}${today.getDate()}/${(today.getMonth() < 9) ? "0" : ""}${today.getMonth() + 1}/${today.getFullYear()}`;
     let presentation = SlidesApp.openById(DriveApp.getFileById(template).makeCopy(today, DriveApp.getFolderById(folderId)).getId());
-    
+
     // First slide
     let firstSlide = presentation.appendSlide(SlidesApp.PredefinedLayout.SECTION_HEADER);
     firstSlide.getShapes()[0].getText().setText(today);

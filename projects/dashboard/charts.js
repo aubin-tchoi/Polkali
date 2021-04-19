@@ -6,11 +6,9 @@
 function createChart(chartType, dataTable, title, options = {}) {
     if (chartType === CHART_TYPE.COLUMN) {
         return createColumnChart(dataTable, title, options);
-    }
-    else if (chartType === CHART_TYPE.PIE) {
+    } else if (chartType === CHART_TYPE.PIE) {
         return createPieChart(dataTable, title, options);
-    }
-    else if (chartType === CHART_TYPE.LINE) {
+    } else if (chartType === CHART_TYPE.LINE) {
         return createLineChart(dataTable, title, options);
     }
 }
