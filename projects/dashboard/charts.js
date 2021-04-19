@@ -3,7 +3,8 @@
 // Creating charts using a data table as input
 
 // Creating a ColumnChart
-function createColumnChart(dataTable, colors, title, dims, percent = false) {
+function createColumnChart(dataTable, colors, title, dims, options = {}) {
+    Logger.log(`Titre : ${title}, options : ${Object.entries(options)}`);
     try {
         // Creating a ColumnChart with data from dataTable
         let chart = Charts.newColumnChart()
@@ -15,8 +16,9 @@ function createColumnChart(dataTable, colors, title, dims, percent = false) {
                 }
             })
             .setOption('colors', colors)
-            .setOption('vAxis.minValue', percent ? 0 : 'automatic')
-            .setOption('vAxis.maxValue', percent ? 100 : 'automatic')
+            .setOption('vAxis.minValue', (options.percent || false) ? 0 : 'automatic')
+            .setOption('vAxis.maxValue', (options.percent || false) ? 100 : 'automatic')
+            .setOption('hAxis.ticks', options.hticks || 'auto')
             .setTitle(title)
             .setDimensions(dims.width, dims.height)
             .build();
@@ -29,6 +31,7 @@ function createColumnChart(dataTable, colors, title, dims, percent = false) {
 
 // Creating a PieChart
 function createPieChart(dataTable, colors, title, dims) {
+    Logger.log(`Titre : ${title}`);
     try {
         // Creating a PieChart with data from dataTable
         let chart = Charts.newPieChart()
@@ -52,6 +55,7 @@ function createPieChart(dataTable, colors, title, dims) {
 
 // Creating a LineChart
 function createLineChart(dataTable, colors, title, dims) {
+    Logger.log(`Titre : ${title}`);
     try {
         // Creating a LineChart with data from dataTable
         let chart = Charts.newLineChart()

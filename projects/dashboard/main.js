@@ -215,7 +215,7 @@ function generateKPI() {
 
   // KPI : Taux de conversion entre chaque étape
   let conversionRateByTypeTable = conversionRateByType(conversionChart);
-  charts.push(createColumnChart(conversionRateByTypeTable, [COLORS["burgundy"]], "Taux de conversion sur chaque étape", DIMS, true));
+  charts.push(createColumnChart(conversionRateByTypeTable, [COLORS["burgundy"]], "Taux de conversion sur chaque étape", DIMS, {percent: true}));
   /*
   // KPI : CA
   let turnoverTable = turnover(dataProspection);
@@ -227,15 +227,19 @@ function generateKPI() {
 
   // KPI : Taux de conversion par type de contact
   let conversionRateByContactTable = conversionRateByContact(dataProspection);
-  charts.push(createColumnChart(conversionRateByContactTable, Object.values(COLORS), "Taux de conversion par type de contact", DIMS, true));
+  charts.push(createColumnChart(conversionRateByContactTable, Object.values(COLORS), "Taux de conversion par type de contact", DIMS, {percent: true}));
   
   // KPI : nombre d'étude pour différents intervalles de prix
   let priceRangeTable = priceRange(dataEtudes.filter(row => row[HEADS["prix"]] != ""), 500, 4500, 8);
-  charts.push(createColumnChart(priceRangeTable, [COLORS["burgundy"]], "Nombre d'étude par tranche de prix", DIMS));
+  charts.push(createColumnChart(priceRangeTable, [COLORS["burgundy"]], "Nombre d'études par tranche de prix", DIMS));
 
   // KPI : nombre d'étude pour différents intervalles de prix
-  let JEHRangeTable = JEHRange(dataEtudes.filter(row => row[HEADS["JEH"]] != ""));
-  charts.push(createColumnChart(JEHRangeTable, [COLORS["burgundy"]], "Nombre d'étude par nombre de JEHs", DIMS));
+  let [JEHRangeTable, JEHTicks] = JEHRange(dataEtudes.filter(row => row[HEADS["JEH"]] != ""));
+  charts.push(createColumnChart(JEHRangeTable, [COLORS["burgundy"]], "Nombre d'études par nombre de JEHs", DIMS, {hticks: JEHTicks}));
+
+  // KPI : nombre d'étude pour différents intervalles de prix
+  let [lengthRangeTable, lengthTicks] = lengthRange(dataEtudes.filter(row => row[HEADS["durée"]] != ""));
+  charts.push(createColumnChart(lengthRangeTable, [COLORS["burgundy"]], "Nombre d'études par durée d'étude", DIMS, {hticks: lengthTicks}));
 
   // Adding the charts to the htmlOutput and the list of attachments
   charts.forEach(c => {
