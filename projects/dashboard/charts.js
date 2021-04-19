@@ -33,7 +33,7 @@ function createColumnChart(dataTable, title, options) {
             .setOption('vAxis.maxValue', (options.percent || false) ? 100 : 'automatic')
             .setOption('hAxis.ticks', options.hticks || 'auto')
             .setTitle(title)
-            .setDimensions(options.width || DIMS["width"], options.height || DIMS["height"])
+            .setDimensions(options.width || DIMS.width, options.height || DIMS.height)
             .build();
 
         return chart;
@@ -57,7 +57,7 @@ function createPieChart(dataTable, title, options) {
             })
             .setOption('colors', options.colors || Object.values(COLORS))
             .setTitle(title)
-            .setDimensions(options.width || DIMS["width"], options.height || DIMS["height"])
+            .setDimensions(options.width || DIMS.width, options.height || DIMS.height)
             .build();
 
         return chart;
@@ -83,7 +83,7 @@ function createLineChart(dataTable, title, options) {
             .setOption('curveType', 'function')
             .setOption('pointShape', 'square')
             .setTitle(title)
-            .setDimensions(options.width || DIMS["width"], options.height || DIMS["height"])
+            .setDimensions(options.width || DIMS.width, options.height || DIMS.height)
             .build();
 
         return chart;

@@ -38,7 +38,8 @@ const ui = SpreadsheetApp.getUi(),
     durée: "Durée (semaines)",
     alumni: "Alumni",
     JEH: "Nb JEH",
-    concurrence: "Autres JE en concurrence"
+    concurrence: "Autres JE en concurrence",
+    secteur: "Secteur"
   }),
   // Graphs' dimensions
   DIMS = {
@@ -57,9 +58,9 @@ const ui = SpreadsheetApp.getUi(),
       .setWidth(1015)
       .setHeight(515),
     mail: HtmlService.createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">&nbsp; &nbsp; Bonjour, <br/><br/>Voici les KPI portant sur la prospection.<br/> <br/>Bonne journée !</span> </span>`),
-    saveConfirm: (url) => `<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">Les KPIs ont été enregistrés, pouce pour ouvrir le lien (cliquez sur Boris).<br/><br/> &nbsp; &nbsp; La bise.</span></span><p style="text-align:center;"><a href=${url} target="_blank"><img src="${IMGS["thumbsUp"]}" alt="Thumbs up" width="130" height="131"></a></p>`,
+    saveConfirm: (url) => `<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">Les KPIs ont été enregistrés, pouce pour ouvrir le lien (cliquez sur Boris).<br/><br/> &nbsp; &nbsp; La bise.</span></span><p style="text-align:center;"><a href=${url} target="_blank"><img src="${IMGS.thumbsUp}" alt="Thumbs up" width="130" height="131"></a></p>`,
     loadingScreen: HtmlService
-      .createHtmlOutput(`<img src="${IMGS["loadingScreen"]}" alt="Loading" width="442" height="249">`)
+      .createHtmlOutput(`<img src="${IMGS.loadingScreen}" alt="Loading" width="442" height="249">`)
       .setWidth(450)
       .setHeight(280)
 
@@ -188,7 +189,7 @@ function generateKPI() {
   displayLoadingScreen("Chargement des KPI..");
 
   // Initialization (names in franglish because why not)
-  let dataProspection = extractSheetData(ADDRESSES["prospectionId"], ADDRESSES["prospectionName"], {
+  let dataProspection = extractSheetData(ADDRESSES.prospectionId, ADDRESSES.prospectionName, {
       data: {
         x: 4,
         y: 2
@@ -197,8 +198,8 @@ function generateKPI() {
         x: 1,
         y: 2
       }
-    }).filter(row => row[HEADS["premierContact"]] != ""),
-    dataEtudes = extractSheetData(ADDRESSES["etudesId"], ADDRESSES["etudesName"], {
+    }).filter(row => row[HEADS.premierContact] != ""),
+    dataEtudes = extractSheetData(ADDRESSES.etudesId, ADDRESSES.etudesName, {
       data: {
         x: 5,
         y: 3
@@ -207,13 +208,13 @@ function generateKPI() {
         x: 1,
         y: 3
       }
-    }).filter(row => row[HEADS["état"]] != ETAT_ETUDE["sanSuite"]);
+    }).filter(row => row[HEADS.état] != ETAT_ETUDE.sanSuite);
 
   currentTime = measureTime(currentTime, "extract data from the two sheets");
 
   // Final outputs (displaying the charts on screen & mail content)
-  let htmlOutput = HTML_CONTENT["display"],
-    htmlMail = HTML_CONTENT["mail"],
+  let htmlOutput = HTML_CONTENT.display,
+    htmlMail = HTML_CONTENT.mail,
     attachments = [],
     charts = [];
 
@@ -226,21 +227,21 @@ function generateKPI() {
   // KPI : Taux de conversion global par mois
   let conversionRateTable = conversionRate(conversionChart);
   charts.push(createChart(CHART_TYPE.LINE, conversionRateTable, "Taux de conversion global", {
-    colors: [COLORS["burgundy"]]
+    colors: [COLORS.burgundy]
   }));
 
   // KPI : Taux de conversion entre chaque étape
   let conversionRateByTypeTable = conversionRateByType(conversionChart);
   charts.push(createChart(CHART_TYPE.COLUMN, conversionRateByTypeTable, "Taux de conversion sur chaque étape", {
-    colors: [COLORS["burgundy"]],
+    colors: [COLORS.burgundy],
     percent: true
   }));
-  /*
+  
   // KPI : CA
-  let turnoverTable = turnover(dataProspection);
-  charts.push(createColumnChart(turnoverTable, Object.values(COLORS), "Chiffre d'affaires", DIMS));
-  */
-  // KPI : Type de contact
+  /* let turnoverTable = turnover(dataProspection);
+  charts.push(createColumnChart(turnoverTable, Object.values(COLORS), "Chiffre d'affaires", DIMS)); */
+
+  // KPI : Répartition des contacts par type
   let contactTypeTable = contactType(dataProspection);
   charts.push(createChart(CHART_TYPE.PIE, contactTypeTable, "Type de contact"));
 
@@ -251,40 +252,46 @@ function generateKPI() {
   }));
 
   // KPI : Contacts qui sont en lien avec d'autres JE
-  let [contactsConcurrenceTable, conversionConcurrenceChart] = contacts(dataProspection.filter(row => row[HEADS["concurrence"]] || false));
+  let [contactsConcurrenceTable, conversionConcurrenceChart] = contacts(dataProspection.filter(row => row[HEADS.concurrence] || false));
   charts.push(createChart(CHART_TYPE.COLUMN, contactsConcurrenceTable, "Contacts en lien avec d'autres JE"));
 
   // KPI : Taux de conversion en concurrence
   let conversionRateConcurrenceTable = conversionRateByType(conversionConcurrenceChart);
   charts.push(createChart(CHART_TYPE.COLUMN, conversionRateConcurrenceTable, "Taux de conversion sur chaque étape (en situation de concurrence)", {
-    colors: [COLORS["burgundy"]],
+    colors: [COLORS.burgundy],
     percent: true
   }));
 
-  // KPI : nombre d'étude pour différents intervalles de prix
-  let priceRangeTable = priceRange(dataEtudes.filter(row => row[HEADS["prix"]] != ""), 500, 4500, 8);
+  // KPI : Nombre d'étude pour différents intervalles de prix
+  let priceRangeTable = priceRange(dataEtudes.filter(row => row[HEADS.prix] != ""), 500, 4500, 8);
   charts.push(createChart(CHART_TYPE.COLUMN, priceRangeTable, "Nombre d'études par tranche de prix", {
-    colors: [COLORS["burgundy"]]
+    colors: [COLORS.burgundy]
   }));
 
-  // KPI : nombre d'étude pour différents intervalles de prix
-  let [JEHRangeTable, JEHTicks] = JEHRange(dataEtudes.filter(row => row[HEADS["JEH"]] != ""));
+  // KPI : Nombre d'étude pour différents intervalles de prix
+  let [JEHRangeTable, JEHTicks] = JEHRange(dataEtudes.filter(row => row[HEADS.JEH] != ""));
   charts.push(createChart(CHART_TYPE.COLUMN, JEHRangeTable, "Nombre d'études par nombre de JEHs", {
-    colors: [COLORS["burgundy"]],
+    colors: [COLORS.burgundy],
     hticks: JEHTicks
   }));
 
-  // KPI : nombre d'étude pour différents intervalles de prix
-  let [lengthRangeTable, lengthTicks] = lengthRange(dataEtudes.filter(row => row[HEADS["durée"]] != ""));
+  // KPI : Nombre d'étude pour différents intervalles de prix
+  let [lengthRangeTable, lengthTicks] = lengthRange(dataEtudes.filter(row => row[HEADS.durée] != ""));
   charts.push(createChart(CHART_TYPE.COLUMN, lengthRangeTable, "Nombre d'études par durée d'étude (en nombre de semaines)", {
-    colors: [COLORS["burgundy"]],
+    colors: [COLORS.burgundy],
     hticks: lengthTicks
   }));
 
-  // KPI : nombre d'étude pour différents intervalles de prix
+  // KPI : Proportion du CA due aux alumni
   let alumniContributionTable = alumniContribution(dataEtudes);
-  charts.push(createChart(CHART_TYPE.PIE, alumniContributionTable, "Proportion du CA due aux alumni"));
+  charts.push(createChart(CHART_TYPE.PIE, alumniContributionTable, "Proportion du CA due aux alumni", {colors: [COLORS.pine, COLORS.burgundy]}));
 
+  // KPI : Répartition des contacts par secteur d'activité
+  let contactBySectorTable = contactBySector(dataProspection.filter(row => row[HEADS.secteur] != ""));
+  charts.push(createChart(CHART_TYPE.PIE, contactBySectorTable, "Répartition des contacts par secteur"));
+
+  // KPI : Proportion du CA du aux alumnis
+  
   currentTime = measureTime(currentTime, "create the charts");
 
   // Adding the charts to the htmlOutput and the list of attachments
@@ -301,7 +308,7 @@ function generateKPI() {
       ui.showModalDialog(htmlOutput, "KPI");
       measureTime(initialTime, "display the charts");
     },
-    save: function (folderId = ADDRESSES["driveId"]) {
+    save: function (folderId = ADDRESSES.driveId) {
       let initialTime = new Date();
       saveOnDrive(attachments, folderId);
       measureTime(initialTime, "save the charts");
@@ -313,7 +320,7 @@ function generateKPI() {
     },
     slides: function () {
       let initialTime = new Date();
-      generateSlides(ADDRESSES["slidesTemplate"], attachments, folderId = ADDRESSES["driveId"]);
+      generateSlides(ADDRESSES.slidesTemplate, attachments, folderId = ADDRESSES.driveId);
       measureTime(initialTime, "generate the slides");
     }
   }

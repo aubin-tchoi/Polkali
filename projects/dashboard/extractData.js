@@ -21,17 +21,17 @@ function contacts(data) {
     });
     // Rows
     MONTH_LIST.forEach(function (month) {
-        let dataRow = [`${MONTH_NAMES[month["month"]]} ${month["year"]}`],
+        let dataRow = [`${MONTH_NAMES[month.month]} ${month.year}`],
             conversionChartRow = [];
         Object.values(ETAT_PROSP).forEach(function (state) {
             // Counting first every contact who find themselves in a more advanced state than state
-            let val = data.filter(row => sameMonth(row, month) && Object.values(ETAT_PROSP).indexOf(row[HEADS["état"]]) >= Object.values(ETAT_PROSP).indexOf(state)).length;
-            if (state == ETAT_PROSP["devis"] || state == ETAT_PROSP["negoc"]) {
+            let val = data.filter(row => sameMonth(row, month) && Object.values(ETAT_PROSP).indexOf(row[HEADS.état]) >= Object.values(ETAT_PROSP).indexOf(state)).length;
+            if (state == ETAT_PROSP.devis || state == ETAT_PROSP.negoc) {
                 // In both cases we forgot to count ppl to whom we sent a devis but who didn't convert it into a mission
-                val += data.filter(row => sameMonth(row, month) && Object.values(ETAT_PROSP_BIS).includes(row[HEADS["état"]]) && row[HEADS["devis"]]).length
-            } else if (state == ETAT_PROSP["rdv"]) {
+                val += data.filter(row => sameMonth(row, month) && Object.values(ETAT_PROSP_BIS).includes(row[HEADS.état]) && row[HEADS.devis]).length
+            } else if (state == ETAT_PROSP.rdv) {
                 // We must also count contacts who didn't lead to a mission
-                val += data.filter(row => sameMonth(row, month) && Object.values(ETAT_PROSP_BIS).includes(row[HEADS["état"]])).length
+                val += data.filter(row => sameMonth(row, month) && Object.values(ETAT_PROSP_BIS).includes(row[HEADS.état])).length
             }
             conversionChartRow.push(val);
             dataRow.push(val);
@@ -51,7 +51,7 @@ function conversionRate(conversionChart) {
     dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion global`);
     // Rows
     MONTH_LIST.forEach(function (month, idx) {
-        dataTable.addRow([`${MONTH_NAMES[month["month"]]} ${month["year"]}`, prcnt(conversionChart[idx][1], conversionChart[idx][0]) / 100 * prcnt(conversionChart[idx][2], conversionChart[idx][1]) / 100 * prcnt(conversionChart[idx][3], conversionChart[idx][2])]);
+        dataTable.addRow([`${MONTH_NAMES[month.month]} ${month.year}`, prcnt(conversionChart[idx][1], conversionChart[idx][0]) / 100 * prcnt(conversionChart[idx][2], conversionChart[idx][1]) / 100 * prcnt(conversionChart[idx][3], conversionChart[idx][2])]);
     });
     return dataTable;
 }
@@ -61,14 +61,13 @@ function conversionRateByType(conversionChart) {
     let dataTable = Charts.newDataTable();
     // Columns : month, all 3 conversion rates
     dataTable.addColumn(Charts.ColumnType.STRING, "Étape de la conversion");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${ETAT_PROSP["rdv"]} et ${ETAT_PROSP["devis"]}`);
-    dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${ETAT_PROSP["devis"]} et ${ETAT_PROSP["negoc"]}`);
-    dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${ETAT_PROSP["negoc"]} et ${ETAT_PROSP["etude"]}`);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${ETAT_PROSP.rdv} et ${ETAT_PROSP.devis}`);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${ETAT_PROSP.devis} et ${ETAT_PROSP.negoc}`);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${ETAT_PROSP.negoc} et ${ETAT_PROSP.etude}`);
     // Rows
-    dataTable.addRow([`${ETAT_PROSP["rdv"]} -> ${ETAT_PROSP["devis"]}`, prcnt(conversionChart.reduce((acc, val) => acc += val[1], 0), conversionChart.reduce((acc, val) => acc += val[0], 0))]);
-    dataTable.addRow([`${ETAT_PROSP["devis"]} -> ${ETAT_PROSP["negoc"]}`, prcnt(conversionChart.reduce((acc, val) => acc += val[2], 0), conversionChart.reduce((acc, val) => acc += val[1], 0))]);
-    dataTable.addRow([`${ETAT_PROSP["negoc"]} -> ${ETAT_PROSP["etude"]}`, prcnt(conversionChart.reduce((acc, val) => acc += val[3], 0), conversionChart.reduce((acc, val) => acc += val[2], 0))]);
-    
+    dataTable.addRow([`${ETAT_PROSP.rdv} -> ${ETAT_PROSP.devis}`, prcnt(conversionChart.reduce((acc, val) => acc += val[1], 0), conversionChart.reduce((acc, val) => acc += val[0], 0))]);
+    dataTable.addRow([`${ETAT_PROSP.devis} -> ${ETAT_PROSP.negoc}`, prcnt(conversionChart.reduce((acc, val) => acc += val[2], 0), conversionChart.reduce((acc, val) => acc += val[1], 0))]);
+    dataTable.addRow([`${ETAT_PROSP.negoc} -> ${ETAT_PROSP.etude}`, prcnt(conversionChart.reduce((acc, val) => acc += val[3], 0), conversionChart.reduce((acc, val) => acc += val[2], 0))]);
     return dataTable;
 }
 
@@ -84,16 +83,16 @@ function turnover(data) {
         let ca_pot = 0,
             ca_sig = 0;
         data.filter(row => sameMonth(row, month)).forEach(function (row) {
-            // /!\ row[HEADS["confiance"]] isn't actually a percentage since we used method getValues on the range instead of getDisplayValues
+            // /!\ row[HEADS.confiance] isn't actually a percentage since we used method getValues on the range instead of getDisplayValues
             // Potential turnover is the sum of every expected gain
-            ca_pot += (parseInt(row[HEADS["caPot"]], 10) * row[HEADS["confiance"]]) || 0;
-            // Contractualized turnover is computed based on missions who are state ETAT_PROSP["study"]
-            if (row[HEADS["état"]] == ETAT_PROSP["etude"]) {
-                ca_sig += parseInt(row[HEADS["caPot"]], 10) || 0;
+            ca_pot += (parseInt(row[HEADS.caPot], 10) * row[HEADS.confiance]) || 0;
+            // Contractualized turnover is computed based on missions who are state ETAT_PROSP.study
+            if (row[HEADS.état] == ETAT_PROSP.etude) {
+                ca_sig += parseInt(row[HEADS.caPot], 10) || 0;
             }
             Logger.log(row);
         });
-        dataTable.addRow([`${MONTH_NAMES[month["month"]]} ${month["year"]}`, ca_pot, ca_sig]);
+        dataTable.addRow([`${MONTH_NAMES[month.month]} ${month.year}`, ca_pot, ca_sig]);
     });
     return dataTable;
 }
@@ -104,9 +103,9 @@ function contactType(data) {
     let dataTable = Charts.newDataTable();
     dataTable.addColumn(Charts.ColumnType.STRING, "Type de contact");
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion");
-    Logger.log(`Valeurs uniques : ${uniqueValues(HEADS["typeContact"], data)}`);
-    uniqueValues(HEADS["typeContact"], data).forEach(function (type) {
-        dataTable.addRow([type, data.filter(row => row[HEADS["typeContact"]] == type).length / data.length]);
+    Logger.log(`Valeurs uniques : ${uniqueValues(HEADS.typeContact, data)}`);
+    uniqueValues(HEADS.typeContact, data).forEach(function (type) {
+        dataTable.addRow([type, data.filter(row => row[HEADS.typeContact] == type).length / data.length]);
     });
     return dataTable;
 }
@@ -119,9 +118,9 @@ function conversionRateByContact(data) {
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre de contacts");
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Taux de conversion global");
     // Rows
-    uniqueValues(HEADS["typeContact"], data).forEach(function (type) {
-        let objFiltered = data.filter(row => row[HEADS["typeContact"]] == type),
-            conversionRate = prcnt(objFiltered.filter(row => row[HEADS["état"]] == ETAT_PROSP["etude"]).length, objFiltered.length);
+    uniqueValues(HEADS.typeContact, data).forEach(function (type) {
+        let objFiltered = data.filter(row => row[HEADS.typeContact] == type),
+            conversionRate = prcnt(objFiltered.filter(row => row[HEADS.état] == ETAT_PROSP.etude).length, objFiltered.length);
         dataTable.addRow([type, objFiltered.length, conversionRate]);
     });
     return dataTable;
@@ -136,7 +135,9 @@ function priceRange(data, lowerBound, higherBound, nbrRanges) {
     // Rows : creating multiple ranges of prices
     let width = parseInt((higherBound - lowerBound) / nbrRanges, 10),
         priceRanges = Array.from(Array(nbrRanges).keys()).map((_, idx) => lowerBound + idx * width);
-    priceRanges.forEach(price => {dataTable.addRow([`${price} - ${price + width}`, data.filter(row => (price <= row[HEADS["prix"]] && row[HEADS["prix"]] < price + width)).length]);});
+    priceRanges.forEach(price => {
+        dataTable.addRow([`${price} - ${price + width}`, data.filter(row => (price <= row[HEADS.prix] && row[HEADS.prix] < price + width)).length]);
+    });
     return dataTable;
 }
 
@@ -147,10 +148,12 @@ function JEHRange(data) {
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre de JEH");
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
     // Rows : creating multiple ranges of prices
-    let lowerBound = Math.min(...data.map(row => parseInt(row[HEADS["JEH"]], 10))),
-        higherBound = Math.max(...data.map(row => parseInt(row[HEADS["JEH"]], 10)));
+    let lowerBound = Math.min(...data.map(row => parseInt(row[HEADS.JEH], 10))),
+        higherBound = Math.max(...data.map(row => parseInt(row[HEADS.JEH], 10)));
     let JEHNumber = Array.from(Array(higherBound - lowerBound + 1).keys()).map(number => number + lowerBound);
-    JEHNumber.forEach(number => {dataTable.addRow([number, data.filter(row => parseInt(row[HEADS["JEH"]], 10) == number).length])});
+    JEHNumber.forEach(number => {
+        dataTable.addRow([number, data.filter(row => parseInt(row[HEADS.JEH], 10) == number).length])
+    });
     return [dataTable, JEHNumber];
 }
 
@@ -161,21 +164,37 @@ function lengthRange(data) {
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Durée (en nombre de semaines)");
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
     // Rows : creating multiple ranges of prices
-    let lowerBound = Math.min(...data.map(row => parseInt(row[HEADS["durée"]], 10))),
-        higherBound = Math.max(...data.map(row => parseInt(row[HEADS["durée"]], 10)));
+    let lowerBound = Math.min(...data.map(row => parseInt(row[HEADS.durée], 10))),
+        higherBound = Math.max(...data.map(row => parseInt(row[HEADS.durée], 10)));
     let lengthNumber = Array.from(Array(higherBound - lowerBound + 1).keys()).map(number => number + lowerBound);
-    lengthNumber.forEach(number => {dataTable.addRow([number, data.filter(row => parseInt(row[HEADS["durée"]], 10) == number).length])});
+    lengthNumber.forEach(number => {
+        dataTable.addRow([number, data.filter(row => parseInt(row[HEADS.durée], 10) == number).length])
+    });
     return [dataTable, lengthNumber];
 }
 
+// Proportion du CA due aux alumni
 function alumniContribution(data) {
     let dataTable = Charts.newDataTable();
-    // Columns :
+    // Columns
     dataTable.addColumn(Charts.ColumnType.STRING, "Alumni/Non alumni");
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
-    // Rows :
-    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS["prix"]], 10) || 0, 0);
-    dataTable.addRow(["Alumni", prcnt(data.filter(row => row[HEADS["alumni"]] || false).reduce((sum, row) => sum += parseInt(row[HEADS["prix"]], 10) || 0, 0), ca)]);
-    dataTable.addRow(["Non Alumni", prcnt(data.filter(row => !(row[HEADS["alumni"]] || false)).reduce((sum, row) => sum += parseInt(row[HEADS["prix"]], 10) || 0, 0), ca)]);
+    // Rows
+    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0);
+    dataTable.addRow(["Alumni", prcnt(data.filter(row => row[HEADS.alumni] || false).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0), ca)]);
+    dataTable.addRow(["Non Alumni", prcnt(data.filter(row => !(row[HEADS.alumni] || false)).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0), ca)]);
+    return dataTable;
+}
+
+// Répartition des contacts par secteur d'activité
+function contactBySector(data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, "Secteur d'activité");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion des contacts");
+    // Rows
+    uniqueValues(HEADS.secteur, data).forEach(currentSector => {
+        dataTable.addRow([currentSector, data.filter(row => row[HEADS.secteur] == currentSector).length / data.length]);
+    });
     return dataTable;
 }
