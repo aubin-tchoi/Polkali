@@ -52,3 +52,22 @@ const logTime = (message) => ((target, name, descriptor) => {
     descriptor.value();
     measureTime(initialTime, message);
 });
+
+// Retrieving a user query and checking if it is correct if message contains a incorrectInput attribute (assuming it matches with a folder's ID)
+const userQuery = (message) => {
+    let response = "";
+    if (message.incorrectInput != undefined) {
+        while (true) {
+            try {
+            response = ui.prompt(message.title, message.query, ui.ButtonSet.OK).getResponseText();
+            // Checking whether the input is valid or not
+            DriveApp.getFolderById(response);
+            return response;
+            } catch(e) {
+            ui.alert(message.title, message.incorrectInput, ui.ButtonSet.OK);
+            }
+        }
+    } else {
+        return ui.prompt(message.title, message.query, ui.ButtonSet.OK).getResponseText();
+    }
+}

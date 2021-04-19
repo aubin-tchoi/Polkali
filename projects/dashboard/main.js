@@ -209,7 +209,7 @@ function generateKPI() {
     htmlMail = HTML_CONTENT["mail"],
     attachments = [],
     charts = [];
-  
+
   currentTime = measureTime(currentTime, "load the HTML content");
 
   // KPI : Contacts par mois
@@ -218,11 +218,16 @@ function generateKPI() {
 
   // KPI : Taux de conversion global par mois
   let conversionRateTable = conversionRate(conversionChart);
-  charts.push(createLineChart(conversionRateTable, "Taux de conversion global", {colors: [COLORS["burgundy"]]}));
+  charts.push(createLineChart(conversionRateTable, "Taux de conversion global", {
+    colors: [COLORS["burgundy"]]
+  }));
 
   // KPI : Taux de conversion entre chaque étape
   let conversionRateByTypeTable = conversionRateByType(conversionChart);
-  charts.push(createColumnChart(conversionRateByTypeTable, "Taux de conversion sur chaque étape", {colors: [COLORS["burgundy"]], percent: true}));
+  charts.push(createColumnChart(conversionRateByTypeTable, "Taux de conversion sur chaque étape", {
+    colors: [COLORS["burgundy"]],
+    percent: true
+  }));
   /*
   // KPI : CA
   let turnoverTable = turnover(dataProspection);
@@ -234,27 +239,40 @@ function generateKPI() {
 
   // KPI : Taux de conversion par type de contact
   let conversionRateByContactTable = conversionRateByContact(dataProspection);
-  charts.push(createColumnChart(conversionRateByContactTable, "Taux de conversion par type de contact", {percent: true}));
-  
+  charts.push(createColumnChart(conversionRateByContactTable, "Taux de conversion par type de contact", {
+    percent: true
+  }));
+
   // KPI : Contacts qui sont en lien avec d'autres JE
   let [contactsConcurrenceTable, conversionConcurrenceChart] = contacts(dataProspection.filter(row => row[HEADS["concurrence"]] || false));
   charts.push(createColumnChart(contactsConcurrenceTable, "Contacts en lien avec d'autres JE"));
 
   // KPI : Taux de conversion en concurrence
   let conversionRateConcurrenceTable = conversionRateByType(conversionConcurrenceChart);
-  charts.push(createColumnChart(conversionRateConcurrenceTable, "Taux de conversion sur chaque étape (en situation de concurrence)", {colors: [COLORS["burgundy"]], percent: true}));
+  charts.push(createColumnChart(conversionRateConcurrenceTable, "Taux de conversion sur chaque étape (en situation de concurrence)", {
+    colors: [COLORS["burgundy"]],
+    percent: true
+  }));
 
   // KPI : nombre d'étude pour différents intervalles de prix
   let priceRangeTable = priceRange(dataEtudes.filter(row => row[HEADS["prix"]] != ""), 500, 4500, 8);
-  charts.push(createColumnChart(priceRangeTable, "Nombre d'études par tranche de prix", {colors: [COLORS["burgundy"]]}));
+  charts.push(createColumnChart(priceRangeTable, "Nombre d'études par tranche de prix", {
+    colors: [COLORS["burgundy"]]
+  }));
 
   // KPI : nombre d'étude pour différents intervalles de prix
   let [JEHRangeTable, JEHTicks] = JEHRange(dataEtudes.filter(row => row[HEADS["JEH"]] != ""));
-  charts.push(createColumnChart(JEHRangeTable, "Nombre d'études par nombre de JEHs", {colors: [COLORS["burgundy"]], hticks: JEHTicks}));
+  charts.push(createColumnChart(JEHRangeTable, "Nombre d'études par nombre de JEHs", {
+    colors: [COLORS["burgundy"]],
+    hticks: JEHTicks
+  }));
 
   // KPI : nombre d'étude pour différents intervalles de prix
   let [lengthRangeTable, lengthTicks] = lengthRange(dataEtudes.filter(row => row[HEADS["durée"]] != ""));
-  charts.push(createColumnChart(lengthRangeTable, "Nombre d'études par durée d'étude (en nombre de semaines)", {colors: [COLORS["burgundy"]], hticks: lengthTicks}));
+  charts.push(createColumnChart(lengthRangeTable, "Nombre d'études par durée d'étude (en nombre de semaines)", {
+    colors: [COLORS["burgundy"]],
+    hticks: lengthTicks
+  }));
 
   currentTime = measureTime(currentTime, "create the charts");
 
@@ -277,9 +295,9 @@ function generateKPI() {
       saveOnDrive(attachments, folderId);
       measureTime(initialTime, "save the charts");
     },
-    mail: function () {
+    mail: function (adress) {
       let initialTime = new Date();
-      sendMail(htmlMail, "KPI", attachments);
+      sendMail(adress, htmlMail, "KPI", attachments);
       measureTime(initialTime, "mail the charts");
     },
     slides: function () {
@@ -301,23 +319,19 @@ function saveKPI() {
   // Prompts and alerts should be made before any time-consuming operation (to make it so users can enter any required information and then leave)
   let mailResults = ui.alert("Envoi des diagrammes par mail", "Souhaitez vous recevoir les diagrammes par mail ?", ui.ButtonSet.YES_NO) == ui.Button.YES,
     saveResults = ui.alert("Enregistrement des images sur le Drive", "Souhaitez vous enregistrer les images sur le Drive ?", ui.ButtonSet.YES_NO) == ui.Button.YES,
-    folderId = "";
-  if (saveResults) {
-    // Retrieving a user input
-    while (true) {
-      try {
-        folderId = ui.prompt("Enregistrement des images sur le Drive", "Entrez l'id du dossier de destination :", ui.ButtonSet.OK).getResponseText();
-        // Checking whether the input is valid or not
-        DriveApp.getFolderById(folderId);
-        break;
-      } catch(e) {
-        ui.alert("Enregistrement des images sur le Drive", "L'ID entré est invalide, veuillez recommencer.", ui.ButtonSet.OK);
-      }
-    }
-  }
-  let KPI = generateKPI();
+    folderId = saveResults ? userQuery({
+      title: "Enregistrement des images sur le Drive",
+      query: "Entrez l'id du dossier de destination :",
+      incorrectInput: "L'ID entré est invalide, veuillez recommencer."
+    }) : "",
+    mailAdress = mailResults ? userQuery({
+      title: "Envoi des diagrammes par mail",
+      query: "Entrez l'adresse mail de destination :"
+    }) : "",
+    KPI = generateKPI();
+
   if (mailResults) {
-    KPI.mail();
+    KPI.mail(mailAdress);
   }
   if (saveResults) {
     KPI.save(folderId);

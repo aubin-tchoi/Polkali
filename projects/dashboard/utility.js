@@ -3,9 +3,8 @@
 // Functionnalities aiming at interfacing the generation of KPI with other tools from the G-Suite
 
 // Send a mail to designated adress
-function sendMail(htmlOutput, subject, attachments) {
-    let adress = ui.prompt("Envoi des diagrammes par mail", "Entrez l'adresse mail de destination :", ui.ButtonSet.OK).getResponseText(),
-        msgHtml = htmlOutput.getContent(),
+function sendMail(adress, htmlOutput, subject, attachments) {
+    let msgHtml = htmlOutput.getContent(),
         msgPlain = htmlOutput.getContent().replace(/\<br\/\>/gi, '\n').replace(/(<([^>]+)>)/ig, "");
     GmailApp.sendEmail(adress, subject, msgPlain, {
         htmlBody: msgHtml,
