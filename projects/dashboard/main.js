@@ -155,6 +155,13 @@ const ui = SpreadsheetApp.getUi(),
     }
   ]);
 
+// Enum used to choose the type of chart chosen
+const CHART_TYPE = Object.freeze({
+  COLUMN: Symbol("column"),
+  PIE: Symbol("pie"),
+  LINE: Symbol("line")
+});
+
 
 /* ----- Triggers ----- */
 function onOpen() {
@@ -214,17 +221,17 @@ function generateKPI() {
 
   // KPI : Contacts par mois
   let [contactsTable, conversionChart] = contacts(dataProspection); // conversionChart is a 2D array : [month][number of contact in a given state]
-  charts.push(createColumnChart(contactsTable, "Contacts"));
+  charts.push(createChart(CHART_TYPE.COLUMN, contactsTable, "Contacts"));
 
   // KPI : Taux de conversion global par mois
   let conversionRateTable = conversionRate(conversionChart);
-  charts.push(createLineChart(conversionRateTable, "Taux de conversion global", {
+  charts.push(createChart(CHART_TYPE.LINE, conversionRateTable, "Taux de conversion global", {
     colors: [COLORS["burgundy"]]
   }));
 
   // KPI : Taux de conversion entre chaque étape
   let conversionRateByTypeTable = conversionRateByType(conversionChart);
-  charts.push(createColumnChart(conversionRateByTypeTable, "Taux de conversion sur chaque étape", {
+  charts.push(createChart(CHART_TYPE.COLUMN, conversionRateByTypeTable, "Taux de conversion sur chaque étape", {
     colors: [COLORS["burgundy"]],
     percent: true
   }));
@@ -235,48 +242,48 @@ function generateKPI() {
   */
   // KPI : Type de contact
   let contactTypeTable = contactType(dataProspection);
-  charts.push(createPieChart(contactTypeTable, "Type de contact"));
+  charts.push(createChart(CHART_TYPE.PIE, contactTypeTable, "Type de contact"));
 
   // KPI : Taux de conversion par type de contact
   let conversionRateByContactTable = conversionRateByContact(dataProspection);
-  charts.push(createColumnChart(conversionRateByContactTable, "Taux de conversion par type de contact", {
+  charts.push(createChart(CHART_TYPE.COLUMN, conversionRateByContactTable, "Taux de conversion par type de contact", {
     percent: true
   }));
 
   // KPI : Contacts qui sont en lien avec d'autres JE
   let [contactsConcurrenceTable, conversionConcurrenceChart] = contacts(dataProspection.filter(row => row[HEADS["concurrence"]] || false));
-  charts.push(createColumnChart(contactsConcurrenceTable, "Contacts en lien avec d'autres JE"));
+  charts.push(createChart(CHART_TYPE.COLUMN, contactsConcurrenceTable, "Contacts en lien avec d'autres JE"));
 
   // KPI : Taux de conversion en concurrence
   let conversionRateConcurrenceTable = conversionRateByType(conversionConcurrenceChart);
-  charts.push(createColumnChart(conversionRateConcurrenceTable, "Taux de conversion sur chaque étape (en situation de concurrence)", {
+  charts.push(createChart(CHART_TYPE.COLUMN, conversionRateConcurrenceTable, "Taux de conversion sur chaque étape (en situation de concurrence)", {
     colors: [COLORS["burgundy"]],
     percent: true
   }));
 
   // KPI : nombre d'étude pour différents intervalles de prix
   let priceRangeTable = priceRange(dataEtudes.filter(row => row[HEADS["prix"]] != ""), 500, 4500, 8);
-  charts.push(createColumnChart(priceRangeTable, "Nombre d'études par tranche de prix", {
+  charts.push(createChart(CHART_TYPE.COLUMN, priceRangeTable, "Nombre d'études par tranche de prix", {
     colors: [COLORS["burgundy"]]
   }));
 
   // KPI : nombre d'étude pour différents intervalles de prix
   let [JEHRangeTable, JEHTicks] = JEHRange(dataEtudes.filter(row => row[HEADS["JEH"]] != ""));
-  charts.push(createColumnChart(JEHRangeTable, "Nombre d'études par nombre de JEHs", {
+  charts.push(createChart(CHART_TYPE.COLUMN, JEHRangeTable, "Nombre d'études par nombre de JEHs", {
     colors: [COLORS["burgundy"]],
     hticks: JEHTicks
   }));
 
   // KPI : nombre d'étude pour différents intervalles de prix
   let [lengthRangeTable, lengthTicks] = lengthRange(dataEtudes.filter(row => row[HEADS["durée"]] != ""));
-  charts.push(createColumnChart(lengthRangeTable, "Nombre d'études par durée d'étude (en nombre de semaines)", {
+  charts.push(createChart(CHART_TYPE.COLUMN, lengthRangeTable, "Nombre d'études par durée d'étude (en nombre de semaines)", {
     colors: [COLORS["burgundy"]],
     hticks: lengthTicks
   }));
 
   // KPI : nombre d'étude pour différents intervalles de prix
   let alumniContributionTable = alumniContribution(dataEtudes);
-  charts.push(createPieChart(alumniContributionTable, "Proportion du CA due aux alumni"));
+  charts.push(createChart(CHART_TYPE.PIE, alumniContributionTable, "Proportion du CA due aux alumni"));
 
   currentTime = measureTime(currentTime, "create the charts");
 

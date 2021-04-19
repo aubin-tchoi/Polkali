@@ -2,8 +2,21 @@
 
 // Creating charts using a data table as input
 
+// Creating a chart using one of the functions described below
+function createChart(chartType, dataTable, title, options = {}) {
+    if (chartType === CHART_TYPE.COLUMN) {
+        return createColumnChart(dataTable, title, options);
+    }
+    else if (chartType === CHART_TYPE.PIE) {
+        return createPieChart(dataTable, title, options);
+    }
+    else if (chartType === CHART_TYPE.LINE) {
+        return createLineChart(dataTable, title, options);
+    }
+}
+
 // Creating a ColumnChart
-function createColumnChart(dataTable, title, options = {}) {
+function createColumnChart(dataTable, title, options) {
     Logger.log(`Titre : ${title}, options : ${Object.entries(options)}`);
     try {
         // Creating a ColumnChart with data from dataTable
@@ -30,7 +43,7 @@ function createColumnChart(dataTable, title, options = {}) {
 }
 
 // Creating a PieChart
-function createPieChart(dataTable, title, options = {}) {
+function createPieChart(dataTable, title, options) {
     Logger.log(`Titre : ${title}`);
     try {
         // Creating a PieChart with data from dataTable
@@ -54,7 +67,7 @@ function createPieChart(dataTable, title, options = {}) {
 }
 
 // Creating a LineChart
-function createLineChart(dataTable, title, options = {}) {
+function createLineChart(dataTable, title, options) {
     Logger.log(`Titre : ${title}`);
     try {
         // Creating a LineChart with data from dataTable
