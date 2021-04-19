@@ -36,7 +36,8 @@ const ui = SpreadsheetApp.getUi(),
     prix: "Prix en € (HT)",
     durée: "Durée (semaines)",
     alumni: "Alumni",
-    JEH: "Nb JEH"
+    JEH: "Nb JEH",
+    concurrence: "Autres JE en concurrence"
   },
   // Graphs' dimensions
   DIMS = {
@@ -204,7 +205,7 @@ function generateKPI() {
     htmlMail = HTML_CONTENT["mail"],
     attachments = [],
     charts = [];
-
+  
   // KPI : Contacts par mois
   let [contactsTable, conversionChart] = contacts(dataProspection); // conversionChart is a 2D array : [month][number of contact in a given state]
   charts.push(createColumnChart(contactsTable, "Contacts"));
@@ -229,6 +230,14 @@ function generateKPI() {
   let conversionRateByContactTable = conversionRateByContact(dataProspection);
   charts.push(createColumnChart(conversionRateByContactTable, "Taux de conversion par type de contact", {percent: true}));
   
+  // KPI : Contacts qui sont en lien avec d'autres JE
+  let [contactsConcurrenceTable, conversionConcurrenceChart] = contacts(dataProspection.filter(row => row[HEADS["concurrence"]] || false));
+  charts.push(createColumnChart(contactsConcurrenceTable, "Contacts en lien avec d'autres JE"));
+
+  // KPI : Taux de conversion en concurrence
+  let conversionRateConcurrenceTable = conversionRateByType(conversionConcurrenceChart);
+  charts.push(createColumnChart(conversionRateConcurrenceTable, "Taux de conversion sur chaque étape (en situation de concurrence)", {colors: [COLORS["burgundy"]], percent: true}));
+
   // KPI : nombre d'étude pour différents intervalles de prix
   let priceRangeTable = priceRange(dataEtudes.filter(row => row[HEADS["prix"]] != ""), 500, 4500, 8);
   charts.push(createColumnChart(priceRangeTable, "Nombre d'études par tranche de prix", {colors: [COLORS["burgundy"]]}));
