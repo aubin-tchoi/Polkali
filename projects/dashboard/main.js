@@ -231,11 +231,11 @@ function generateKPI() {
   
   // KPI : nombre d'étude pour différents intervalles de prix
   let priceRangeTable = priceRange(dataEtudes.filter(row => row[HEADS["prix"]] != ""), 500, 4500, 8);
-  charts.push(createColumnChart(priceRangeTable, Object.values(COLORS), "Nombre d'étude par tranche de prix", DIMS));
+  charts.push(createColumnChart(priceRangeTable, [COLORS["burgundy"]], "Nombre d'étude par tranche de prix", DIMS));
 
   // KPI : nombre d'étude pour différents intervalles de prix
   let JEHRangeTable = JEHRange(dataEtudes.filter(row => row[HEADS["JEH"]] != ""));
-  charts.push(createColumnChart(JEHRangeTable, Object.values(COLORS), "Nombre d'étude par nombre de JEHs", DIMS));
+  charts.push(createColumnChart(JEHRangeTable, [COLORS["burgundy"]], "Nombre d'étude par nombre de JEHs", DIMS));
 
   // Adding the charts to the htmlOutput and the list of attachments
   charts.forEach(c => {
