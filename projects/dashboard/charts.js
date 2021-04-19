@@ -3,7 +3,7 @@
 // Creating charts using a data table as input
 
 // Creating a ColumnChart
-function createColumnChart(dataTable, colors, title, dims, options = {}) {
+function createColumnChart(dataTable, title, options = {}) {
     Logger.log(`Titre : ${title}, options : ${Object.entries(options)}`);
     try {
         // Creating a ColumnChart with data from dataTable
@@ -15,12 +15,12 @@ function createColumnChart(dataTable, colors, title, dims, options = {}) {
                     fontSize: 11
                 }
             })
-            .setOption('colors', colors)
+            .setOption('colors', options.colors || Object.values(COLORS))
             .setOption('vAxis.minValue', (options.percent || false) ? 0 : 'automatic')
             .setOption('vAxis.maxValue', (options.percent || false) ? 100 : 'automatic')
             .setOption('hAxis.ticks', options.hticks || 'auto')
             .setTitle(title)
-            .setDimensions(dims.width, dims.height)
+            .setDimensions(options.width || DIMS["width"], options.height || DIMS["height"])
             .build();
 
         return chart;
@@ -30,7 +30,7 @@ function createColumnChart(dataTable, colors, title, dims, options = {}) {
 }
 
 // Creating a PieChart
-function createPieChart(dataTable, colors, title, dims) {
+function createPieChart(dataTable, title, options = {}) {
     Logger.log(`Titre : ${title}`);
     try {
         // Creating a PieChart with data from dataTable
@@ -42,9 +42,9 @@ function createPieChart(dataTable, colors, title, dims) {
                     fontSize: 11
                 }
             })
-            .setOption('colors', colors)
+            .setOption('colors', options.colors || Object.values(COLORS))
             .setTitle(title)
-            .setDimensions(dims.width, dims.height)
+            .setDimensions(options.width || DIMS["width"], options.height || DIMS["height"])
             .build();
 
         return chart;
@@ -54,7 +54,7 @@ function createPieChart(dataTable, colors, title, dims) {
 }
 
 // Creating a LineChart
-function createLineChart(dataTable, colors, title, dims) {
+function createLineChart(dataTable, title, options = {}) {
     Logger.log(`Titre : ${title}`);
     try {
         // Creating a LineChart with data from dataTable
@@ -66,11 +66,11 @@ function createLineChart(dataTable, colors, title, dims) {
                     fontSize: 11
                 }
             })
+            .setOption('colors', options.colors || Object.values(COLORS))
             .setOption('curveType', 'function')
             .setOption('pointShape', 'square')
             .setTitle(title)
-            .setDimensions(dims.width, dims.height)
-            .setColors(colors)
+            .setDimensions(options.width || DIMS["width"], options.height || DIMS["height"])
             .build();
 
         return chart;

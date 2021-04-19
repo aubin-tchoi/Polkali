@@ -207,15 +207,15 @@ function generateKPI() {
 
   // KPI : Contacts par mois
   let [contactsTable, conversionChart] = contacts(dataProspection); // conversionChart is a 2D array : [month][number of contact in a given state]
-  charts.push(createColumnChart(contactsTable, Object.values(COLORS), "Contacts", DIMS));
+  charts.push(createColumnChart(contactsTable, "Contacts"));
 
   // KPI : Taux de conversion global par mois
   let conversionRateTable = conversionRate(conversionChart);
-  charts.push(createLineChart(conversionRateTable, [COLORS["burgundy"]], "Taux de conversion global", DIMS));
+  charts.push(createLineChart(conversionRateTable, "Taux de conversion global", {colors: [COLORS["burgundy"]]}));
 
   // KPI : Taux de conversion entre chaque étape
   let conversionRateByTypeTable = conversionRateByType(conversionChart);
-  charts.push(createColumnChart(conversionRateByTypeTable, [COLORS["burgundy"]], "Taux de conversion sur chaque étape", DIMS, {percent: true}));
+  charts.push(createColumnChart(conversionRateByTypeTable, "Taux de conversion sur chaque étape", {colors: [COLORS["burgundy"]], percent: true}));
   /*
   // KPI : CA
   let turnoverTable = turnover(dataProspection);
@@ -223,23 +223,23 @@ function generateKPI() {
   */
   // KPI : Type de contact
   let contactTypeTable = contactType(dataProspection);
-  charts.push(createPieChart(contactTypeTable, Object.values(COLORS), "Type de contact", DIMS));
+  charts.push(createPieChart(contactTypeTable, "Type de contact"));
 
   // KPI : Taux de conversion par type de contact
   let conversionRateByContactTable = conversionRateByContact(dataProspection);
-  charts.push(createColumnChart(conversionRateByContactTable, Object.values(COLORS), "Taux de conversion par type de contact", DIMS, {percent: true}));
+  charts.push(createColumnChart(conversionRateByContactTable, "Taux de conversion par type de contact", {percent: true}));
   
   // KPI : nombre d'étude pour différents intervalles de prix
   let priceRangeTable = priceRange(dataEtudes.filter(row => row[HEADS["prix"]] != ""), 500, 4500, 8);
-  charts.push(createColumnChart(priceRangeTable, [COLORS["burgundy"]], "Nombre d'études par tranche de prix", DIMS));
+  charts.push(createColumnChart(priceRangeTable, "Nombre d'études par tranche de prix", {colors: [COLORS["burgundy"]]}));
 
   // KPI : nombre d'étude pour différents intervalles de prix
   let [JEHRangeTable, JEHTicks] = JEHRange(dataEtudes.filter(row => row[HEADS["JEH"]] != ""));
-  charts.push(createColumnChart(JEHRangeTable, [COLORS["burgundy"]], "Nombre d'études par nombre de JEHs", DIMS, {hticks: JEHTicks}));
+  charts.push(createColumnChart(JEHRangeTable, "Nombre d'études par nombre de JEHs", {colors: [COLORS["burgundy"]], hticks: JEHTicks}));
 
   // KPI : nombre d'étude pour différents intervalles de prix
   let [lengthRangeTable, lengthTicks] = lengthRange(dataEtudes.filter(row => row[HEADS["durée"]] != ""));
-  charts.push(createColumnChart(lengthRangeTable, [COLORS["burgundy"]], "Nombre d'études par durée d'étude", DIMS, {hticks: lengthTicks}));
+  charts.push(createColumnChart(lengthRangeTable, "Nombre d'études par durée d'étude (en nombre de semaines)", {colors: [COLORS["burgundy"]], hticks: lengthTicks}));
 
   // Adding the charts to the htmlOutput and the list of attachments
   charts.forEach(c => {
