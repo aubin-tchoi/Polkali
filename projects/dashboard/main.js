@@ -265,7 +265,7 @@ function generateKPI() {
 
   currentTime = measureTime(currentTime, "convert the charts");
 
-  // All functions are manually decorated
+  // Returning functions within an Object for later use, all functions are manually decorated with an execution time logger
   return {
     display: function () {
       let initialTime = new Date();
