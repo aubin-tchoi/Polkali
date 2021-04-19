@@ -167,3 +167,15 @@ function lengthRange(data) {
     lengthNumber.forEach(number => {dataTable.addRow([number, data.filter(row => parseInt(row[HEADS["durée"]], 10) == number).length])});
     return [dataTable, lengthNumber];
 }
+
+function alumniContribution(data) {
+    let dataTable = Charts.newDataTable();
+    // Columns :
+    dataTable.addColumn(Charts.ColumnType.STRING, "Alumni/Non alumni");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
+    // Rows :
+    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS["prix"]], 10) || 0, 0);
+    dataTable.addRow(["Alumni", prcnt(data.filter(row => row[HEADS["alumni"]] || false).reduce((sum, row) => sum += parseInt(row[HEADS["prix"]], 10) || 0, 0), ca)]);
+    dataTable.addRow(["Non Alumni", prcnt(data.filter(row => !(row[HEADS["alumni"]] || false)).reduce((sum, row) => sum += parseInt(row[HEADS["prix"]], 10) || 0, 0), ca)]);
+    return dataTable;
+}

@@ -274,6 +274,10 @@ function generateKPI() {
     hticks: lengthTicks
   }));
 
+  // KPI : nombre d'étude pour différents intervalles de prix
+  let alumniContributionTable = alumniContribution(dataEtudes);
+  charts.push(createPieChart(alumniContributionTable, "Proportion du CA due aux alumni"));
+
   currentTime = measureTime(currentTime, "create the charts");
 
   // Adding the charts to the htmlOutput and the list of attachments
