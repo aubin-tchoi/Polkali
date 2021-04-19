@@ -38,3 +38,17 @@ const prcnt = (a, b) => (parseInt(b, 10) == 0) ? 0 : a / b * 100;
 
 // Checks if row was written in month month or not
 const sameMonth = (row, month) => parseInt(row[HEADS["premierContact"]].getMonth(), 10) == month["month"] && parseInt(row[HEADS["premierContact"]].getFullYear(), 10) == month["year"];
+
+// Logs the execution time and resets the checkpoint
+const measureTime = (checkpoint, message) => {
+    let newCheckpoint = new Date();
+    Logger.log(`It took ${(newCheckpoint.getTime() - checkpoint.getTime()) / 1000} s to ${message}.`);
+    return newCheckpoint;
+};
+
+// There will be a time when this decorator will be put to a good use
+const logTime = (message) => ((target, name, descriptor) => {
+    let initialTime = new Date();
+    descriptor.value();
+    measureTime(initialTime, message);
+});

@@ -14,7 +14,6 @@ function sendMail(htmlOutput, subject, attachments) {
     ui.alert("Envoi des diagrammes par mail", `Les diagrammes ont été envoyés par mail à : ${adress}.`, ui.ButtonSet.OK);
 }
 
-
 // Save data in designated Drive folder
 function saveOnDrive(imageBlobs, folderId) {
     try {
@@ -38,6 +37,7 @@ function saveOnDrive(imageBlobs, folderId) {
 }
 
 // Generating a Slides file using the charts listed in the array named charts
+// NB: many values are hardcoded here, do not put them at the top of the main file, these are not parameters and won't come to change
 function generateSlides(template, chartImages, folderId) {
     displayLoadingScreen("Génération des slides..");
     // Today's date

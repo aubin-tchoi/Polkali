@@ -1,10 +1,11 @@
 /* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
 
-// Main file (triggers + main function for KPI and synchronization)
+// Main file (triggers + main functions for KPI)
 
+// Parameters : do not put here hardcoded values that are not parameters
 const ui = SpreadsheetApp.getUi(),
   // Colors found in PEP's graphic chart
-  COLORS = {
+  COLORS = Object.freeze({
     plum: "#934683",
     wildOrchid: "#D66BA0",
     silverPink: "#C9ADA1",
@@ -14,18 +15,18 @@ const ui = SpreadsheetApp.getUi(),
     gold: "#FFBE2B",
     grey: "#404040",
     lightGrey: "#A29386"
-  },
+  }),
   // Sheet, spreadsheet and Drive folders addresses
-  ADDRESSES = {
+  ADDRESSES = Object.freeze({
     prospectionId: "1lJhJuZxUt_8_mVLXe5tazXPrb2Z3wr0M49rho974sNQ",
     prospectionName: "Suivi",
     etudesId: "1gmJLAKvUOYFeS32raOiSTYiE_ozr7YSk26Y0t0blm04",
     etudesName: "Suivi",
     driveId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy",
     slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU"
-  },
+  }),
   // Data sheet's header
-  HEADS = {
+  HEADS = Object.freeze({
     entreprise: "Entreprise",
     premierContact: "Premier contact",
     typeContact: "Type de contact",
@@ -38,7 +39,7 @@ const ui = SpreadsheetApp.getUi(),
     alumni: "Alumni",
     JEH: "Nb JEH",
     concurrence: "Autres JE en concurrence"
-  },
+  }),
   // Graphs' dimensions
   DIMS = {
     width: 1000,
@@ -64,21 +65,21 @@ const ui = SpreadsheetApp.getUi(),
 
   },
   // How months are spelled
-  MONTH_NAMES = ["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
+  MONTH_NAMES = Object.freeze(["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"]),
   // Different states a mission can go through during the prospection phase
-  ETAT_PROSP = {
+  ETAT_PROSP = Object.freeze({
     rdv: "Premier RDV réalisé",
     devis: "Devis rédigé et envoyé",
     negoc: "En négociation",
     etude: "Etude obtenue"
-  },
+  }),
   // States corresponding to a contact that wasn't converted into a mission
-  ETAT_PROSP_BIS = {
+  ETAT_PROSP_BIS = Object.freeze({
     sansSuite: "Sans suite",
     aRelancer: "A relancer",
-  },
+  }),
   // Different states a mission can go through
-  ETAT_ETUDE = {
+  ETAT_ETUDE = Object.freeze({
     negoc: "En négociation",
     redac: "En rédaction",
     enAttente: "En attente",
@@ -86,9 +87,9 @@ const ui = SpreadsheetApp.getUi(),
     terminée: "Terminée",
     cloturée: "Clôturée",
     sanSuite: "Sans suite"
-  },
+  }),
   // Indexes of months
-  MONTH_LIST = [{
+  MONTH_LIST = Object.freeze([{
       month: 1,
       year: 2020
     },
@@ -152,7 +153,7 @@ const ui = SpreadsheetApp.getUi(),
       month: 4,
       year: 2021
     }
-  ];
+  ]);
 
 
 /* ----- Triggers ----- */
@@ -176,6 +177,7 @@ function installTrigger() {
 /* ------ KPI ----- */
 function generateKPI() {
 
+  let currentTime = new Date();
   displayLoadingScreen("Chargement des KPI..");
 
   // Initialization (names in franglish because why not)
@@ -200,12 +202,16 @@ function generateKPI() {
       }
     }).filter(row => row[HEADS["état"]] != ETAT_ETUDE["sanSuite"]);
 
+  currentTime = measureTime(currentTime, "extract data from the two sheets");
+
   // Final outputs (displaying the charts on screen & mail content)
   let htmlOutput = HTML_CONTENT["display"],
     htmlMail = HTML_CONTENT["mail"],
     attachments = [],
     charts = [];
   
+  currentTime = measureTime(currentTime, "load the HTML content");
+
   // KPI : Contacts par mois
   let [contactsTable, conversionChart] = contacts(dataProspection); // conversionChart is a 2D array : [month][number of contact in a given state]
   charts.push(createColumnChart(contactsTable, "Contacts"));
@@ -250,23 +256,36 @@ function generateKPI() {
   let [lengthRangeTable, lengthTicks] = lengthRange(dataEtudes.filter(row => row[HEADS["durée"]] != ""));
   charts.push(createColumnChart(lengthRangeTable, "Nombre d'études par durée d'étude (en nombre de semaines)", {colors: [COLORS["burgundy"]], hticks: lengthTicks}));
 
+  currentTime = measureTime(currentTime, "create the charts");
+
   // Adding the charts to the htmlOutput and the list of attachments
   charts.forEach(c => {
     convertChart(c, c.getOptions().get("title"), htmlOutput, attachments);
   });
 
+  currentTime = measureTime(currentTime, "convert the charts");
+
+  // All functions are manually decorated
   return {
     display: function () {
+      let initialTime = new Date();
       ui.showModalDialog(htmlOutput, "KPI");
+      measureTime(initialTime, "display the charts");
     },
     save: function (folderId = ADDRESSES["driveId"]) {
+      let initialTime = new Date();
       saveOnDrive(attachments, folderId);
+      measureTime(initialTime, "save the charts");
     },
     mail: function () {
+      let initialTime = new Date();
       sendMail(htmlMail, "KPI", attachments);
+      measureTime(initialTime, "mail the charts");
     },
     slides: function () {
+      let initialTime = new Date();
       generateSlides(ADDRESSES["slidesTemplate"], attachments, folderId = ADDRESSES["driveId"]);
+      measureTime(initialTime, "generate the slides");
     }
   }
 }
