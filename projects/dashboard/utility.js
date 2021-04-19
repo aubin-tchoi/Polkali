@@ -59,9 +59,9 @@ function generateSlides(template, chartImages, folderId) {
         box.getBorder().getLineFill().setSolidFill('#FFFFFF');
         box.getFill().setSolidFill('#FFFFFF');
         // Inserting the image
-        slide.insertImage(img).alignOnPage(SlidesApp.AlignmentPosition.CENTER).setTop(530 - DIMS["height"]);
+        slide.insertImage(img).alignOnPage(SlidesApp.AlignmentPosition.CENTER).setTop(375 - DIMS["height"] / 2);
         // Writing a title
-        let text = slide.insertTextBox(img.getName()).setTop(65).setWidth(300).alignOnPage(SlidesApp.AlignmentPosition.HORIZONTAL_CENTER).getText();
+        let text = slide.insertTextBox(img.getName()).setTop(65).setWidth(480).alignOnPage(SlidesApp.AlignmentPosition.HORIZONTAL_CENTER).getText();
         text.getTextStyle().setFontSize(28).setForegroundColor(COLORS["burgundy"]);
         text.getParagraphStyle().setParagraphAlignment(SlidesApp.ParagraphAlignment.CENTER);
     });
