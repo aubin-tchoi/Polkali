@@ -35,7 +35,8 @@ const ui = SpreadsheetApp.getUi(),
     confiance: "Pourcentage de confiance à la conversion en réelle étude",
     prix: "Prix en € (HT)",
     durée: "Durée (semaines)",
-    alumni: "Alumni"
+    alumni: "Alumni",
+    JEH: "Nb JEH"
   },
   // Graphs' dimensions
   DIMS = {
@@ -196,7 +197,7 @@ function generateKPI() {
         x: 1,
         y: 3
       }
-    });
+    }).filter(row => row[HEADS["état"]] != ETAT_ETUDE["sanSuite"]);
 
   // Final outputs (displaying the charts on screen & mail content)
   let htmlOutput = HTML_CONTENT["display"],
@@ -228,6 +229,14 @@ function generateKPI() {
   let conversionRateByContactTable = conversionRateByContact(dataProspection);
   charts.push(createColumnChart(conversionRateByContactTable, Object.values(COLORS), "Taux de conversion par type de contact", DIMS, true));
   
+  // KPI : nombre d'étude pour différents intervalles de prix
+  let priceRangeTable = priceRange(dataEtudes.filter(row => row[HEADS["prix"]] != ""), 500, 4500, 8);
+  charts.push(createColumnChart(priceRangeTable, Object.values(COLORS), "Nombre d'étude par tranche de prix", DIMS));
+
+  // KPI : nombre d'étude pour différents intervalles de prix
+  let JEHRangeTable = JEHRange(dataEtudes.filter(row => row[HEADS["JEH"]] != ""));
+  charts.push(createColumnChart(JEHRangeTable, Object.values(COLORS), "Nombre d'étude par nombre de JEHs", DIMS));
+
   // Adding the charts to the htmlOutput and the list of attachments
   charts.forEach(c => {
     convertChart(c, c.getOptions().get("title"), htmlOutput, attachments);

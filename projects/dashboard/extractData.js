@@ -126,3 +126,30 @@ function conversionRateByContact(data) {
     });
     return dataTable;
 }
+
+// Répartition des prix des études
+function priceRange(data, lowerBound, higherBound, nbrRanges) {
+    let dataTable = Charts.newDataTable();
+    // Columns : number of missions for different price ranges
+    dataTable.addColumn(Charts.ColumnType.STRING, "Intervalle de prix");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études'");
+    // Rows : creating multiple ranges of prices
+    let width = parseInt((higherBound - lowerBound) / nbrRanges, 10),
+        priceRanges = Array.from(Array(nbrRanges).keys()).map((_, idx) => lowerBound + idx * width);
+    priceRanges.forEach(price => {Logger.log(price); Logger.log(data[2][HEADS["prix"]]); dataTable.addRow([`${price} - ${price + width}`, data.filter(row => (price <= row[HEADS["prix"]] && row[HEADS["prix"]] < price + width)).length]);});
+    return dataTable;
+}
+
+// Nombre d'étude par nombre de JEH
+function JEHRange(data) {
+    let dataTable = Charts.newDataTable();
+    // Columns : number of missions for different price ranges
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre de JEH");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études'");
+    // Rows : creating multiple ranges of prices
+    let lowerBound = Math.min(...data.map(row => parseInt(row[HEADS["JEH"]], 10))),
+        higherBound = Math.max(...data.map(row => parseInt(row[HEADS["JEH"]], 10)));
+    let JEHNumber = Array.from(Array(higherBound - lowerBound + 1).keys()).map(number => number + lowerBound);
+    JEHNumber.forEach(number => {dataTable.addRow([number, data.filter(row => parseInt(row[HEADS["JEH"]], 10) == number).length])});
+    return dataTable;
+}
