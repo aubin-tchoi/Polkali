@@ -30,7 +30,7 @@ const ui = SpreadsheetApp.getUi(),
     // Contenu HTML (mail, affichage des KPI et écran de chargement)
     HTML_CONTENT = {
         display: HtmlService
-            .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">KPI KPI KPI<br/></span> </span> <br/>`)
+            .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">Voici quelques KPI représentant l'activité de la JE :<br/></span> </span> <br/>`)
             .setWidth(1015)
             .setHeight(515),
         mail: HtmlService.createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">&nbsp; &nbsp; Bonjour, <br/><br/>Voici les KPI portant sur la prospection.<br/> <br/>Bonne journée !</span> </span>`),
@@ -44,13 +44,13 @@ const ui = SpreadsheetApp.getUi(),
             .setHeight(280)
     },
     TITLES = {
-      summary: "Bilan",
-      contactTypology: "Typologie des contacts",
-      competitiveness: "Compétitivité face aux autres JE",
-      sizeComparison: "Performance sur différentes tailles d'étude",
-      contributions: "Mesure des différentes contributions au CA"
-    }
-    
+        summary: "Bilan",
+        contactTypology: "Typologie des contacts",
+        competitiveness: "Compétitivité face aux autres JE",
+        sizeComparison: "Performance sur différentes tailles d'étude",
+        contributions: "Mesure des différentes contributions au CA"
+    },
+
     /* ----- Paramètres d'accès ----- */
     // IDs et noms de sheets
     ADDRESSES = Object.freeze({
@@ -75,7 +75,8 @@ const ui = SpreadsheetApp.getUi(),
         alumni: "Alumni",
         JEH: "Nb JEH",
         concurrence: "Autres JE en concurrence",
-        secteur: "Secteur"
+        domaine: "Domaine de compétence",
+        secteur: "Secteur du Client"
     }),
     // Différents états possible dans la prospection (dans le suivi de la prospection)
     ETAT_PROSP = Object.freeze({
@@ -99,7 +100,7 @@ const ui = SpreadsheetApp.getUi(),
         site: "Site",
         redirectionQuali: "Redirection suite à la prospection quali ",
         redirectionClassique: "Redirection suite à la prospection classique "
-    })
+    }),
     // Différents états possible d'une étude (dans le suivi des études)
     ETAT_ETUDE = Object.freeze({
         negoc: "En négociation",
@@ -110,7 +111,7 @@ const ui = SpreadsheetApp.getUi(),
         cloturée: "Clôturée",
         sanSuite: "Sans suite"
     }),
-    
+
     /* ----- Paramètres portant sur les mois ----- */
     // Index des mois à représenter
     MONTH_LIST = Object.freeze([{
@@ -180,7 +181,7 @@ const ui = SpreadsheetApp.getUi(),
     ]),
     // Comment les mois sont écrits
     MONTH_NAMES = Object.freeze(["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"]);
-    
+
 
 // Enum used to choose the type of chart chosen
 const CHART_TYPE = Object.freeze({

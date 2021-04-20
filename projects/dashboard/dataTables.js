@@ -178,14 +178,14 @@ function alumniContribution(data) {
 }
 
 // Répartition des contacts par secteur d'activité
-function contactBySector(data) {
+function contactByDomain(data) {
     let dataTable = Charts.newDataTable();
     // Columns
-    dataTable.addColumn(Charts.ColumnType.STRING, "Secteur d'activité");
+    dataTable.addColumn(Charts.ColumnType.STRING, "Domaine de compétences");
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion des contacts");
     // Rows
-    uniqueValues(HEADS.secteur, data).forEach(currentSector => {
-        dataTable.addRow([currentSector, data.filter(row => row[HEADS.secteur] == currentSector).length / data.length]);
+    uniqueValues(HEADS.domaine, data).forEach(currentDomain => {
+        dataTable.addRow([currentDomain, data.filter(row => row[HEADS.domaine] == currentDomain).length / data.length]);
     });
     return dataTable;
 }
@@ -200,5 +200,33 @@ function prospectionTurnover(data) {
     let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
     dataTable.addRow(["Prospection", prcnt(data.filter(row => !([CONTACT_TYPE.site, CONTACT_TYPE.spontané].includes(row[HEADS.typeContact]))).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
     dataTable.addRow(["Hors prospection", prcnt(data.filter(row => [CONTACT_TYPE.site, CONTACT_TYPE.spontané].includes(row[HEADS.typeContact])).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
+    return dataTable;
+}
+
+// Proportion du CA venant de chaque secteur
+function turnoverBySector(data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, "Secteur");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
+    // Rows
+    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
+    uniqueValues(HEADS.secteur, data).forEach(currentSector => {
+        dataTable.addRow([currentSector, prcnt(data.filter(row => row[HEADS.secteur] == currentSector).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)])
+    });
+    return dataTable;
+}
+
+// Performance par secteur
+function performanceBySector(data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, "Secteur");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "CA (en milliers d'€)");
+    // Rows
+    uniqueValues(HEADS.secteur, data).forEach(currentSector => {
+        dataTable.addRow([currentSector, data.filter(row => row[HEADS.secteur] == currentSector).length, data.filter(row => row[HEADS.secteur] == currentSector).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000])
+    });
     return dataTable;
 }

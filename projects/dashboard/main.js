@@ -106,9 +106,9 @@ function generateKPI() {
     percent: true
   }));
 
-  // KPI : Répartition des contacts par secteur d'activité
-  let contactBySectorTable = contactBySector(dataProspection.filter(row => row[HEADS.secteur] != ""));
-  charts.contactTypology.push(createChart(CHART_TYPE.PIE, contactBySectorTable, "Répartition des contacts par secteur"));
+  // KPI : Répartition des contacts par domaine de compétence
+  let contactByDomainTable = contactByDomain(dataProspection.filter(row => row[HEADS.domaine] != ""));
+  charts.contactTypology.push(createChart(CHART_TYPE.PIE, contactByDomainTable, "Répartition des contacts par domaine de compétence"));
 
 
   // ----- CONCURRENCE AVEC D'AUTRES JE
@@ -149,6 +149,14 @@ function generateKPI() {
 
 
   // ----- MESURE DES DIFFERENTES CONTRIBUTIONS AU CA -----
+
+  // KPI : nombre d'études, CA par secteur
+  let performanceBySectorTable = performanceBySector(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
+  charts.contributions.push(createChart(CHART_TYPE.COLUMN, performanceBySectorTable, "Performance par secteur"));
+
+  // KPI : Proportion du CA venant de chaque secteur
+  let turnoverBySectorTable = turnoverBySector(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
+  charts.contributions.push(createChart(CHART_TYPE.PIE, turnoverBySectorTable, "Proportion du CA venant de chaque secteur"));
 
   // KPI : Proportion du CA due aux alumni
   let alumniContributionTable = alumniContribution(dataEtudes);

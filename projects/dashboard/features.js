@@ -53,7 +53,8 @@ function generateSlides(template, chartImages, folderId) {
     currentSlide.getShapes()[1].getText().setText("Aubin Tchoï, Directeur Qualité 022");
     presentation.getSlides()[0].remove();
 
-    let box = currentSlide.insertShape(SlidesApp.ShapeType.RECTANGLE).setLeft(650).setTop(140).setWidth(300).setHeight(380), text;
+    let box = currentSlide.insertShape(SlidesApp.ShapeType.RECTANGLE).setLeft(650).setTop(140).setWidth(300).setHeight(380),
+        text;
     box.getBorder().getLineFill().setSolidFill('#FFFFFF');
     box.getFill().setSolidFill('#FFFFFF');
 
@@ -75,7 +76,6 @@ function generateSlides(template, chartImages, folderId) {
             // Writing a title
             text = currentSlide.getShapes()[0].getText().setText(img.getName());
         });
-        
     });
     box.remove();
 }
