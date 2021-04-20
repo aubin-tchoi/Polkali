@@ -174,12 +174,15 @@ function generateKPI() {
 
   // Adding the charts to the htmlOutput and the list of attachments
   Object.keys(charts).forEach(key => {
+    // Adding a line that describe the category of KPI
+    if (charts[key].length > 0) {
+      addHTMLLine(key, htmlOutput);
+    }
     attachments[key] = [];
+    // Converting every chart
     charts[key].forEach(c => {
       convertChart(c, c.getOptions().get("title"), htmlOutput, attachments[key]);
     });
-    // Add a line to the HtmlOutput
-    // Add a separation slide
   });
 
   currentTime = measureTime(currentTime, "convert the charts");

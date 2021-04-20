@@ -70,6 +70,10 @@ const userQuery = (message) => {
     }
 }
 
+const addHTMLLine = (key, htmlOutput) => {
+    htmlOutput.append(`<br/><br/><span style='font-size: 16pt;'> <span style="font-family: 'roboto', sans-serif;">${TITLES[key]}<br/></span> </span> <br/>`)
+};
+
 // Logs the execution time and resets the checkpoint
 const measureTime = (checkpoint, message) => {
     let newCheckpoint = new Date();

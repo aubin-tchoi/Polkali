@@ -30,7 +30,7 @@ const ui = SpreadsheetApp.getUi(),
     // Contenu HTML (mail, affichage des KPI et écran de chargement)
     HTML_CONTENT = {
         display: HtmlService
-            .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">Voici quelques KPI représentant l'activité de la JE :<br/></span> </span> <br/>`)
+            .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">&nbsp; &nbsp; Voici quelques KPI représentant l'activité de la JE :<br/></span> </span> <br/>`)
             .setWidth(1015)
             .setHeight(515),
         mail: HtmlService.createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">&nbsp; &nbsp; Bonjour, <br/><br/>Voici les KPI portant sur la prospection.<br/> <br/>Bonne journée !</span> </span>`),
