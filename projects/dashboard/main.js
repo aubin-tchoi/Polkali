@@ -61,6 +61,9 @@ function generateKPI() {
 
   currentTime = measureTime(currentTime, "load the HTML content");
 
+
+  // ----- BILAN PROSPECTION -----
+
   // KPI : Contacts par mois
   let [contactsTable, conversionChart] = contacts(dataProspection); // conversionChart is a 2D array : [month][number of contact in a given state]
   charts.push(createChart(CHART_TYPE.COLUMN, contactsTable, "Contacts"));
@@ -82,6 +85,9 @@ function generateKPI() {
   /* let turnoverTable = turnover(dataProspection);
   charts.push(createColumnChart(turnoverTable, Object.values(COLORS), "Chiffre d'affaires", DIMS)); */
 
+
+  // ----- TYPOLOGIE DES CONTACTS -----
+
   // KPI : Répartition des contacts par type
   let contactTypeTable = contactType(dataProspection);
   charts.push(createChart(CHART_TYPE.PIE, contactTypeTable, "Type de contact"));
@@ -92,16 +98,26 @@ function generateKPI() {
     percent: true
   }));
 
+  // KPI : Répartition des contacts par secteur d'activité
+  let contactBySectorTable = contactBySector(dataProspection.filter(row => row[HEADS.secteur] != ""));
+  charts.push(createChart(CHART_TYPE.PIE, contactBySectorTable, "Répartition des contacts par secteur"));
+
+
+  // ----- CONCURRENCE AVEC D'AUTRES JE
+
   // KPI : Contacts qui sont en lien avec d'autres JE
-  let [contactsConcurrenceTable, conversionConcurrenceChart] = contacts(dataProspection.filter(row => row[HEADS.concurrence] || false));
-  charts.push(createChart(CHART_TYPE.COLUMN, contactsConcurrenceTable, "Contacts en lien avec d'autres JE"));
+  /*let [contactsConcurrenceTable, conversionConcurrenceChart] = contacts(dataProspection.filter(row => row[HEADS.concurrence] || false));
+  charts.push(createChart(CHART_TYPE.COLUMN, contactsConcurrenceTable, "Contacts en lien avec d'autres JE")); */
 
   // KPI : Taux de conversion en concurrence
-  let conversionRateConcurrenceTable = conversionRateByType(conversionConcurrenceChart);
+  /* let conversionRateConcurrenceTable = conversionRateByType(conversionConcurrenceChart);
   charts.push(createChart(CHART_TYPE.COLUMN, conversionRateConcurrenceTable, "Taux de conversion sur chaque étape (en situation de concurrence)", {
     colors: [COLORS.burgundy],
     percent: true
-  }));
+  })); */
+
+
+  // ----- PERFORMANCE SELON LA TAILLE DES ETUDES -----
 
   // KPI : Nombre d'étude pour différents intervalles de prix
   let priceRangeTable = priceRange(dataEtudes.filter(row => row[HEADS.prix] != ""), 500, 4500, 8);
@@ -123,17 +139,20 @@ function generateKPI() {
     hticks: lengthTicks
   }));
 
+
+  // ----- MESURE DES DIFFERENTES CONTRIBUTIONS AU CA -----
+
   // KPI : Proportion du CA due aux alumni
   let alumniContributionTable = alumniContribution(dataEtudes);
   charts.push(createChart(CHART_TYPE.PIE, alumniContributionTable, "Proportion du CA due aux alumni", {
-    colors: [COLORS.pine, COLORS.burgundy]
+    colors: [COLORS.pine, COLORS.silverPink]
   }));
 
-  // KPI : Répartition des contacts par secteur d'activité
-  let contactBySectorTable = contactBySector(dataProspection.filter(row => row[HEADS.secteur] != ""));
-  charts.push(createChart(CHART_TYPE.PIE, contactBySectorTable, "Répartition des contacts par secteur"));
-
   // KPI : Proportion du CA venant de la prospection
+  let prospectionTurnoverTable = prospectionTurnover(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude));
+  charts.push(createChart(CHART_TYPE.PIE, prospectionTurnoverTable, "Proportion du CA venant de la prospection", {
+    colors: [COLORS.pine, COLORS.silverPink]
+  }));
 
   currentTime = measureTime(currentTime, "create the charts");
 

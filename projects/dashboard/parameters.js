@@ -56,7 +56,10 @@ const ui = SpreadsheetApp.getUi(),
             .setWidth(1015)
             .setHeight(515),
         mail: HtmlService.createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">&nbsp; &nbsp; Bonjour, <br/><br/>Voici les KPI portant sur la prospection.<br/> <br/>Bonne journée !</span> </span>`),
-        saveConfirm: (url) => `<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">Les KPIs ont été enregistrés, pouce pour ouvrir le lien (cliquez sur Boris).<br/><br/> &nbsp; &nbsp; La bise.</span></span><p style="text-align:center;"><a href=${url} target="_blank"><img src="${IMGS.thumbsUp}" alt="Thumbs up" width="130" height="131"></a></p>`,
+        saveConfirm: (url) => HtmlService
+            .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">Les KPIs ont été enregistrés, pouce pour ouvrir le lien (cliquez sur Boris).<br/><br/> &nbsp; &nbsp; La bise.</span></span><p style="text-align:center;"><a href=${url} target="_blank"><img src="${IMGS.thumbsUp}" alt="Thumbs up" width="130" height="131"></a></p>`)
+            .setHeight(235)
+            .setWidth(600),
         loadingScreen: HtmlService
             .createHtmlOutput(`<img src="${IMGS.loadingScreen}" alt="Loading" width="442" height="249">`)
             .setWidth(450)
@@ -151,7 +154,17 @@ const ui = SpreadsheetApp.getUi(),
             month: 4,
             year: 2021
         }
-    ]);
+    ]),
+    CONTACT_TYPE = Object.freeze({
+        quali: "Prospection quali ",
+        spontané: "Contact spontané",
+        classique: "Prospection classique ",
+        recommandé: "Recommandé ",
+        ao: "Appel d'offre",
+        site: "Site",
+        redirectionQuali: "Redirection suite à la prospection quali ",
+        redirectionClassique: "Redirection suite à la prospection classique "
+    });
 
 // Enum used to choose the type of chart chosen
 const CHART_TYPE = Object.freeze({

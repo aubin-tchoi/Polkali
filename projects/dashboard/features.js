@@ -1,6 +1,6 @@
 /* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
 
-// Functionnalities aiming at interfacing the generation of KPI with other tools from the G-Suite
+// Features aiming at interfacing the generation of KPI with other tools from the G-Suite
 
 // Send a mail to designated adress
 function sendMail(adress, htmlOutput, subject, attachments) {
@@ -24,10 +24,7 @@ function saveOnDrive(imageBlobs, folderId) {
         imageBlobs.forEach(function (f) {
             folder.createFile(f);
         });
-        let confirm = HtmlService
-            .createHtmlOutput(HTML_CONTENT.saveConfirm(folder.getUrl()))
-            .setHeight(235)
-            .setWidth(600);
+        let confirm = HTML_CONTENT.saveConfirm(folder.getUrl());
         ui.showModelessDialog(confirm, "KPIs enregistrés !");
     } catch (e) {
         Logger.log(`Erreur lors de l'enregistrement des images sur le Drive : ${e}.`);
