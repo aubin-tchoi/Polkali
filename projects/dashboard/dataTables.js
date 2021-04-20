@@ -31,7 +31,6 @@ function contacts(data) {
         conversionChart.push(conversionChartRow);
         dataTable.addRow(dataRow);
     });
-    Logger.log(`Conversion : ${conversionChart}`);
     return [dataTable, conversionChart];
 }
 
@@ -199,7 +198,6 @@ function prospectionTurnover(data) {
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
     // Rows
     let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
-    Logger.log(ca);
     dataTable.addRow(["Prospection", prcnt(data.filter(row => !([CONTACT_TYPE.site, CONTACT_TYPE.spontané].includes(row[HEADS.typeContact]))).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
     dataTable.addRow(["Hors prospection", prcnt(data.filter(row => [CONTACT_TYPE.site, CONTACT_TYPE.spontané].includes(row[HEADS.typeContact])).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
     return dataTable;

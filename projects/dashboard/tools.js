@@ -27,6 +27,12 @@ function manuallyGetLastRow(sheet, start, trustColumn) {
 // Getting an array of all unique values inside of a set of data for 1 information
 const uniqueValues = (key, data) => data.map((row) => row[key]).filter((val, idx, arr) => arr.indexOf(val) == idx);
 
+// Computes a / b * 100 if b !=0, and returns 0 otherwise
+const prcnt = (a, b) => (parseInt(b, 10) == 0) ? 0 : a / b * 100;
+
+// Checks if row was written in month month or not
+const sameMonth = (row, month) => parseInt(row[HEADS.premierContact].getMonth(), 10) == month.month && parseInt(row[HEADS.premierContact].getFullYear(), 10) == month.year;
+
 // Converting a chart object into an image
 function convertChart(chart, title, htmlOutput, attachments) {
     // Loading the blob for this chart (this part takes the most time)
@@ -36,12 +42,6 @@ function convertChart(chart, title, htmlOutput, attachments) {
     // Adding the chart to the attachments
     attachments.push(chartBlob.setName(title));
 }
-
-// Computes a / b * 100 if b !=0, and returns 0 otherwise
-const prcnt = (a, b) => (parseInt(b, 10) == 0) ? 0 : a / b * 100;
-
-// Checks if row was written in month month or not
-const sameMonth = (row, month) => parseInt(row[HEADS.premierContact].getMonth(), 10) == month.month && parseInt(row[HEADS.premierContact].getFullYear(), 10) == month.year;
 
 
 // ----- User's side features -----

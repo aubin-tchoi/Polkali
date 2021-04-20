@@ -21,8 +21,10 @@ function saveOnDrive(imageBlobs, folderId) {
         let today = new Date();
         today = `KPI ${(today.getDate() < 9) ? "0" : ""}${today.getDate()}/${(today.getMonth() < 9) ? "0" : ""}${today.getMonth() + 1}/${today.getFullYear()}`;
         let folder = DriveApp.getFolderById(folderId).createFolder(today);
-        imageBlobs.forEach(function (f) {
-            folder.createFile(f);
+        Object.values(imageBlobs).forEach(arr => {
+            arr.forEach(f => {
+                folder.createFile(f);
+            });
         });
         let confirm = HTML_CONTENT.saveConfirm(folder.getUrl());
         ui.showModelessDialog(confirm, "KPIs enregistrés !");
@@ -33,32 +35,47 @@ function saveOnDrive(imageBlobs, folderId) {
 }
 
 // Generating a Slides file using the charts listed in the array named charts
-// NB: many values are hardcoded here, do not put them at the top of the main file, these are not parameters and won't come to change
+// NB1: many values are hardcoded here, do not put them in the parameters file, these are not parameters and won't come to change
+// NB2: many suppositions are made on the template (and on its predefined layout), this won't work on any template
 function generateSlides(template, chartImages, folderId) {
     displayLoadingScreen("Génération des slides..");
+
     // Today's date
     let today = new Date();
     today = `Point KPI du ${(today.getDate() < 9) ? "0" : ""}${today.getDate()}/${(today.getMonth() < 9) ? "0" : ""}${today.getMonth() + 1}/${today.getFullYear()}`;
-    let presentation = SlidesApp.openById(DriveApp.getFileById(template).makeCopy(today, DriveApp.getFolderById(folderId)).getId());
+    let presentation = SlidesApp.openById(DriveApp.getFileById(template).makeCopy(today, DriveApp.getFolderById(folderId)).getId()),
+        chartlayout = presentation.getLayouts()[8],
+        sectionLayout = presentation.getLayouts()[6];
 
     // First slide
-    let firstSlide = presentation.appendSlide(SlidesApp.PredefinedLayout.SECTION_HEADER);
-    firstSlide.getShapes()[0].getText().setText(today);
-    firstSlide.getShapes()[1].getText().setText("Aubin Tchoï, Directeur Qualité 022");
+    let currentSlide = presentation.appendSlide(SlidesApp.PredefinedLayout.SECTION_HEADER);
+    currentSlide.getShapes()[0].getText().setText(today);
+    currentSlide.getShapes()[1].getText().setText("Aubin Tchoï, Directeur Qualité 022");
     presentation.getSlides()[0].remove();
 
-    chartImages.forEach(img => {
-        // New slide
-        let slide = presentation.appendSlide();
-        // White box to hide PEP's logo in the bottom right corner
-        let box = slide.insertShape(SlidesApp.ShapeType.RECTANGLE).setLeft(650).setTop(100).setWidth(300).setHeight(430);
-        box.getBorder().getLineFill().setSolidFill('#FFFFFF');
-        box.getFill().setSolidFill('#FFFFFF');
-        // Inserting the image
-        slide.insertImage(img).alignOnPage(SlidesApp.AlignmentPosition.CENTER).setTop(375 - DIMS.height / 2);
-        // Writing a title
-        let text = slide.insertTextBox(img.getName()).setTop(65).setWidth(480).alignOnPage(SlidesApp.AlignmentPosition.HORIZONTAL_CENTER).getText();
-        text.getTextStyle().setFontSize(28).setForegroundColor(COLORS.burgundy);
-        text.getParagraphStyle().setParagraphAlignment(SlidesApp.ParagraphAlignment.CENTER);
+    let box = currentSlide.insertShape(SlidesApp.ShapeType.RECTANGLE).setLeft(650).setTop(140).setWidth(300).setHeight(380), text;
+    box.getBorder().getLineFill().setSolidFill('#FFFFFF');
+    box.getFill().setSolidFill('#FFFFFF');
+
+    Object.keys(chartImages).forEach(key => {
+        // New slide to present the section
+        if (chartImages[key].length > 0) {
+            currentSlide = presentation.appendSlide(sectionLayout);
+            currentSlide.getShapes()[1].getText().setText(today);
+            currentSlide.getShapes()[2].getText().setText("Aubin Tchoï, Directeur Qualité 022");
+            currentSlide.getShapes()[0].getText().setText(TITLES[key]);
+        }
+        chartImages[key].forEach(img => {
+            // New slide
+            currentSlide = presentation.appendSlide(chartlayout);
+            // White box to hide PEP's logo in the bottom right corner
+            currentSlide.insertShape(box);
+            // Inserting the image
+            currentSlide.insertImage(img).alignOnPage(SlidesApp.AlignmentPosition.CENTER).setTop(375 - DIMS.height / 2);
+            // Writing a title
+            text = currentSlide.getShapes()[0].getText().setText(img.getName());
+        });
+        
     });
+    box.remove();
 }

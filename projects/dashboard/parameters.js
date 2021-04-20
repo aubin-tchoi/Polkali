@@ -1,8 +1,11 @@
 /* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
 
 // Parameters : do not put here hardcoded values that are not parameters
+
 const ui = SpreadsheetApp.getUi(),
-    // Colors found in PEP's graphic chart
+
+    /* ----- Paramètres d'affichage ----- */
+    // Couleurs des graphes
     COLORS = Object.freeze({
         plum: "#934683",
         wildOrchid: "#D66BA0",
@@ -14,42 +17,17 @@ const ui = SpreadsheetApp.getUi(),
         grey: "#404040",
         lightGrey: "#A29386"
     }),
-    // Sheet, spreadsheet and Drive folders addresses
-    ADDRESSES = Object.freeze({
-        prospectionId: "1lJhJuZxUt_8_mVLXe5tazXPrb2Z3wr0M49rho974sNQ",
-        prospectionName: "Suivi",
-        etudesId: "1gmJLAKvUOYFeS32raOiSTYiE_ozr7YSk26Y0t0blm04",
-        etudesName: "Suivi",
-        driveId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy",
-        slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU"
-    }),
-    // Data sheet's header
-    HEADS = Object.freeze({
-        entreprise: "Entreprise",
-        premierContact: "Premier contact",
-        typeContact: "Type de contact",
-        état: "État",
-        devis: "Devis réalisé",
-        caPot: "Prix potentiel de l'étude  € (HT)",
-        confiance: "Pourcentage de confiance à la conversion en réelle étude",
-        prix: "Prix en € (HT)",
-        durée: "Durée (semaines)",
-        alumni: "Alumni",
-        JEH: "Nb JEH",
-        concurrence: "Autres JE en concurrence",
-        secteur: "Secteur"
-    }),
-    // Graphs' dimensions
+    // Dimensions des graphes
     DIMS = {
         width: 1000,
         height: 400
     },
-    // Links to every image used in this project
+    // Liens vers différentes images/gif
     IMGS = {
         loadingScreen: "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/loadingScreen.gif",
         thumbsUp: "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/thumbsUp.png"
     },
-    // Html content of what is displayed and what is sent in a mail
+    // Contenu HTML (mail, affichage des KPI et écran de chargement)
     HTML_CONTENT = {
         display: HtmlService
             .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">KPI KPI KPI<br/></span> </span> <br/>`)
@@ -65,21 +43,64 @@ const ui = SpreadsheetApp.getUi(),
             .setWidth(450)
             .setHeight(280)
     },
-    // How months are spelled
-    MONTH_NAMES = Object.freeze(["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"]),
-    // Different states a mission can go through during the prospection phase
+    TITLES = {
+      summary: "Bilan",
+      contactTypology: "Typologie des contacts",
+      competitiveness: "Compétitivité face aux autres JE",
+      sizeComparison: "Performance sur différentes tailles d'étude",
+      contributions: "Mesure des différentes contributions au CA"
+    }
+    
+    /* ----- Paramètres d'accès ----- */
+    // IDs et noms de sheets
+    ADDRESSES = Object.freeze({
+        prospectionId: "1lJhJuZxUt_8_mVLXe5tazXPrb2Z3wr0M49rho974sNQ",
+        prospectionName: "Suivi",
+        etudesId: "1gmJLAKvUOYFeS32raOiSTYiE_ozr7YSk26Y0t0blm04",
+        etudesName: "Suivi",
+        driveId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy",
+        slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU"
+    }),
+    // Header des fichiers de données
+    HEADS = Object.freeze({
+        entreprise: "Entreprise",
+        premierContact: "Premier contact",
+        typeContact: "Type de contact",
+        état: "État",
+        devis: "Devis réalisé",
+        caPot: "Prix potentiel de l'étude  € (HT)",
+        confiance: "Pourcentage de confiance à la conversion en réelle étude",
+        prix: "Prix en € (HT)",
+        durée: "Durée (semaines)",
+        alumni: "Alumni",
+        JEH: "Nb JEH",
+        concurrence: "Autres JE en concurrence",
+        secteur: "Secteur"
+    }),
+    // Différents états possible dans la prospection (dans le suivi de la prospection)
     ETAT_PROSP = Object.freeze({
         rdv: "Premier RDV réalisé",
         devis: "Devis rédigé et envoyé",
         negoc: "En négociation",
         etude: "Etude obtenue"
     }),
-    // States corresponding to a contact that wasn't converted into a mission
+    // États correspondant à un contact qui n'a pas abouti sur une étude (dans le suivi de la prospection)
     ETAT_PROSP_BIS = Object.freeze({
         sansSuite: "Sans suite",
         aRelancer: "A relancer",
     }),
-    // Different states a mission can go through
+    // Différents types de contact
+    CONTACT_TYPE = Object.freeze({
+        quali: "Prospection quali ",
+        spontané: "Contact spontané",
+        classique: "Prospection classique ",
+        recommandé: "Recommandé ",
+        ao: "Appel d'offre",
+        site: "Site",
+        redirectionQuali: "Redirection suite à la prospection quali ",
+        redirectionClassique: "Redirection suite à la prospection classique "
+    })
+    // Différents états possible d'une étude (dans le suivi des études)
     ETAT_ETUDE = Object.freeze({
         negoc: "En négociation",
         redac: "En rédaction",
@@ -89,7 +110,9 @@ const ui = SpreadsheetApp.getUi(),
         cloturée: "Clôturée",
         sanSuite: "Sans suite"
     }),
-    // Indexes of months
+    
+    /* ----- Paramètres portant sur les mois ----- */
+    // Index des mois à représenter
     MONTH_LIST = Object.freeze([{
             month: 1,
             year: 2020
@@ -155,16 +178,9 @@ const ui = SpreadsheetApp.getUi(),
             year: 2021
         }
     ]),
-    CONTACT_TYPE = Object.freeze({
-        quali: "Prospection quali ",
-        spontané: "Contact spontané",
-        classique: "Prospection classique ",
-        recommandé: "Recommandé ",
-        ao: "Appel d'offre",
-        site: "Site",
-        redirectionQuali: "Redirection suite à la prospection quali ",
-        redirectionClassique: "Redirection suite à la prospection classique "
-    });
+    // Comment les mois sont écrits
+    MONTH_NAMES = Object.freeze(["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"]);
+    
 
 // Enum used to choose the type of chart chosen
 const CHART_TYPE = Object.freeze({

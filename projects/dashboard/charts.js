@@ -2,90 +2,36 @@
 
 // Creating charts using a data table as input
 
-// Creating a chart using one of the functions described below
+// Creating a chart using one of the different builders among PieChart, ColumnChart and LineChart
 function createChart(chartType, dataTable, title, options = {}) {
-    if (chartType === CHART_TYPE.COLUMN) {
-        return createColumnChart(dataTable, title, options);
-    } else if (chartType === CHART_TYPE.PIE) {
-        return createPieChart(dataTable, title, options);
-    } else if (chartType === CHART_TYPE.LINE) {
-        return createLineChart(dataTable, title, options);
-    }
-}
-
-// Creating a ColumnChart
-function createColumnChart(dataTable, title, options) {
-    Logger.log(`Titre : ${title}, options : ${Object.entries(options)}`);
+    Logger.log(`Creating chart ${title} of type ${Object.keys(CHART_TYPE)[Object.values(CHART_TYPE).indexOf(chartType)]} with ${!!options ? "no option" : `options : ${Object.entries(options)}`}.`);
     try {
-        // Creating a ColumnChart with data from dataTable
-        let chart = Charts.newColumnChart()
-            .setDataTable(dataTable)
-            .setOption('legend', {
-                textStyle: {
-                    font: 'roboto',
-                    fontSize: 11
-                }
-            })
-            .setOption('colors', options.colors || Object.values(COLORS))
-            .setOption('vAxis.minValue', (options.percent || false) ? 0 : 'automatic')
-            .setOption('vAxis.maxValue', (options.percent || false) ? 100 : 'automatic')
-            .setOption('hAxis.ticks', options.hticks || 'auto')
-            .setTitle(title)
-            .setDimensions(options.width || DIMS.width, options.height || DIMS.height)
-            .build();
-
-        return chart;
+        if (chartType === CHART_TYPE.COLUMN) {
+            return addOptions(Charts.newColumnChart().setDataTable(dataTable), title, options);
+        } else if (chartType === CHART_TYPE.PIE) {
+            return addOptions(Charts.newPieChart().setDataTable(dataTable), title, options);
+        } else if (chartType === CHART_TYPE.LINE) {
+            return addOptions(Charts.newLineChart().setDataTable(dataTable).setOption('curveType', 'function').setOption('pointSize', 10).setOption('pointShape', 'diamond'), title, options);
+        }
     } catch (e) {
         Logger.log(`Could not create graph for info : ${title}, error : ${e}`);
     }
 }
 
-// Creating a PieChart
-function createPieChart(dataTable, title, options) {
-    Logger.log(`Titre : ${title}`);
-    try {
-        // Creating a PieChart with data from dataTable
-        let chart = Charts.newPieChart()
-            .setDataTable(dataTable)
-            .setOption('legend', {
-                textStyle: {
-                    font: 'roboto',
-                    fontSize: 11
-                }
-            })
-            .setOption('colors', options.colors || Object.values(COLORS))
-            .setTitle(title)
-            .setDimensions(options.width || DIMS.width, options.height || DIMS.height)
-            .build();
-
-        return chart;
-    } catch (e) {
-        Logger.log(`Could not create graph for info : ${title}, error : ${e}`);
-    }
-}
-
-// Creating a LineChart
-function createLineChart(dataTable, title, options) {
-    Logger.log(`Titre : ${title}`);
-    try {
-        // Creating a LineChart with data from dataTable
-        let chart = Charts.newLineChart()
-            .setDataTable(dataTable)
-            .setOption('legend', {
-                textStyle: {
-                    font: 'roboto',
-                    fontSize: 11
-                }
-            })
-            .setOption('colors', options.colors || Object.values(COLORS))
-            .setOption('curveType', 'function')
-            .setOption('pointShape', 'square')
-            .setTitle(title)
-            .setDimensions(options.width || DIMS.width, options.height || DIMS.height)
-            .build();
-
-        return chart;
-    } catch (e) {
-        Logger.log(`Could not create graph for info : ${title},, error : ${e}`);
-    }
+// Add options to a chartBuilder
+function addOptions(chartBuilder, title, options) {
+    return chartBuilder
+        .setOption('legend', {
+            textStyle: {
+                font: 'roboto',
+                fontSize: 11
+            }
+        })
+        .setOption('colors', options.colors || Object.values(COLORS))
+        .setOption('vAxis.minValue', (options.percent || false) ? 0 : 'automatic')
+        .setOption('vAxis.maxValue', (options.percent || false) ? 100 : 'automatic')
+        .setOption('hAxis.ticks', options.hticks || 'auto')
+        .setTitle(title)
+        .setDimensions(options.width || DIMS.width, options.height || DIMS.height)
+        .build();
 }
