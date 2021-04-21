@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>dataTables.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="../accueil.html"> Accueil</a></li>
+    <li class="nav-heading"><a href="main.html">main.js</a></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="main.html#autoSaveKPI">autoSaveKPI</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="main.html#displayKPI">displayKPI</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="main.html#generateKPI">generateKPI</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="main.html#installTrigger">installTrigger</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="main.html#prepCA">prepCA</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="main.html#saveKPI">saveKPI</a></span></li>
+
+    <li class="nav-heading"><a href="dataTables.html">dataTables</a></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="dataTables.html#conversionRate">conversionRate</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="dataTables.html#numberOfMissions">numberOfMissions</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="dataTables.html#performance">performance</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="dataTables.html#totalDistribution">totalDistribution</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="dataTables.html#turnoverDistribution">turnoverDistribution</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="dataTables.html#turnoverDistributionBinary">turnoverDistributionBinary</a></span></li>
+
+    <li class="nav-heading"><a href="charts.html">charts</a></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="charts.html#addOptions">addOptions</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="charts.html#createChart">createChart</a></span></li>
+
+    <li class="nav-heading"><a href="features.html">features</a></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="features.html#generateSlides">generateSlides</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="features.html#saveOnDrive">saveOnDrive</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="features.html#sendMail">sendMail</a></span></li>
+
+    <li class="nav-heading"><a href="tools.html">tools</a></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#addHTMLLine">addHTMLLine</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#convertChart">convertChart</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#displayLoadingScreen">displayLoadingScreen</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#extractSheetData">extractSheetData</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#manuallyGetRowNumber">manuallyGetRowNumber</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#measureTime">measureTime</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#prcnt">prcnt</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#sameMonth">sameMonth</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#uniqueValues">uniqueValues</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#userQuery">userQuery</a></span></li>
+
+    <li class="nav-heading"><a href="parameters.html">parameters</a></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#ADDRESSES">ADDRESSES</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#CHART_TYPE">CHART_TYPE</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#COLORS">COLORS</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#CONTACT_TYPE">CONTACT_TYPE</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#DIMS">DIMS</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#ETAT_ETUDE">ETAT_ETUDE</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#ETAT_PROSP">ETAT_PROSP</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#ETAT_PROSP_BIS">ETAT_PROSP_BIS</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#HEADS">HEADS</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#HTML_CONTENT">HTML_CONTENT</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#IMGS">IMGS</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#MONTH_LIST">MONTH_LIST</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#MONTH_NAMES">MONTH_NAMES</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#TITLES">TITLES</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">dataTables.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
+
+// Extracting data from an array of Objects and returning a dataTable
+
+/**
+ * Calcul de la réparition des contacts selon la colonne dont le nom est spécifié.
+ * @param {string} key Nom de la colonne selon laquelle sera effectuée la répartition.
+ * @param {Array} data Données d'entrée.
+ * @returns {DataTabke} Table des données permettant de créer le graphe correspondant.
+ */
+function totalDistribution(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, key);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion des contacts");
+    // Rows
+    uniqueValues(key, data).forEach(type => {
+        dataTable.addRow([type, data.filter(row => row[key] == type).length / data.length]);
+    });
+    return dataTable;
+}
+
+/**
+ * Calcul de la répartition du CA selon les valeurs présentes dans une colonne du fichier de suivi de la prospection (transposable au suivi d'étude en remplaçant caPot en prix).
+ * @param {string} key Nom de la colonne selon laquelle sera évaluée la répartition du CA.
+ * @param {Array} data Données d'entrée.
+ * @returns {DataTable} Table des données permettant de créer le graphe correspondant.
+ */
+function turnoverDistribution(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, key);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
+    // Rows
+    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
+    uniqueValues(key, data).forEach(currentType => {
+        dataTable.addRow([currentType, prcnt(data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
+    });
+    return dataTable;
+}
+
+/**
+ * Calcul du CA et du nombre d'études selon les valeurs présentes dans une colonne du fichier de suivi de la prospection (transposable au suivi d'étude en remplaçant caPot en prix).
+ * @param {string} key Nom de la colonne selon laquelle sera évaluée la performance de la JE.
+ * @param {Array} data Données d'entrée.
+ * @returns {Array} Table des données permettant de créer le graphe correspondant
+ * et tableau des valeurs à indiquer selon l'axe vertical.
+ */
+function performance(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, key);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "CA (en milliers d'€)");
+    // Rows
+    let maxTick = 0;
+    uniqueValues(key, data).forEach(currentType => {
+        maxTick = Math.max(maxTick, data.filter(row => row[key] == currentType).length, parseInt(data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000, 10) + 1);
+        dataTable.addRow([currentType, data.filter(row => row[key] == currentType).length, data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000]);
+    });
+    return [dataTable, Array.from(Array(maxTick + 1).keys())];
+}
+
+/**
+ * Calcul du nombre d'études selon les valeurs présente dans une colonne du fichier étudié.
+ * @param {string} key Nom de la colonne selon laquelle sera compté le nombre d'études.
+ * @param {Array} data Données d'entrée.
+ * @returns {Array} Table des données permettant de créer le graphe correspondant
+ * et tableau des valeurs à indiquer selon l'axe horizontal.
+ */
+ function numberOfMissions(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.NUMBER, key);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
+    // Rows
+    let lowerBound = Math.min(...data.map(row => parseInt(row[key], 10))),
+        higherBound = Math.max(...data.map(row => parseInt(row[key], 10)));
+    let values = Array.from(Array(higherBound - lowerBound + 1).keys()).map(number => number + lowerBound);
+    values.forEach(number => {
+        dataTable.addRow([number, data.filter(row => parseInt(row[HEADS.durée], 10) == number).length])
+    });
+    return [dataTable, values];
+}
+
+/**
+ * Calcul du taux de conversion décliné selon les différentes catégories présentes dans une colonne spécifiée (uniquement pour le suivi de la prospection).
+ * @param {string} key Nom de la colonne selon laquelle sera évalué le taux de conversion.
+ * @param {Array} data Données d'entrée.
+ * @returns {Array} Table des données permettant de créer le graphe correspondant.
+ */
+function conversionRate(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, key);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre de contacts");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Taux de conversion global");
+    // Rows
+    uniqueValues(key, data).forEach(function (type) {
+        let objFiltered = data.filter(row => row[key] == type),
+            conversionRate = prcnt(objFiltered.filter(row => row[HEADS.état] == ETAT_PROSP.etude).length, objFiltered.length);
+        dataTable.addRow([type, objFiltered.length, conversionRate]);
+    });
+    return dataTable;
+}
+
+/**
+ * Calcul de la répartition du CA selon les valeurs présentes dans une colonne du fichier de suivi de la prospection (transposable au suivi de la prospection en remplaçant prix par caPot).
+ * On suppose que la colonne contient des cases à cocher (deux catégories uniquement).
+ * @param {string} key Nom de la colonne selon laquelle sera évaluée la répartition du CA.
+ * @param {Array} data Données d'entrée.
+ * @returns {DataTable} Table des données permettant de créer le graphe correspondant.
+ */
+ function turnoverDistributionBinary(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, `${key}/Hors ${key}`);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
+    // Rows
+    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0);
+    dataTable.addRow([key, prcnt(data.filter(row => row[key] || false).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0), ca)]);
+    dataTable.addRow([`Hors ${key}`, prcnt(data.filter(row => !(row[key] || false)).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0), ca)]);
+    return dataTable;
+}
+
+// Répartition des contacts par mois
+function contacts(data) {
+    let dataTable = Charts.newDataTable(),
+        conversionChart = [];
+    // Columns : month, all 4 states a mission can go through
+    dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
+    Object.values(ETAT_PROSP).forEach(function (state) {
+        dataTable.addColumn(Charts.ColumnType.NUMBER, state);
+    });
+    // Rows
+    MONTH_LIST.forEach(function (month) {
+        let dataRow = [`${MONTH_NAMES[month.month]} ${month.year}`],
+            conversionChartRow = [];
+        Object.values(ETAT_PROSP).forEach(function (state) {
+            // Counting first every contact who find themselves in a more advanced state than state
+            let val = data.filter(row => sameMonth(row, month) &amp;&amp; Object.values(ETAT_PROSP).indexOf(row[HEADS.état]) >= Object.values(ETAT_PROSP).indexOf(state)).length;
+            if (state == ETAT_PROSP.devis || state == ETAT_PROSP.negoc) {
+                // In both cases we forgot to count ppl to whom we sent a devis but who didn't convert it into a mission
+                val += data.filter(row => sameMonth(row, month) &amp;&amp; Object.values(ETAT_PROSP_BIS).includes(row[HEADS.état]) &amp;&amp; row[HEADS.devis]).length
+            } else if (state == ETAT_PROSP.rdv) {
+                // We must also count contacts who didn't lead to a mission
+                val += data.filter(row => sameMonth(row, month) &amp;&amp; Object.values(ETAT_PROSP_BIS).includes(row[HEADS.état])).length
+            }
+            conversionChartRow.push(val);
+            dataRow.push(val);
+        });
+        conversionChart.push(conversionChartRow);
+        dataTable.addRow(dataRow);
+    });
+    return [dataTable, conversionChart];
+}
+
+// Taux de conversion global
+function conversionRateOverTime(conversionChart) {
+    let dataTable = Charts.newDataTable();
+    // Columns : month, all 3 conversion rates
+    dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion global`);
+    // Rows
+    MONTH_LIST.forEach(function (month, idx) {
+        dataTable.addRow([`${MONTH_NAMES[month.month]} ${month.year}`, prcnt(conversionChart[idx][1], conversionChart[idx][0]) / 100 * prcnt(conversionChart[idx][2], conversionChart[idx][1]) / 100 * prcnt(conversionChart[idx][3], conversionChart[idx][2])]);
+    });
+    return dataTable;
+}
+
+// Taux de conversion par étape
+function conversionRateByType(conversionChart) {
+    let dataTable = Charts.newDataTable();
+    // Columns : month, all 3 conversion rates
+    dataTable.addColumn(Charts.ColumnType.STRING, "Étape de la conversion");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${ETAT_PROSP.rdv} et ${ETAT_PROSP.devis}`);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${ETAT_PROSP.devis} et ${ETAT_PROSP.negoc}`);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, `Taux de conversion entre ${ETAT_PROSP.negoc} et ${ETAT_PROSP.etude}`);
+    // Rows
+    dataTable.addRow([`${ETAT_PROSP.rdv} -> ${ETAT_PROSP.devis}`, prcnt(conversionChart.reduce((acc, val) => acc += val[1], 0), conversionChart.reduce((acc, val) => acc += val[0], 0))]);
+    dataTable.addRow([`${ETAT_PROSP.devis} -> ${ETAT_PROSP.negoc}`, prcnt(conversionChart.reduce((acc, val) => acc += val[2], 0), conversionChart.reduce((acc, val) => acc += val[1], 0))]);
+    dataTable.addRow([`${ETAT_PROSP.negoc} -> ${ETAT_PROSP.etude}`, prcnt(conversionChart.reduce((acc, val) => acc += val[3], 0), conversionChart.reduce((acc, val) => acc += val[2], 0))]);
+    return dataTable;
+}
+
+// CA potentiel et CA signé
+function turnover(data) {
+    let dataTable = Charts.newDataTable();
+    // Columns : month, potential turnover and contractualized turnover
+    dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "CA sur étude potentielle");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "CA sur étude signée");
+    // Rows
+    MONTH_LIST.forEach(function (month) {
+        let ca_pot = 0,
+            ca_sig = 0;
+        data.filter(row => sameMonth(row, month)).forEach(function (row) {
+            // /!\ row[HEADS.confiance] isn't actually a percentage since we used method getValues on the range instead of getDisplayValues
+            // Potential turnover is the sum of every expected gain
+            ca_pot += (parseInt(row[HEADS.caPot], 10) * row[HEADS.confiance]) || 0;
+            // Contractualized turnover is computed based on missions who are state ETAT_PROSP.study
+            if (row[HEADS.état] == ETAT_PROSP.etude) {
+                ca_sig += parseInt(row[HEADS.caPot], 10) || 0;
+            }
+            Logger.log(row);
+        });
+        dataTable.addRow([`${MONTH_NAMES[month.month]} ${month.year}`, ca_pot, ca_sig]);
+    });
+    return dataTable;
+}
+
+// Répartition des prix des études
+function priceRange(data, lowerBound, higherBound, nbrRanges) {
+    let dataTable = Charts.newDataTable();
+    // Columns : number of missions for different price ranges
+    dataTable.addColumn(Charts.ColumnType.STRING, "Intervalle de prix");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
+    // Rows : creating multiple ranges of prices
+    let width = parseInt((higherBound - lowerBound) / nbrRanges, 10),
+        priceRanges = Array.from(Array(nbrRanges).keys()).map((_, idx) => lowerBound + idx * width);
+    priceRanges.forEach(price => {
+        dataTable.addRow([`${price} - ${price + width}`, data.filter(row => (price &lt;= row[HEADS.prix] &amp;&amp; row[HEADS.prix] &lt; price + width)).length]);
+    });
+    return dataTable;
+}
+
+// Proportion du CA venant de la prospection
+function prospectionTurnover(data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, "Prospection ou non");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
+    // Rows
+    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
+    dataTable.addRow(["Prospection", prcnt(data.filter(row => !([CONTACT_TYPE.site, CONTACT_TYPE.spontané].includes(row[HEADS.typeContact]))).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
+    dataTable.addRow(["Hors prospection", prcnt(data.filter(row => [CONTACT_TYPE.site, CONTACT_TYPE.spontané].includes(row[HEADS.typeContact])).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
+    return dataTable;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
+    <div class="container">
+        <p class="float-end"><a href="#">Retour en haut</a></p>
+        <ul class="bd-footer-links ps-0 mb-3">
+            <li class="d-inline-block"><a
+                    href="https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app">Documentation
+                    Google</a></li>
+        </ul>
+        <p class="mb-0">Ponts Études Projets &middot; Pôle Qualité &middot; mandat 022</a></p>
+    </div>
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

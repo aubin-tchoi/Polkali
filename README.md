@@ -5,6 +5,8 @@ Ensemble des ressources Google Apps Script développées par le pôle Qualité 0
 
 Vous trouverez différents fichiers ou dossiers dans ce respository :
 
+* `documentation` : documentation portant sur l'implémentation des KPI, ouvrir le fichier "accueil.hml".
+
 * `samples` : différents scripts qui servent d'exemple ou de template à des scripts plus spécifiques. Consultez le readme du dossier pour plus de détail sur chaque script.
 
 * `projects` : des scripts utilisés dans le Drive de PEP, ils sont séparés par dossier afin de permetter l'utilisation de `clasp`.

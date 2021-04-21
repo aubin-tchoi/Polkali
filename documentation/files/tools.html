@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Documentation - PEP KPI</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+    <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+    <label for="nav-trigger" class="navicon-button x">
+        <div class="navicon"></div>
+    </label>
+    <label for="nav-trigger" class="overlay"></label>
+    <nav>
+        <li class="nav-link nav-home-link"><a href="../accueil.html"> Accueil</a></li>
+        <li class="nav-heading"><a href="main.html">main.js</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#autoSaveKPI">autoSaveKPI</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#displayKPI">displayKPI</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#generateKPI">generateKPI</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#installTrigger">installTrigger</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#prepCA">prepCA</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#saveKPI">saveKPI</a></span></li>
+
+        <li class="nav-heading"><a href="dataTables.html">dataTables</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#conversionRate">conversionRate</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#numberOfMissions">numberOfMissions</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#performance">performance</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#totalDistribution">totalDistribution</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#turnoverDistribution">turnoverDistribution</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#turnoverDistributionBinary">turnoverDistributionBinary</a></span></li>
+
+        <li class="nav-heading"><a href="charts.html">charts</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="charts.html#addOptions">addOptions</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="charts.html#createChart">createChart</a></span></li>
+
+        <li class="nav-heading"><a href="features.html">features</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="features.html#generateSlides">generateSlides</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="features.html#saveOnDrive">saveOnDrive</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="features.html#sendMail">sendMail</a></span></li>
+
+        <li class="nav-heading"><a href="tools.html">tools</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#addHTMLLine">addHTMLLine</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#convertChart">convertChart</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#displayLoadingScreen">displayLoadingScreen</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#extractSheetData">extractSheetData</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#manuallyGetRowNumber">manuallyGetRowNumber</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#measureTime">measureTime</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#prcnt">prcnt</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#sameMonth">sameMonth</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#uniqueValues">uniqueValues</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#userQuery">userQuery</a></span></li>
+
+        <li class="nav-heading"><a href="parameters.html">parameters</a></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#ADDRESSES">ADDRESSES</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#CHART_TYPE">CHART_TYPE</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#COLORS">COLORS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#CONTACT_TYPE">CONTACT_TYPE</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#DIMS">DIMS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#ETAT_ETUDE">ETAT_ETUDE</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#ETAT_PROSP">ETAT_PROSP</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#ETAT_PROSP_BIS">ETAT_PROSP_BIS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#HEADS">HEADS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#HTML_CONTENT">HTML_CONTENT</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#IMGS">IMGS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#MONTH_LIST">MONTH_LIST</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#MONTH_NAMES">MONTH_NAMES</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#TITLES">TITLES</a></span></li>
+    </nav>
+    <div id="main">
+        <h1 class="page-title">Outils divers</h1>
+        <section>
+            <header>
+                <h2>
+                </h2>
+            </header>
+            <article>
+                <div class="container-overview">
+                    <dl class="details">
+
+
+                    </dl>
+                </div>
+                <h3 class="subsection-title">Methods</h3>
+                <div class="section-method">
+                    <h4 class="name" id="addHTMLLine"><span class="type-signature"></span>addHTMLLine<span
+                            class="signature">(key, htmlOutput)</span><span class="type-signature"></span></h4>
+                    <div class="description">
+                        Ajout d'une ligne (dont le contenu est hardcodé et correspond à ajouter une ligne de titre).
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="tools.js.html">tools.js</a>, <a href="tools.js.html#line121">line 121</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>key</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>string</code></span>
+                                </td>
+                                <td class="description last">
+                                    Clé permettant de retrouver le titre de la ligne à ajouter.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>htmlOutput</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>HtmlOutput</code></span>
+                                </td>
+                                <td class="description last">
+                                    Contenu html à modifier.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="section-method">
+                    <h4 class="name" id="convertChart"><span class="type-signature"></span>convertChart<span
+                            class="signature">(chart, title, htmlOutput, attachments)</span><span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Conversion d'un graphe de type Chart en une image qui sera ajoutée à un HtmlOutput ainsi qu'à
+                        une liste.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="tools.js.html">tools.js</a>, <a href="tools.js.html#line71">line 71</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>chart</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>Chart</code></span>
+                                </td>
+                                <td class="description last">
+                                    Graphe.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>title</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>string</code></span>
+                                </td>
+                                <td class="description last">
+                                    Titre du graphe.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>htmlOutput</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>HtmlOutput</code></span>
+                                </td>
+                                <td class="description last">
+                                    Contenu html qui servira à afficher les graphes à l'écran.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>attachments</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>Array</code></span>
+                                </td>
+                                <td class="description last">
+                                    Liste des blobs des images.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="section-method">
+                    <h4 class="name" id="displayLoadingScreen"><span
+                            class="type-signature"></span>displayLoadingScreen<span class="signature">(msg)</span><span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Affichage d'un écran de chargement.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="tools.js.html">tools.js</a>, <a href="tools.js.html#line87">line 87</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>msg</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>string</code></span>
+                                </td>
+                                <td class="description last">
+                                    Message à afficher en titre.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="section-method">
+                    <h4 class="name" id="extractSheetData"><span class="type-signature"></span>extractSheetData<span
+                            class="signature">(spreadsheetId, sheetName, pos)</span><span class="type-signature"> &rarr;
+                            {Array}</span></h4>
+                    <div class="description">
+                        Extrait les données d'un sheet sous forme d'un tableau d'Objects afin d'en faciliter la lecture.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="tools.js.html">tools.js</a>, <a href="tools.js.html#line13">line 13</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>spreadsheetId</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>string</code></span>
+                                </td>
+                                <td class="description last">
+                                    ID du spreadsheet.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>sheetName</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>string</code></span>
+                                </td>
+                                <td class="description last">
+                                    Nom de l'onglet à extraire.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>pos</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>Object</code></span>
+                                </td>
+                                <td class="description last">
+                                    Object contenant deux clés : data et pos pour indiquer la position du header ainsi
+                                    que des données.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section-returns">
+                        <h5>Returns:</h5>
+                        <dl class="param-type">
+                            <dt>
+                                Type:
+                            </dt>
+                            <dd>
+                                <span class="param-type"><code>Array</code></span>
+                            </dd>
+                        </dl>
+                        <div class="param-desc">
+                            Array d'Object décrivant l'ensemble des données extraites (1 ligne correspond à une ligne du
+                            fichier et les clés sont alors les valeurs du header).
+                        </div>
+                    </div>
+                </div>
+                <div class="section-method">
+                    <h4 class="name" id="manuallyGetRowNumber"><span
+                            class="type-signature"></span>manuallyGetRowNumber<span class="signature">(sheet, start,
+                            trustColumn)</span><span class="type-signature"> &rarr; {number}</span></h4>
+                    <div class="description">
+                        Renvoie le nombre de lignes non-vide dans un Sheet (pas toujours possible avec getLastRow à
+                        cause de la validation des données).
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="tools.js.html">tools.js</a>, <a href="tools.js.html#line27">line 27</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>sheet</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>Sheet</code></span>
+                                </td>
+                                <td class="description last">
+                                    Onglet du sheet à considérer.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>start</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>number</code></span>
+                                </td>
+                                <td class="description last">
+                                    Indice de la 1ère ligne contenant des données.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>trustColumn</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>number</code></span>
+                                </td>
+                                <td class="description last">
+                                    Indice d'une colonne qui sera vide ssi la ligne est vide.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section-returns">
+                        <h5>Returns:</h5>
+                        <dl class="param-type">
+                            <dt>
+                                Type:
+                            </dt>
+                            <dd>
+                                <span class="param-type"><code>number</code></span>
+                            </dd>
+                        </dl>
+                        <div class="param-desc">
+                            Nombre de lignes de données.
+                        </div>
+                    </div>
+                </div>
+                <div class="section-method">
+                    <h4 class="name" id="measureTime"><span class="type-signature"></span>measureTime<span
+                            class="signature">(checkpoint, message)</span><span class="type-signature"> &rarr;
+                            {Date}</span></h4>
+                    <div class="description">
+                        Log le temps écoulé depuis le checkpoint puis renvoit un nouveau checkpoint.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="tools.js.html">tools.js</a>, <a href="tools.js.html#line131">line 131</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>checkpoint</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>Date</code></span>
+                                </td>
+                                <td class="description last">
+                                    Date à partir de laquelle le décompte sera fait.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>message</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>string</code></span>
+                                </td>
+                                <td class="description last">
+                                    Message à afficher dans le log (il s'agit seulement de la fin du message, le début
+                                    est hardcodé ici).
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section-returns">
+                        <h5>Returns:</h5>
+                        <dl class="param-type">
+                            <dt>
+                                Type:
+                            </dt>
+                            <dd>
+                                <span class="param-type"><code>Date</code></span>
+                            </dd>
+                        </dl>
+                        <div class="param-desc">
+                            Nouveau checkpoint.
+                        </div>
+                    </div>
+                </div>
+                <div class="section-method">
+                    <h4 class="name" id="prcnt"><span class="type-signature"></span>prcnt<span class="signature">(a,
+                            b)</span><span class="type-signature"> &rarr; {number}</span></h4>
+                    <div class="description">
+                        Renvoie a / b * 100 si b est non nul, 0 sinon.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="tools.js.html">tools.js</a>, <a href="tools.js.html#line54">line 54</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>a</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>number</code></span>
+                                </td>
+                                <td class="description last">
+                                    Numérateur.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>b</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>number</code></span>
+                                </td>
+                                <td class="description last">
+                                    Dénominateur.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section-returns">
+                        <h5>Returns:</h5>
+                        <dl class="param-type">
+                            <dt>
+                                Type:
+                            </dt>
+                            <dd>
+                                <span class="param-type"><code>number</code></span>
+                            </dd>
+                        </dl>
+                        <div class="param-desc">
+                            a / b * 100.
+                        </div>
+                    </div>
+                </div>
+                <div class="section-method">
+                    <h4 class="name" id="sameMonth"><span class="type-signature"></span>sameMonth<span
+                            class="signature">(row, month)</span><span class="type-signature"> &rarr; {Boolean}</span>
+                    </h4>
+                    <div class="description">
+                        Test vérifiant si une ligne de données correspond à un mois donné.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="tools.js.html">tools.js</a>, <a href="tools.js.html#line62">line 62</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>row</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>Object</code></span>
+                                </td>
+                                <td class="description last">
+                                    Ligne de donnée à considérer.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>month</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>Object</code></span>
+                                </td>
+                                <td class="description last">
+                                    Object à deux éléments: month et year.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section-returns">
+                        <h5>Returns:</h5>
+                        <dl class="param-type">
+                            <dt>
+                                Type:
+                            </dt>
+                            <dd>
+                                <span class="param-type"><code>Boolean</code></span>
+                            </dd>
+                        </dl>
+                        <div class="param-desc">
+                            true ssi le champ "Premier contact" de la ligne correspond bien au mois spécifié.
+                        </div>
+                    </div>
+                </div>
+                <div class="section-method">
+                    <h4 class="name" id="uniqueValues"><span class="type-signature"></span>uniqueValues<span
+                            class="signature">(key, data)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+                    <div class="description">
+                        Renvoie un tableau des valeurs uniques trouvées pour une certaine colonne des données entrées.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="tools.js.html">tools.js</a>, <a href="tools.js.html#line46">line 46</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>key</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>string</code></span>
+                                </td>
+                                <td class="description last">
+                                    Clé à considérer (doit être présente dans les éléments de data).
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>data</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>Array</code></span>
+                                </td>
+                                <td class="description last">
+                                    Données à considérer.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section-returns">
+                        <h5>Returns:</h5>
+                        <dl class="param-type">
+                            <dt>
+                                Type:
+                            </dt>
+                            <dd>
+                                <span class="param-type"><code>Array</code></span>
+                            </dd>
+                        </dl>
+                        <div class="param-desc">
+                            Valeurs uniques se trouvant dans cette colonne.
+                        </div>
+                    </div>
+                </div>
+                <div class="section-method">
+                    <h4 class="name" id="userQuery"><span class="type-signature"></span>userQuery<span
+                            class="signature">(message, test)</span><span class="type-signature"> &rarr; {string}</span>
+                    </h4>
+                    <div class="description">
+                        Récupère une entrée de l'utilisateur en ouvrant une fenêtre.
+                        Si l'argument message contient une clé 'incorrectInput' l'entrée sera testée et demandée à
+                        nouveau jusqu'à ce qu'elle soit validée.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="tools.js.html">tools.js</a>, <a href="tools.js.html#line98">line 98</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>message</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>Object</code></span>
+                                </td>
+                                <td class="description last">
+                                    Object décrivant les messages à afficher: titre de la fenêtre, question à poser et
+                                    message indiquant une entrée non valide (ce dernier est optionnel).
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>test</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>function</code></span>
+                                </td>
+                                <td class="description last">
+                                    Fonction booléenne permettant de tester l'entrée.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section-returns">
+                        <h5>Returns:</h5>
+                        <dl class="param-type">
+                            <dt>
+                                Type:
+                            </dt>
+                            <dd>
+                                <span class="param-type"><code>string</code></span>
+                            </dd>
+                        </dl>
+                        <div class="param-desc">
+                            Réponse de l'utilisateur.
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </div>
+    <br class="clear">
+    <footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
+        <div class="container">
+            <p class="float-end"><a href="#">Retour en haut</a></p>
+            <ul class="bd-footer-links ps-0 mb-3">
+                <li class="d-inline-block"><a
+                        href="https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app">Documentation
+                        Google</a></li>
+            </ul>
+            <p class="mb-0">Ponts Études Projets &middot; Pôle Qualité &middot; mandat 022</a></p>
+        </div>
+    </footer>
+    <script>
+        prettyPrint();
+    </script>
+    <script src="scripts/linenumber.js"></script>
+</body>
+
+</html>
