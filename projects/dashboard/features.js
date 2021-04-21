@@ -2,18 +2,29 @@
 
 // Features aiming at interfacing the generation of KPI with other tools from the G-Suite
 
-// Send a mail to designated adress
-function sendMail(adress, htmlOutput, subject, attachments) {
+/**
+ * Envoi des graphes (en pièces jointes, sous format .png) à l'adresse mail spécifiée.
+ * @param {string} address - Adresse mail de destination.
+ * @param {HtmlOutput} htmlOutput - Contenu Html à faire parvenir.
+ * @param {string} subject - Objet du mail.
+ * @param {Object} attachments - Pièces jointes du mail (sous forme d'Object car les KPI sont groupés par catégorie).
+ */
+function sendMail(address, htmlOutput, subject, attachments) {
     let msgHtml = htmlOutput.getContent(),
         msgPlain = htmlOutput.getContent().replace(/\<br\/\>/gi, '\n').replace(/(<([^>]+)>)/ig, "");
-    GmailApp.sendEmail(adress, subject, msgPlain, {
+    GmailApp.sendEmail(address, subject, msgPlain, {
         htmlBody: msgHtml,
-        attachments: attachments
+        attachments: [].concat(...Object.values(attachments))
     });
     ui.alert("Envoi des diagrammes par mail", `Les diagrammes ont été envoyés par mail à : ${adress}.`, ui.ButtonSet.OK);
 }
 
-// Save data in designated Drive folder
+/**
+ * Enregistrement des graphes (sous format .png) dans un sous dossier daté à la date d'aujourd'hui du dossier spécifié
+ * (par défaut dans Pôle Qualité -> KPI -> KPI archivés).
+ * @param {Object} imageBlobs - Object dont les valeurs sont des Array de blobs correspondant aux images des graphes.
+ * @param {string} folderId - ID du fichier de destination.
+ */
 function saveOnDrive(imageBlobs, folderId) {
     try {
         displayLoadingScreen("Enregistrement des images sur le Drive..");
@@ -34,9 +45,15 @@ function saveOnDrive(imageBlobs, folderId) {
     }
 }
 
-// Generating a Slides file using the charts listed in the array named charts
 // NB1: many values are hardcoded here, do not put them in the parameters file, these are not parameters and won't come to change
 // NB2: many suppositions are made on the template (and on its predefined layout), this won't work on any template
+/**
+ * Génération d'un fichier Slides à partir d'un template et d'un ensemble d'images,
+ * enregistré dans le dossier spécifié (par défaut dans Pôle Qualité -> KPI -> KPI archivés).
+ * @param {string} template - ID du fichier Slides qui servira de template.
+ * @param {Object} chartImages - Object dont les valeurs sont des Array de blobs (titrés) correspondant aux images des graphes.
+ * @param {string} folderId - ID du dossier Drive dans lequel seront enregistrées les slides.
+ */
 function generateSlides(template, chartImages, folderId) {
     displayLoadingScreen("Génération des slides..");
 

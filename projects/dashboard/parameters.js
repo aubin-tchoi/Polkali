@@ -5,7 +5,11 @@
 const ui = SpreadsheetApp.getUi(),
 
     /* ----- Paramètres d'affichage ----- */
-    // Couleurs des graphes
+    /** 
+     * Couleurs des graphes
+     * @constant
+     * @readonly
+     */
     COLORS = Object.freeze({
         plum: "#934683",
         wildOrchid: "#D66BA0",
@@ -17,20 +21,42 @@ const ui = SpreadsheetApp.getUi(),
         grey: "#404040",
         lightGrey: "#A29386"
     }),
-    // Dimensions des graphes
+    /**
+     * Couleurs des graphes (version Anatole)
+     * @constant
+     * @readonly
+     */
+    COLORS_ANATOLE_2COLUMNS = Object.freeze(["#8e3232", "#561E1E"]),
+    COLORS_ANATOLE = Object.freeze([
+        "#4472C4", "#954F72", "#C00000", "#ED7D31", "#FFC000", "#70AD47", "#264478", "#592F44", "#730000",
+        "#9E480E", "#997300", "#43682B", "#698ED0", "#B16C8E", "#FF0101", "#F1975A", "#FFCD33", "#8CC168"
+    ]),
+    /** 
+     * Dimensions des graphes
+     * @constant
+     * @readonly
+     */
     DIMS = {
         width: 1000,
         height: 400
     },
-    // Liens vers différentes images/gif
+    /** 
+     * Liens vers différentes images/gif
+     * @constant
+     * @readonly
+     */
     IMGS = {
         loadingScreen: "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/loadingScreen.gif",
         thumbsUp: "https://raw.githubusercontent.com/aubin-tchoi/Polkali/main/images/thumbsUp.png"
     },
-    // Contenu HTML (mail, affichage des KPI et écran de chargement)
+    /** 
+     * Contenu HTML (mail, affichage des KPI et écran de chargement)
+     * @constant
+     * @readonly
+     */
     HTML_CONTENT = {
         display: HtmlService
-            .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">&nbsp; &nbsp; Voici quelques KPI représentant l'activité de la JE :<br/></span> </span> <br/>`)
+            .createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">&nbsp; &nbsp; Voici quelques KPI représentant l'activité de la JE :</span> </span>`)
             .setWidth(1015)
             .setHeight(515),
         mail: HtmlService.createHtmlOutput(`<span style='font-size: 12pt;'> <span style="font-family: 'roboto', sans-serif;">&nbsp; &nbsp; Bonjour, <br/><br/>Voici les KPI portant sur la prospection.<br/> <br/>Bonne journée !</span> </span>`),
@@ -43,6 +69,11 @@ const ui = SpreadsheetApp.getUi(),
             .setWidth(450)
             .setHeight(280)
     },
+    /** 
+     * Titres des slides de transition
+     * @constant
+     * @readonly
+     */
     TITLES = {
         summary: "Bilan",
         contactTypology: "Typologie des contacts",
@@ -52,7 +83,11 @@ const ui = SpreadsheetApp.getUi(),
     },
 
     /* ----- Paramètres d'accès ----- */
-    // IDs et noms de sheets
+    /**  
+     * IDs et noms de sheets
+     * @constant
+     * @readonly
+     */
     ADDRESSES = Object.freeze({
         prospectionId: "1lJhJuZxUt_8_mVLXe5tazXPrb2Z3wr0M49rho974sNQ",
         prospectionName: "Suivi",
@@ -61,7 +96,11 @@ const ui = SpreadsheetApp.getUi(),
         driveId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy",
         slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU"
     }),
-    // Header des fichiers de données
+    /**  
+     * Header des fichiers de données
+     * @constant
+     * @readonly
+     */
     HEADS = Object.freeze({
         entreprise: "Entreprise",
         premierContact: "Premier contact",
@@ -76,21 +115,34 @@ const ui = SpreadsheetApp.getUi(),
         JEH: "Nb JEH",
         concurrence: "Autres JE en concurrence",
         domaine: "Domaine de compétence",
-        secteur: "Secteur du Client"
+        secteur: "Secteur du Client",
+        typeEntreprise: "Type d'entreprise"
     }),
-    // Différents états possible dans la prospection (dans le suivi de la prospection)
+    /**  
+     * Différents états possible dans la prospection (dans le suivi de la prospection)
+     * @constant
+     * @readonly
+     */
     ETAT_PROSP = Object.freeze({
         rdv: "Premier RDV réalisé",
         devis: "Devis rédigé et envoyé",
         negoc: "En négociation",
         etude: "Etude obtenue"
     }),
-    // États correspondant à un contact qui n'a pas abouti sur une étude (dans le suivi de la prospection)
+    /** 
+     * États correspondant à un contact qui n'a pas abouti sur une étude (dans le suivi de la prospection)
+     * @constant
+     * @readonly
+     */
     ETAT_PROSP_BIS = Object.freeze({
         sansSuite: "Sans suite",
         aRelancer: "A relancer",
     }),
-    // Différents types de contact
+    /** 
+     * Différents types de contact
+     * @constant
+     * @readonly
+     */
     CONTACT_TYPE = Object.freeze({
         quali: "Prospection quali ",
         spontané: "Contact spontané",
@@ -101,7 +153,11 @@ const ui = SpreadsheetApp.getUi(),
         redirectionQuali: "Redirection suite à la prospection quali ",
         redirectionClassique: "Redirection suite à la prospection classique "
     }),
-    // Différents états possible d'une étude (dans le suivi des études)
+    /** 
+     * Différents états possible d'une étude (dans le suivi des études)
+     * @constant
+     * @readonly
+     */
     ETAT_ETUDE = Object.freeze({
         negoc: "En négociation",
         redac: "En rédaction",
@@ -113,7 +169,11 @@ const ui = SpreadsheetApp.getUi(),
     }),
 
     /* ----- Paramètres portant sur les mois ----- */
-    // Index des mois à représenter
+    /** 
+     * Index des mois à représenter
+     * @constant
+     * @readonly
+     */
     MONTH_LIST = Object.freeze([{
             month: 1,
             year: 2020
@@ -179,11 +239,20 @@ const ui = SpreadsheetApp.getUi(),
             year: 2021
         }
     ]),
-    // Comment les mois sont écrits
+    /**
+     * Manière dont les mois sont écrits
+     * @constant
+     * @readonly
+     */
     MONTH_NAMES = Object.freeze(["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"]);
 
 
-// Enum used to choose the type of chart chosen
+/** 
+ * Enum utilisé pour identifier les différents types de graphes
+ * @enum {Symbol}
+ * @constant
+ * @readonly
+ */
 const CHART_TYPE = Object.freeze({
     COLUMN: Symbol("column"),
     PIE: Symbol("pie"),

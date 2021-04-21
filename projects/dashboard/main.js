@@ -1,10 +1,15 @@
 /* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
-/* Les commentaires sont en anglais à l'exception des parties sujettes à un accès fréquent
-  (pour ajouter un KPI ou paramètrer le script) qui sont en français. */
+/* Certains commentaires sont en anglais, d'autres en français.
+Si vous vous contenez à une modification en surface du code (ajout d'un KPI par exemple),
+vous devriez voir essentiellement des commentaires en français. */
 
 // Main file (triggers + main functions for KPI)
 
 /* ----- Triggers ----- */
+/**
+ * Fonction exécutée à l'ouverture du dashboard, permet la création du menu 'KPI'.
+ * @ignore
+ */
 function onOpen() {
   ui.createMenu('KPI')
     .addItem("Affichage des KPI", "displayKPI")
@@ -14,7 +19,9 @@ function onOpen() {
     .addToUi();
 }
 
-// Creates a monthly trigger on autoSaveKPI
+/**
+ * Fonction qui à l'exécution crée le trigger de sauvegarde automatique (a besoin d'être exécuté une seule fois).
+ */
 function installTrigger() {
   ScriptApp.newTrigger("autoSaveKPI")
     .timeBased()
@@ -23,6 +30,11 @@ function installTrigger() {
 }
 
 /* ------ KPI ----- */
+/**
+ * Fonction main - Génération des KPI, log régulièrement le temps écoulé entre chaque étape.
+ * Dans le return vous disposez des graphes dans les Objects charts (type Chart) et attachments (type Blob) ainsi que dans le htmlOutput.
+ * @returns {Object} Méthodes display, save, mail, slides qui correspondent chacune à une fonctionnalité associée aux KPI.
+ */
 function generateKPI() {
   // Initializing the time counter
   let currentTime = new Date();
@@ -30,6 +42,10 @@ function generateKPI() {
   displayLoadingScreen("Chargement des KPI..");
 
   // Initialization (names in franglish because why not)
+  /**
+   * Données sous forme d'Array d'Object
+   * (1 ligne correspond à une ligne du Sheets, les clés correspondent aux champs du header indiqués dans HEADS)
+   */
   let dataProspection = extractSheetData(ADDRESSES.prospectionId, ADDRESSES.prospectionName, {
       data: {
         x: 4,
@@ -55,10 +71,21 @@ function generateKPI() {
 
   currentTime = measureTime(currentTime, "extract data from the two sheets");
 
-  // Final outputs (displaying the charts on screen & mail content)
+  /**
+   * Output qui sera affiché lors du display (type HtmlOutput).
+   */
   let htmlOutput = HTML_CONTENT.display,
+    /** 
+     * Contenu Html du mail qui peut être envoyé sur demande dans le menu "Enregistrement des KPI".
+     */
     htmlMail = HTML_CONTENT.mail,
+    /**
+     * Object regroupant les blobs des graphes (au format .png) en différentes catégories décrites par les clés de l'Object.
+     */
     attachments = {},
+    /**
+     * Object regroupant les graphes (au type Chart) en différentes catégories décrites par les clés de l'Object.
+     */
     charts = {
       summary: [],
       contactTypology: [],
@@ -74,7 +101,9 @@ function generateKPI() {
 
   // KPI : Contacts par mois
   let [contactsTable, conversionChart] = contacts(dataProspection); // conversionChart is a 2D array : [month][number of contact in a given state]
-  charts.summary.push(createChart(CHART_TYPE.COLUMN, contactsTable, "Contacts"));
+  charts.summary.push(createChart(CHART_TYPE.COLUMN, contactsTable, "Contacts", {
+    colors: COLORS_ANATOLE
+  }));
 
   // KPI : Taux de conversion global par mois
   let conversionRateTable = conversionRate(conversionChart);
@@ -98,17 +127,22 @@ function generateKPI() {
 
   // KPI : Répartition des contacts par type
   let contactTypeTable = contactType(dataProspection);
-  charts.contactTypology.push(createChart(CHART_TYPE.PIE, contactTypeTable, "Type de contact"));
+  charts.contactTypology.push(createChart(CHART_TYPE.PIE, contactTypeTable, "Type de contact", {
+    colors: COLORS_ANATOLE
+  }));
 
   // KPI : Taux de conversion par type de contact
   let conversionRateByContactTable = conversionRateByContact(dataProspection);
   charts.contactTypology.push(createChart(CHART_TYPE.COLUMN, conversionRateByContactTable, "Taux de conversion par type de contact", {
+    colors: COLORS_ANATOLE_2COLUMNS,
     percent: true
   }));
 
   // KPI : Répartition des contacts par domaine de compétence
   let contactByDomainTable = contactByDomain(dataProspection.filter(row => row[HEADS.domaine] != ""));
-  charts.contactTypology.push(createChart(CHART_TYPE.PIE, contactByDomainTable, "Répartition des contacts par domaine de compétence"));
+  charts.contactTypology.push(createChart(CHART_TYPE.PIE, contactByDomainTable, "Répartition des contacts par domaine de compétence", {
+    colors: COLORS_ANATOLE
+  }));
 
 
   // ----- CONCURRENCE AVEC D'AUTRES JE
@@ -150,13 +184,29 @@ function generateKPI() {
 
   // ----- MESURE DES DIFFERENTES CONTRIBUTIONS AU CA -----
 
+  // KPI : nombre d'études, CA par type d'entreprise
+  let performanceByCompanyTypeTable = performanceByCompanyType(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
+  charts.contributions.push(createChart(CHART_TYPE.COLUMN, performanceByCompanyTypeTable, "Performance par type d'entreprise", {
+    colors: COLORS_ANATOLE_2COLUMNS
+  }));
+
+  // KPI : Proportion du CA venant de chaque type d'entreprise
+  let turnoverByCompanyTypeTable = turnoverByCompanyType(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
+  charts.contributions.push(createChart(CHART_TYPE.PIE, turnoverByCompanyTypeTable, "Proportion du CA venant de chaque type d'entreprise", {
+    colors: COLORS_ANATOLE
+  }));
+
   // KPI : nombre d'études, CA par secteur
   let performanceBySectorTable = performanceBySector(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
-  charts.contributions.push(createChart(CHART_TYPE.COLUMN, performanceBySectorTable, "Performance par secteur"));
+  charts.contributions.push(createChart(CHART_TYPE.COLUMN, performanceBySectorTable, "Performance par secteur", {
+    colors: COLORS_ANATOLE_2COLUMNS
+  }));
 
   // KPI : Proportion du CA venant de chaque secteur
   let turnoverBySectorTable = turnoverBySector(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
-  charts.contributions.push(createChart(CHART_TYPE.PIE, turnoverBySectorTable, "Proportion du CA venant de chaque secteur"));
+  charts.contributions.push(createChart(CHART_TYPE.PIE, turnoverBySectorTable, "Proportion du CA venant de chaque secteur", {
+    colors: COLORS_ANATOLE
+  }));
 
   // KPI : Proportion du CA due aux alumni
   let alumniContributionTable = alumniContribution(dataEtudes);
@@ -189,21 +239,35 @@ function generateKPI() {
 
   // Returning functions within an Object for later use, all functions are manually decorated with an execution time logger
   return {
+    /**
+     * Ouvre une fenêtre sur le dashboard et y affiche les graphes.
+     */
     display: function () {
       let initialTime = new Date();
       ui.showModalDialog(htmlOutput, "KPI");
       measureTime(initialTime, "display the charts");
     },
+    /**
+     * Enregistre les graphes sous forme d'images (au format .png) dans le dossier spécifié (par défaut dans Pôle Qualité -> KPI -> KPI archivés).
+     * @param {string} folderId ID du dossier de destination.
+     */
     save: function (folderId = ADDRESSES.driveId) {
       let initialTime = new Date();
       saveOnDrive(attachments, folderId);
       measureTime(initialTime, "save the charts");
     },
-    mail: function (adress) {
+    /**
+     * Envoie par mail les graphes sous forme d'images (au format .png) à l'adresse spécifiée.
+     * @param {string} address Adresse mail du destinataire.
+     */
+    mail: function (address) {
       let initialTime = new Date();
-      sendMail(adress, htmlMail, "KPI", attachments);
+      sendMail(address, htmlMail, "KPI", attachments);
       measureTime(initialTime, "mail the charts");
     },
+    /**
+     * Crée un fichier Slides (il s'agit du Point KPI) contenant les KPI regroupés par catégorie.
+     */
     slides: function () {
       let initialTime = new Date();
       generateSlides(ADDRESSES.slidesTemplate, attachments, folderId = ADDRESSES.driveId);
@@ -212,13 +276,18 @@ function generateKPI() {
   }
 }
 
-// Displaying the graphs (through a menu in the sheet)
+/**
+ * Affichage des KPI dans le dashboard. Reliée à l'item "Affichage des KPI" dans le menu "KPI".
+ */
 function displayKPI() {
   let KPI = generateKPI();
   KPI.display();
 }
 
-// Saving the graphs (through a menu in the sheet)
+/**
+ * Enregistre les graphes sous forme d'images (au format .png) dans le dossier spécifié (par défaut dans Pôle Qualité -> KPI -> KPI archivés)
+ * puis les envoie par mail à l'adresse spécifiée. Reliée à l'item "Enregistrement des KPI" dans le menu "KPI".
+ */
 function saveKPI() {
   // Prompts and alerts should be made before any time-consuming operation (to make it so users can enter any required information and then leave)
   let mailResults = ui.alert("Envoi des diagrammes par mail", "Souhaitez vous recevoir les diagrammes par mail ?", ui.ButtonSet.YES_NO) == ui.Button.YES,
@@ -243,13 +312,19 @@ function saveKPI() {
   KPI.display();
 }
 
-// Saving the graphs automatically (linked to a monthly trigger)
+/**
+ * Enregistre les graphes sous forme d'images (au format .png) dans Pôle Qualité -> KPI -> KPI archivés.
+ * Reliée à un trigger mensuel (le 11 du mois).
+ */
 function autoSaveKPI() {
   let KPI = generateKPI();
   KPI.save();
 }
 
-// Saving the graphs + creating slides to present them (through a menu in the sheet)
+/**
+ * Crée un fichier Slides (il s'agit du Point KPI) contenant les KPI regroupés par catégorie,
+ * il se trouvera dans Pôle Qualité -> KPI -> KPI archivés. Reliée à l'item "Préparation du CA" dans le menu "KPI".
+ */
 function prepCA() {
   let KPI = generateKPI();
   KPI.slides();

@@ -212,7 +212,7 @@ function turnoverBySector(data) {
     // Rows
     let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
     uniqueValues(HEADS.secteur, data).forEach(currentSector => {
-        dataTable.addRow([currentSector, prcnt(data.filter(row => row[HEADS.secteur] == currentSector).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)])
+        dataTable.addRow([currentSector, prcnt(data.filter(row => row[HEADS.secteur] == currentSector).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
     });
     return dataTable;
 }
@@ -226,7 +226,35 @@ function performanceBySector(data) {
     dataTable.addColumn(Charts.ColumnType.NUMBER, "CA (en milliers d'€)");
     // Rows
     uniqueValues(HEADS.secteur, data).forEach(currentSector => {
-        dataTable.addRow([currentSector, data.filter(row => row[HEADS.secteur] == currentSector).length, data.filter(row => row[HEADS.secteur] == currentSector).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000])
+        dataTable.addRow([currentSector, data.filter(row => row[HEADS.secteur] == currentSector).length, data.filter(row => row[HEADS.secteur] == currentSector).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000]);
+    });
+    return dataTable;
+}
+
+// Performance par type d'entreprise
+function performanceByCompanyType(data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, "Type d'entreprise");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "CA (en milliers d'€)");
+    // Rows
+    uniqueValues(HEADS.typeEntreprise, data).forEach(currentType => {
+        dataTable.addRow([currentType, data.filter(row => row[HEADS.typeEntreprise] == currentType).length, data.filter(row => row[HEADS.typeEntreprise] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000]);
+    });
+    return dataTable;
+}
+
+// Proportion du CA venant de chaque type d'entreprise
+function turnoverByCompanyType(data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, "Type d'entreprise");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
+    // Rows
+    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
+    uniqueValues(HEADS.typeEntreprise, data).forEach(currentType => {
+        dataTable.addRow([currentType, prcnt(data.filter(row => row[HEADS.typeEntreprise] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
     });
     return dataTable;
 }
