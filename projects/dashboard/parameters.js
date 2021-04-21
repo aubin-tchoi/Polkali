@@ -26,11 +26,11 @@ const ui = SpreadsheetApp.getUi(),
      * @constant
      * @readonly
      */
-    COLORS_ANATOLE_2COLUMNS = Object.freeze(["#8e3232", "#561E1E"]),
-    COLORS_ANATOLE = Object.freeze([
+    COLORS_OFFICE = Object.freeze([
         "#4472C4", "#954F72", "#C00000", "#ED7D31", "#FFC000", "#70AD47", "#264478", "#592F44", "#730000",
         "#9E480E", "#997300", "#43682B", "#698ED0", "#B16C8E", "#FF0101", "#F1975A", "#FFCD33", "#8CC168"
     ]),
+    COLORS_DUO = Object.freeze(["#8e3232", "#561E1E"]),
     /** 
      * Dimensions des graphes
      * @constant

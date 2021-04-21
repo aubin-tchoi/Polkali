@@ -100,60 +100,60 @@ function generateKPI() {
   // ----- BILAN PROSPECTION -----
 
   // KPI : Contacts par mois
-  let [contactsTable, conversionChart] = contacts(dataProspection); // conversionChart is a 2D array : [month][number of contact in a given state]
-  charts.summary.push(createChart(CHART_TYPE.COLUMN, contactsTable, "Contacts", {
-    colors: COLORS_ANATOLE
+  let [dataTable, conversionChart] = contacts(dataProspection); // conversionChart is a 2D array : [month][number of contact in a given state]
+  charts.summary.push(createChart(CHART_TYPE.COLUMN, dataTable, "Contacts", {
+    colors: COLORS_OFFICE
   }));
 
   // KPI : Taux de conversion global par mois
-  let conversionRateTable = conversionRate(conversionChart);
-  charts.summary.push(createChart(CHART_TYPE.LINE, conversionRateTable, "Taux de conversion global", {
+  dataTable = conversionRateOverTime(conversionChart);
+  charts.summary.push(createChart(CHART_TYPE.LINE, dataTable, "Taux de conversion global", {
     colors: [COLORS.burgundy]
   }));
 
   // KPI : Taux de conversion entre chaque étape
-  let conversionRateByTypeTable = conversionRateByType(conversionChart);
-  charts.summary.push(createChart(CHART_TYPE.COLUMN, conversionRateByTypeTable, "Taux de conversion sur chaque étape", {
+  dataTable = conversionRateByType(conversionChart);
+  charts.summary.push(createChart(CHART_TYPE.COLUMN, dataTable, "Taux de conversion sur chaque étape", {
     colors: [COLORS.burgundy],
     percent: true
   }));
 
   // KPI : CA
-  /* let turnoverTable = turnover(dataProspection);
-  charts.summary.push(createColumnChart(turnoverTable, Object.values(COLORS), "Chiffre d'affaires", DIMS)); */
+  /* dataTable = turnover(dataProspection);
+  charts.summary.push(createColumnChart(dataTable, Object.values(COLORS), "Chiffre d'affaires", DIMS)); */
 
 
   // ----- TYPOLOGIE DES CONTACTS -----
 
   // KPI : Répartition des contacts par type
-  let contactTypeTable = contactType(dataProspection);
-  charts.contactTypology.push(createChart(CHART_TYPE.PIE, contactTypeTable, "Type de contact", {
-    colors: COLORS_ANATOLE
+  dataTable = totalDistribution(HEADS.typeContact, dataProspection);
+  charts.contactTypology.push(createChart(CHART_TYPE.PIE, dataTable, "Type de contact", {
+    colors: COLORS_OFFICE
   }));
 
   // KPI : Taux de conversion par type de contact
-  let conversionRateByContactTable = conversionRateByContact(dataProspection);
-  charts.contactTypology.push(createChart(CHART_TYPE.COLUMN, conversionRateByContactTable, "Taux de conversion par type de contact", {
-    colors: COLORS_ANATOLE_2COLUMNS,
+  dataTable = conversionRate(HEADS.typeContact, dataProspection);
+  charts.contactTypology.push(createChart(CHART_TYPE.COLUMN, dataTable, "Taux de conversion par type de contact", {
+    colors: COLORS_DUO,
     percent: true
   }));
 
   // KPI : Répartition des contacts par domaine de compétence
-  let contactByDomainTable = contactByDomain(dataProspection.filter(row => row[HEADS.domaine] != ""));
-  charts.contactTypology.push(createChart(CHART_TYPE.PIE, contactByDomainTable, "Répartition des contacts par domaine de compétence", {
-    colors: COLORS_ANATOLE
+  dataTable = totalDistribution(HEADS.domaine, dataProspection.filter(row => row[HEADS.domaine] != ""));
+  charts.contactTypology.push(createChart(CHART_TYPE.PIE, dataTable, "Répartition des contacts par domaine de compétence", {
+    colors: COLORS_OFFICE
   }));
 
 
   // ----- CONCURRENCE AVEC D'AUTRES JE
 
   // KPI : Contacts qui sont en lien avec d'autres JE
-  /*let [contactsConcurrenceTable, conversionConcurrenceChart] = contacts(dataProspection.filter(row => row[HEADS.concurrence] || false));
-  charts.competitiveness.push(createChart(CHART_TYPE.COLUMN, contactsConcurrenceTable, "Contacts en lien avec d'autres JE")); */
+  /*let [dataTable, conversionConcurrenceChart] = contacts(dataProspection.filter(row => row[HEADS.concurrence] || false));
+  charts.competitiveness.push(createChart(CHART_TYPE.COLUMN, dataTable, "Contacts en lien avec d'autres JE")); */
 
   // KPI : Taux de conversion en concurrence
-  /* let conversionRateConcurrenceTable = conversionRateByType(conversionConcurrenceChart);
-  charts.competitiveness.push(createChart(CHART_TYPE.COLUMN, conversionRateConcurrenceTable, "Taux de conversion sur chaque étape (en situation de concurrence)", {
+  /* dataTable = conversionRateByType(conversionConcurrenceChart);
+  charts.competitiveness.push(createChart(CHART_TYPE.COLUMN, dataTable, "Taux de conversion sur chaque étape (en situation de concurrence)", {
     colors: [COLORS.burgundy],
     percent: true
   })); */
@@ -162,61 +162,63 @@ function generateKPI() {
   // ----- PERFORMANCE SELON LA TAILLE DES ETUDES -----
 
   // KPI : Nombre d'étude pour différents intervalles de prix
-  let priceRangeTable = priceRange(dataEtudes.filter(row => row[HEADS.prix] != ""), 500, 4500, 8);
-  charts.sizeComparison.push(createChart(CHART_TYPE.COLUMN, priceRangeTable, "Nombre d'études par tranche de prix", {
+  dataTable = priceRange(dataEtudes.filter(row => row[HEADS.prix] != ""), 500, 4500, 8);
+  charts.sizeComparison.push(createChart(CHART_TYPE.COLUMN, dataTable, "Nombre d'études par tranche de prix (en €)", {
     colors: [COLORS.burgundy]
   }));
 
   // KPI : Nombre d'étude pour différents intervalles de prix
-  let [JEHRangeTable, JEHTicks] = JEHRange(dataEtudes.filter(row => row[HEADS.JEH] != ""));
-  charts.sizeComparison.push(createChart(CHART_TYPE.COLUMN, JEHRangeTable, "Nombre d'études par nombre de JEHs", {
+  let [dataTablebis, ticks] = numberOfMissions(HEADS.JEH, dataEtudes.filter(row => row[HEADS.JEH] != ""));
+  charts.sizeComparison.push(createChart(CHART_TYPE.COLUMN, dataTablebis, "Nombre d'études par nombre de JEHs", {
     colors: [COLORS.burgundy],
-    hticks: JEHTicks
+    hticks: ticks
   }));
 
   // KPI : Nombre d'étude pour différents intervalles de prix
-  let [lengthRangeTable, lengthTicks] = lengthRange(dataEtudes.filter(row => row[HEADS.durée] != ""));
-  charts.sizeComparison.push(createChart(CHART_TYPE.COLUMN, lengthRangeTable, "Nombre d'études par durée d'étude (en nombre de semaines)", {
+  [dataTablebis, ticks] = numberOfMissions(HEADS.durée, dataEtudes.filter(row => row[HEADS.durée] != ""));
+  charts.sizeComparison.push(createChart(CHART_TYPE.COLUMN, dataTablebis, "Nombre d'études par durée d'étude (en nombre de semaines)", {
     colors: [COLORS.burgundy],
-    hticks: lengthTicks
+    hticks: ticks
   }));
 
 
   // ----- MESURE DES DIFFERENTES CONTRIBUTIONS AU CA -----
 
   // KPI : nombre d'études, CA par type d'entreprise
-  let performanceByCompanyTypeTable = performanceByCompanyType(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
-  charts.contributions.push(createChart(CHART_TYPE.COLUMN, performanceByCompanyTypeTable, "Performance par type d'entreprise", {
-    colors: COLORS_ANATOLE_2COLUMNS
+  [dataTable, ticks] = performance(HEADS.secteur, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
+  charts.contributions.push(createChart(CHART_TYPE.COLUMN, dataTable, "Performance par type d'entreprise", {
+    colors: COLORS_DUO,
+    vticks: ticks
   }));
 
   // KPI : Proportion du CA venant de chaque type d'entreprise
-  let turnoverByCompanyTypeTable = turnoverByCompanyType(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
-  charts.contributions.push(createChart(CHART_TYPE.PIE, turnoverByCompanyTypeTable, "Proportion du CA venant de chaque type d'entreprise", {
-    colors: COLORS_ANATOLE
+  dataTable = turnoverDistribution(HEADS.typeEntreprise, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
+  charts.contributions.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA venant de chaque type d'entreprise", {
+    colors: COLORS_OFFICE
   }));
 
   // KPI : nombre d'études, CA par secteur
-  let performanceBySectorTable = performanceBySector(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
-  charts.contributions.push(createChart(CHART_TYPE.COLUMN, performanceBySectorTable, "Performance par secteur", {
-    colors: COLORS_ANATOLE_2COLUMNS
+  [dataTable, ticks] = performance(HEADS.secteur, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
+  charts.contributions.push(createChart(CHART_TYPE.COLUMN, dataTable, "Performance par secteur", {
+    colors: COLORS_DUO,
+    vticks: ticks
   }));
 
   // KPI : Proportion du CA venant de chaque secteur
-  let turnoverBySectorTable = turnoverBySector(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
-  charts.contributions.push(createChart(CHART_TYPE.PIE, turnoverBySectorTable, "Proportion du CA venant de chaque secteur", {
-    colors: COLORS_ANATOLE
+  dataTable = turnoverDistribution(HEADS.secteur, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
+  charts.contributions.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA venant de chaque secteur", {
+    colors: COLORS_OFFICE
   }));
 
   // KPI : Proportion du CA due aux alumni
-  let alumniContributionTable = alumniContribution(dataEtudes);
-  charts.contributions.push(createChart(CHART_TYPE.PIE, alumniContributionTable, "Proportion du CA due aux alumni", {
+  dataTable = turnoverDistributionBinary(HEADS.alumni, dataEtudes);
+  charts.contributions.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA due aux alumni", {
     colors: [COLORS.pine, COLORS.silverPink]
   }));
 
   // KPI : Proportion du CA venant de la prospection
-  let prospectionTurnoverTable = prospectionTurnover(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude));
-  charts.contributions.push(createChart(CHART_TYPE.PIE, prospectionTurnoverTable, "Proportion du CA venant de la prospection", {
+  dataTable = prospectionTurnover(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude));
+  charts.contributions.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA venant de la prospection", {
     colors: [COLORS.pine, COLORS.silverPink]
   }));
 

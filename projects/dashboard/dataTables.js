@@ -2,6 +2,127 @@
 
 // Extracting data from an array of Objects and returning a dataTable
 
+/**
+ * Calcul de la réparition des contacts selon la colonne dont le nom est spécifié.
+ * @param {string} key Nom de la colonne selon laquelle sera effectuée la répartition.
+ * @param {Array} data Données d'entrée.
+ * @returns {DataTabke} Table des données permettant de créer le graphe correspondant.
+ */
+function totalDistribution(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, key);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion des contacts");
+    // Rows
+    uniqueValues(key, data).forEach(type => {
+        dataTable.addRow([type, data.filter(row => row[key] == type).length / data.length]);
+    });
+    return dataTable;
+}
+
+/**
+ * Calcul de la répartition du CA selon les valeurs présentes dans une colonne du fichier de suivi de la prospection (transposable au suivi d'étude en remplaçant caPot en prix).
+ * @param {string} key Nom de la colonne selon laquelle sera évaluée la répartition du CA.
+ * @param {Array} data Données d'entrée.
+ * @returns {DataTable} Table des données permettant de créer le graphe correspondant.
+ */
+function turnoverDistribution(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, key);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
+    // Rows
+    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
+    uniqueValues(key, data).forEach(currentType => {
+        dataTable.addRow([currentType, prcnt(data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
+    });
+    return dataTable;
+}
+
+/**
+ * Calcul du CA et du nombre d'études selon les valeurs présentes dans une colonne du fichier de suivi de la prospection (transposable au suivi d'étude en remplaçant caPot en prix).
+ * @param {string} key Nom de la colonne selon laquelle sera évaluée la performance de la JE.
+ * @param {Array} data Données d'entrée.
+ * @returns {Array} Table des données permettant de créer le graphe correspondant
+ * et tableau des valeurs à indiquer selon l'axe vertical.
+ */
+function performance(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, key);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "CA (en milliers d'€)");
+    // Rows
+    let maxTick = 0;
+    uniqueValues(key, data).forEach(currentType => {
+        maxTick = Math.max(maxTick, data.filter(row => row[key] == currentType).length, parseInt(data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000, 10) + 1);
+        dataTable.addRow([currentType, data.filter(row => row[key] == currentType).length, data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000]);
+    });
+    return [dataTable, Array.from(Array(maxTick + 1).keys())];
+}
+
+/**
+ * Calcul du nombre d'études selon les valeurs présente dans une colonne du fichier étudié.
+ * @param {string} key Nom de la colonne selon laquelle sera compté le nombre d'études.
+ * @param {Array} data Données d'entrée.
+ * @returns {Array} Table des données permettant de créer le graphe correspondant
+ * et tableau des valeurs à indiquer selon l'axe horizontal.
+ */
+ function numberOfMissions(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.NUMBER, key);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
+    // Rows
+    let lowerBound = Math.min(...data.map(row => parseInt(row[key], 10))),
+        higherBound = Math.max(...data.map(row => parseInt(row[key], 10)));
+    let values = Array.from(Array(higherBound - lowerBound + 1).keys()).map(number => number + lowerBound);
+    values.forEach(number => {
+        dataTable.addRow([number, data.filter(row => parseInt(row[HEADS.durée], 10) == number).length])
+    });
+    return [dataTable, values];
+}
+
+/**
+ * Calcul du taux de conversion décliné selon les différentes catégories présentes dans une colonne spécifiée (uniquement pour le suivi de la prospection).
+ * @param {string} key Nom de la colonne selon laquelle sera évalué le taux de conversion.
+ * @param {Array} data Données d'entrée.
+ * @returns {Array} Table des données permettant de créer le graphe correspondant.
+ */
+function conversionRate(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, key);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre de contacts");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Taux de conversion global");
+    // Rows
+    uniqueValues(key, data).forEach(function (type) {
+        let objFiltered = data.filter(row => row[key] == type),
+            conversionRate = prcnt(objFiltered.filter(row => row[HEADS.état] == ETAT_PROSP.etude).length, objFiltered.length);
+        dataTable.addRow([type, objFiltered.length, conversionRate]);
+    });
+    return dataTable;
+}
+
+/**
+ * Calcul de la répartition du CA selon les valeurs présentes dans une colonne du fichier de suivi de la prospection (transposable au suivi de la prospection en remplaçant prix par caPot).
+ * On suppose que la colonne contient des cases à cocher (deux catégories uniquement).
+ * @param {string} key Nom de la colonne selon laquelle sera évaluée la répartition du CA.
+ * @param {Array} data Données d'entrée.
+ * @returns {DataTable} Table des données permettant de créer le graphe correspondant.
+ */
+ function turnoverDistributionBinary(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, `${key}/Hors ${key}`);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
+    // Rows
+    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0);
+    dataTable.addRow([key, prcnt(data.filter(row => row[key] || false).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0), ca)]);
+    dataTable.addRow([`Hors ${key}`, prcnt(data.filter(row => !(row[key] || false)).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0), ca)]);
+    return dataTable;
+}
+
 // Répartition des contacts par mois
 function contacts(data) {
     let dataTable = Charts.newDataTable(),
@@ -34,8 +155,8 @@ function contacts(data) {
     return [dataTable, conversionChart];
 }
 
-// Taux de conversion
-function conversionRate(conversionChart) {
+// Taux de conversion global
+function conversionRateOverTime(conversionChart) {
     let dataTable = Charts.newDataTable();
     // Columns : month, all 3 conversion rates
     dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
@@ -47,7 +168,7 @@ function conversionRate(conversionChart) {
     return dataTable;
 }
 
-// Taux de conversion
+// Taux de conversion par étape
 function conversionRateByType(conversionChart) {
     let dataTable = Charts.newDataTable();
     // Columns : month, all 3 conversion rates
@@ -88,35 +209,6 @@ function turnover(data) {
     return dataTable;
 }
 
-// Répartition des contacts par type
-function contactType(data) {
-    // Creating a DataTable with the proportion of each contact type
-    let dataTable = Charts.newDataTable();
-    dataTable.addColumn(Charts.ColumnType.STRING, "Type de contact");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion");
-    Logger.log(`Valeurs uniques : ${uniqueValues(HEADS.typeContact, data)}`);
-    uniqueValues(HEADS.typeContact, data).forEach(function (type) {
-        dataTable.addRow([type, data.filter(row => row[HEADS.typeContact] == type).length / data.length]);
-    });
-    return dataTable;
-}
-
-// Taux de conversion pour chaque type de contact
-function conversionRateByContact(data) {
-    let dataTable = Charts.newDataTable();
-    // Columns : contactType, number of contacts and conversionRate
-    dataTable.addColumn(Charts.ColumnType.STRING, "Type de contact");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre de contacts");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Taux de conversion global");
-    // Rows
-    uniqueValues(HEADS.typeContact, data).forEach(function (type) {
-        let objFiltered = data.filter(row => row[HEADS.typeContact] == type),
-            conversionRate = prcnt(objFiltered.filter(row => row[HEADS.état] == ETAT_PROSP.etude).length, objFiltered.length);
-        dataTable.addRow([type, objFiltered.length, conversionRate]);
-    });
-    return dataTable;
-}
-
 // Répartition des prix des études
 function priceRange(data, lowerBound, higherBound, nbrRanges) {
     let dataTable = Charts.newDataTable();
@@ -132,64 +224,6 @@ function priceRange(data, lowerBound, higherBound, nbrRanges) {
     return dataTable;
 }
 
-// Nombre d'étude par nombre de JEH
-function JEHRange(data) {
-    let dataTable = Charts.newDataTable();
-    // Columns : number of missions for different price ranges
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre de JEH");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
-    // Rows : creating multiple ranges of prices
-    let lowerBound = Math.min(...data.map(row => parseInt(row[HEADS.JEH], 10))),
-        higherBound = Math.max(...data.map(row => parseInt(row[HEADS.JEH], 10)));
-    let JEHNumber = Array.from(Array(higherBound - lowerBound + 1).keys()).map(number => number + lowerBound);
-    JEHNumber.forEach(number => {
-        dataTable.addRow([number, data.filter(row => parseInt(row[HEADS.JEH], 10) == number).length])
-    });
-    return [dataTable, JEHNumber];
-}
-
-// Nombre d'étude par nombre de JEH
-function lengthRange(data) {
-    let dataTable = Charts.newDataTable();
-    // Columns : number of missions for different price ranges
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Durée (en nombre de semaines)");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
-    // Rows : creating multiple ranges of prices
-    let lowerBound = Math.min(...data.map(row => parseInt(row[HEADS.durée], 10))),
-        higherBound = Math.max(...data.map(row => parseInt(row[HEADS.durée], 10)));
-    let lengthNumber = Array.from(Array(higherBound - lowerBound + 1).keys()).map(number => number + lowerBound);
-    lengthNumber.forEach(number => {
-        dataTable.addRow([number, data.filter(row => parseInt(row[HEADS.durée], 10) == number).length])
-    });
-    return [dataTable, lengthNumber];
-}
-
-// Proportion du CA due aux alumni
-function alumniContribution(data) {
-    let dataTable = Charts.newDataTable();
-    // Columns
-    dataTable.addColumn(Charts.ColumnType.STRING, "Alumni/Non alumni");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
-    // Rows
-    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0);
-    dataTable.addRow(["Alumni", prcnt(data.filter(row => row[HEADS.alumni] || false).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0), ca)]);
-    dataTable.addRow(["Non Alumni", prcnt(data.filter(row => !(row[HEADS.alumni] || false)).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0), ca)]);
-    return dataTable;
-}
-
-// Répartition des contacts par secteur d'activité
-function contactByDomain(data) {
-    let dataTable = Charts.newDataTable();
-    // Columns
-    dataTable.addColumn(Charts.ColumnType.STRING, "Domaine de compétences");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion des contacts");
-    // Rows
-    uniqueValues(HEADS.domaine, data).forEach(currentDomain => {
-        dataTable.addRow([currentDomain, data.filter(row => row[HEADS.domaine] == currentDomain).length / data.length]);
-    });
-    return dataTable;
-}
-
 // Proportion du CA venant de la prospection
 function prospectionTurnover(data) {
     let dataTable = Charts.newDataTable();
@@ -200,61 +234,5 @@ function prospectionTurnover(data) {
     let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
     dataTable.addRow(["Prospection", prcnt(data.filter(row => !([CONTACT_TYPE.site, CONTACT_TYPE.spontané].includes(row[HEADS.typeContact]))).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
     dataTable.addRow(["Hors prospection", prcnt(data.filter(row => [CONTACT_TYPE.site, CONTACT_TYPE.spontané].includes(row[HEADS.typeContact])).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
-    return dataTable;
-}
-
-// Proportion du CA venant de chaque secteur
-function turnoverBySector(data) {
-    let dataTable = Charts.newDataTable();
-    // Columns
-    dataTable.addColumn(Charts.ColumnType.STRING, "Secteur");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
-    // Rows
-    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
-    uniqueValues(HEADS.secteur, data).forEach(currentSector => {
-        dataTable.addRow([currentSector, prcnt(data.filter(row => row[HEADS.secteur] == currentSector).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
-    });
-    return dataTable;
-}
-
-// Performance par secteur
-function performanceBySector(data) {
-    let dataTable = Charts.newDataTable();
-    // Columns
-    dataTable.addColumn(Charts.ColumnType.STRING, "Secteur");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "CA (en milliers d'€)");
-    // Rows
-    uniqueValues(HEADS.secteur, data).forEach(currentSector => {
-        dataTable.addRow([currentSector, data.filter(row => row[HEADS.secteur] == currentSector).length, data.filter(row => row[HEADS.secteur] == currentSector).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000]);
-    });
-    return dataTable;
-}
-
-// Performance par type d'entreprise
-function performanceByCompanyType(data) {
-    let dataTable = Charts.newDataTable();
-    // Columns
-    dataTable.addColumn(Charts.ColumnType.STRING, "Type d'entreprise");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "CA (en milliers d'€)");
-    // Rows
-    uniqueValues(HEADS.typeEntreprise, data).forEach(currentType => {
-        dataTable.addRow([currentType, data.filter(row => row[HEADS.typeEntreprise] == currentType).length, data.filter(row => row[HEADS.typeEntreprise] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000]);
-    });
-    return dataTable;
-}
-
-// Proportion du CA venant de chaque type d'entreprise
-function turnoverByCompanyType(data) {
-    let dataTable = Charts.newDataTable();
-    // Columns
-    dataTable.addColumn(Charts.ColumnType.STRING, "Type d'entreprise");
-    dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
-    // Rows
-    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
-    uniqueValues(HEADS.typeEntreprise, data).forEach(currentType => {
-        dataTable.addRow([currentType, prcnt(data.filter(row => row[HEADS.typeEntreprise] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
-    });
     return dataTable;
 }
