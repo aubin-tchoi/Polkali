@@ -241,35 +241,21 @@ function generateKPI() {
 
   // Returning functions within an Object for later use, all functions are manually decorated with an execution time logger
   return {
-    /**
-     * Ouvre une fenêtre sur le dashboard et y affiche les graphes.
-     */
     display: function () {
       let initialTime = new Date();
       ui.showModalDialog(htmlOutput, "KPI");
       measureTime(initialTime, "display the charts");
     },
-    /**
-     * Enregistre les graphes sous forme d'images (au format .png) dans le dossier spécifié (par défaut dans Pôle Qualité -> KPI -> KPI archivés).
-     * @param {string} folderId ID du dossier de destination.
-     */
     save: function (folderId = ADDRESSES.driveId) {
       let initialTime = new Date();
       saveOnDrive(attachments, folderId);
       measureTime(initialTime, "save the charts");
     },
-    /**
-     * Envoie par mail les graphes sous forme d'images (au format .png) à l'adresse spécifiée.
-     * @param {string} address Adresse mail du destinataire.
-     */
     mail: function (address) {
       let initialTime = new Date();
       sendMail(address, htmlMail, "KPI", attachments);
       measureTime(initialTime, "mail the charts");
     },
-    /**
-     * Crée un fichier Slides (il s'agit du Point KPI) contenant les KPI regroupés par catégorie.
-     */
     slides: function () {
       let initialTime = new Date();
       generateSlides(ADDRESSES.slidesTemplate, attachments, folderId = ADDRESSES.driveId);
