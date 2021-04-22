@@ -171,7 +171,7 @@
                             <tr>
                                 <td class="name"><code>htmlOutput</code></td>
                                 <td class="type">
-                                    <span class="param-type"><code>HtmlOutput</code></span>
+                                    <span class="param-type"><code><a href="https://developers.google.com/apps-script/reference/html/html-output?hl=en">HtmlOutput</a></code></span>
                                 </td>
                                 <td class="description last">
                                     Contenu html à modifier.
@@ -186,7 +186,7 @@
                             class="signature">(chart, title, htmlOutput, attachments)</span><span
                             class="type-signature"></span></h4>
                     <div class="description">
-                        Conversion d'un graphe de type Chart en une image qui sera ajoutée à un HtmlOutput ainsi qu'à
+                        Conversion d'un graphe de type <a href="https://developers.google.com/apps-script/reference/charts/chart?hl=en">Chart</a> en une image qui sera ajoutée à un HtmlOutput ainsi qu'à
                         une liste.
                     </div>
                     <dl class="details">
@@ -213,7 +213,7 @@
                             <tr>
                                 <td class="name"><code>chart</code></td>
                                 <td class="type">
-                                    <span class="param-type"><code>Chart</code></span>
+                                    <span class="param-type"><code><a href="https://developers.google.com/apps-script/reference/charts/chart?hl=en">Chart</a></code></span>
                                 </td>
                                 <td class="description last">
                                     Graphe.
@@ -231,7 +231,7 @@
                             <tr>
                                 <td class="name"><code>htmlOutput</code></td>
                                 <td class="type">
-                                    <span class="param-type"><code>HtmlOutput</code></span>
+                                    <span class="param-type"><code><a href="https://developers.google.com/apps-script/reference/html/html-output?hl=en">HtmlOutput</a></code></span>
                                 </td>
                                 <td class="description last">
                                     Contenu html qui servira à afficher les graphes à l'écran.
@@ -359,11 +359,9 @@
                             <dd>
                                 <span class="param-type"><code>Array</code></span>
                             </dd>
-                        </dl>
-                        <div class="param-desc">
-                            Array d'Object décrivant l'ensemble des données extraites (1 ligne correspond à une ligne du
+                            - Array d'Object décrivant l'ensemble des données extraites (1 ligne correspond à une ligne du
                             fichier et les clés sont alors les valeurs du header).
-                        </div>
+                        </dl>
                     </div>
                 </div>
                 <div class="section-method">
@@ -371,7 +369,7 @@
                             class="type-signature"></span>manuallyGetRowNumber<span class="signature">(sheet, start,
                             trustColumn)</span><span class="type-signature"> &rarr; {number}</span></h4>
                     <div class="description">
-                        Renvoie le nombre de lignes non-vide dans un Sheet (pas toujours possible avec getLastRow à
+                        Renvoie le nombre de lignes non-vide dans un <a href="https://developers.google.com/apps-script/reference/spreadsheet/sheet?hl=en">Sheet</a> (pas toujours possible avec <a href="https://developers.google.com/apps-script/reference/spreadsheet/sheet?hl=en#getLastRow()">getLastRow</a> à
                         cause de la validation des données).
                     </div>
                     <dl class="details">
@@ -398,7 +396,7 @@
                             <tr>
                                 <td class="name"><code>sheet</code></td>
                                 <td class="type">
-                                    <span class="param-type"><code>Sheet</code></span>
+                                    <span class="param-type"><code><a href="https://developers.google.com/apps-script/reference/spreadsheet/sheet?hl=en">Sheet</a></code></span>
                                 </td>
                                 <td class="description last">
                                     Onglet du sheet à considérer.
@@ -434,10 +432,8 @@
                             <dd>
                                 <span class="param-type"><code>number</code></span>
                             </dd>
+                            - Nombre de lignes de données.
                         </dl>
-                        <div class="param-desc">
-                            Nombre de lignes de données.
-                        </div>
                     </div>
                 </div>
                 <div class="section-method">
@@ -499,10 +495,8 @@
                             <dd>
                                 <span class="param-type"><code>Date</code></span>
                             </dd>
+                            - Nouveau checkpoint.
                         </dl>
-                        <div class="param-desc">
-                            Nouveau checkpoint.
-                        </div>
                     </div>
                 </div>
                 <div class="section-method">
@@ -561,11 +555,9 @@
                             </dt>
                             <dd>
                                 <span class="param-type"><code>number</code></span>
-                            </dd>
-                        </dl>
-                        <div class="param-desc">
+                            </dd> - 
                             a / b * 100.
-                        </div>
+                        </dl>
                     </div>
                 </div>
                 <div class="section-method">
@@ -625,11 +617,9 @@
                             </dt>
                             <dd>
                                 <span class="param-type"><code>Boolean</code></span>
-                            </dd>
-                        </dl>
-                        <div class="param-desc">
+                            </dd>-
                             true ssi le champ "Premier contact" de la ligne correspond bien au mois spécifié.
-                        </div>
+                        </dl>
                     </div>
                 </div>
                 <div class="section-method">
@@ -688,11 +678,9 @@
                             </dt>
                             <dd>
                                 <span class="param-type"><code>Array</code></span>
-                            </dd>
-                        </dl>
-                        <div class="param-desc">
+                            </dd>-
                             Valeurs uniques se trouvant dans cette colonne.
-                        </div>
+                        </dl>
                     </div>
                 </div>
                 <div class="section-method">
@@ -755,11 +743,9 @@
                             </dt>
                             <dd>
                                 <span class="param-type"><code>string</code></span>
-                            </dd>
-                        </dl>
-                        <div class="param-desc">
+                            </dd>-
                             Réponse de l'utilisateur.
-                        </div>
+                        </dl>
                     </div>
                 </div>
             </article>

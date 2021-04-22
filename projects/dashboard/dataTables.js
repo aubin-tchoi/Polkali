@@ -6,7 +6,7 @@
  * Calcul de la réparition des contacts selon la colonne dont le nom est spécifié.
  * @param {string} key Nom de la colonne selon laquelle sera effectuée la répartition.
  * @param {Array} data Données d'entrée.
- * @returns {DataTabke} Table des données permettant de créer le graphe correspondant.
+ * @returns {DataTable} Table des données permettant de créer le graphe correspondant.
  */
 function totalDistribution(key, data) {
     let dataTable = Charts.newDataTable();
