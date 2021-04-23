@@ -119,6 +119,8 @@ function conversionRate(key, data) {
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
     // Rows
     let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0);
+    Logger.log(`CA calculé à partir du suivi d'études : ${ca}.`);
+    Logger.log(`CA alumni : ${data.filter(row => row[key] || false).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0)}.`);
     dataTable.addRow([key, prcnt(data.filter(row => row[key] || false).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0), ca)]);
     dataTable.addRow([`Hors ${key}`, prcnt(data.filter(row => !(row[key] || false)).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0), ca)]);
     return dataTable;

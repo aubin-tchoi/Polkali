@@ -162,6 +162,19 @@ const ui = SpreadsheetApp.getUi(),
         cloturée: "Clôturée",
         sanSuite: "Sans suite"
     }),
+    /** 
+     * Différents états possible d'une étude non aboutie (dans le suivi des études).
+     * @constant
+     * @readonly
+     */
+     ETAT_ETUDE_BIS = Object.freeze({
+        enAttente: "En attente",
+        sanSuite: "Sans suite",
+        aRelancer: "A relancer",
+        negoc: "En négociation",
+        redac: "En rédaction"
+    }),
+    
 
     /* ----- Paramètres portant sur les mois ----- */
     /** 

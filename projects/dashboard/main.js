@@ -67,7 +67,7 @@ function generateKPI() {
         y: 3
       },
       trustColumn: 3
-    }).filter(row => row[HEADS.état] != ETAT_ETUDE.sanSuite);
+    }).filter(row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])));
 
   currentTime = measureTime(currentTime, "extract data from the two sheets");
 
