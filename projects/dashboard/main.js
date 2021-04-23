@@ -185,7 +185,7 @@ function generateKPI() {
   // ----- MESURE DES DIFFERENTES CONTRIBUTIONS AU CA -----
 
   // KPI : nombre d'études, CA par type d'entreprise
-  [dataTable, ticks] = performance(HEADS.secteur, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
+  [dataTable, ticks] = performance(HEADS.typeEntreprise, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
   charts.contributions.push(createChart(CHART_TYPE.COLUMN, dataTable, "Performance par type d'entreprise", {
     colors: COLORS_DUO,
     vticks: ticks

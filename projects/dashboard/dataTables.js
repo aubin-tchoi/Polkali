@@ -33,6 +33,7 @@ function turnoverDistribution(key, data) {
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
     // Rows
     let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
+    Logger.log(`CA calculé à partir du suivi de la prospection : ${ca}`);
     uniqueValues(key, data).forEach(currentType => {
         dataTable.addRow([currentType, prcnt(data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
     });
