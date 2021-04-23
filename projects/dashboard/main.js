@@ -67,6 +67,17 @@ function generateKPI() {
         y: 3
       },
       trustColumn: 3
+    }).filter(row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état]))),
+    dataEtudesBis = extractSheetData(ADDRESSES.etudesIdBis, ADDRESSES.etudesName, {
+      data: {
+        x: 5,
+        y: 3
+      },
+      header: {
+        x: 1,
+        y: 3
+      },
+      trustColumn: 3
     }).filter(row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])));
 
   currentTime = measureTime(currentTime, "extract data from the two sheets");
@@ -210,6 +221,19 @@ function generateKPI() {
     colors: COLORS_OFFICE
   }));
 
+  // KPI : nombre d'études, CA par type de prestation
+  [dataTable, ticks] = performance(HEADS.prestation, dataEtudesBis, HEADS.prix);
+  charts.contributions.push(createChart(CHART_TYPE.COLUMN, dataTable, "Performance par type de prestation", {
+    colors: COLORS_DUO,
+    vticks: ticks
+  }));
+
+  // KPI : Proportion du CA obtenue sur chaque type de prestation
+  dataTable = turnoverDistribution(HEADS.prestation, dataEtudesBis, HEADS.prix);
+  charts.contributions.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA obtenue sur chaque type de prestation", {
+    colors: COLORS_OFFICE
+  }));
+
   // KPI : Proportion du CA due aux alumni
   dataTable = turnoverDistributionBinary(HEADS.alumni, dataEtudes);
   charts.contributions.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA due aux alumni", {
@@ -285,14 +309,14 @@ function saveKPI() {
       query: "Entrez l'id du dossier de destination :",
       incorrectInput: "L'ID entré est invalide, veuillez recommencer."
     }) : "",
-    mailAdress = mailResults ? userQuery({
+    mailAddress = mailResults ? userQuery({
       title: "Envoi des diagrammes par mail",
       query: "Entrez l'adresse mail de destination :"
     }) : "",
     KPI = generateKPI();
 
   if (mailResults) {
-    KPI.mail(mailAdress);
+    KPI.mail(mailAddress);
   }
   if (saveResults) {
     KPI.save(folderId);

@@ -88,6 +88,7 @@ const ui = SpreadsheetApp.getUi(),
         prospectionName: "Suivi",
         etudesId: "1gmJLAKvUOYFeS32raOiSTYiE_ozr7YSk26Y0t0blm04",
         etudesName: "Suivi",
+        etudesIdBis: "1XY8CVuvPpscU2BkkpX0HZ4TqQo0SDWMIh3kzDSvvhcM",
         driveId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy",
         slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU"
     }),
@@ -111,7 +112,8 @@ const ui = SpreadsheetApp.getUi(),
         concurrence: "Autres JE en concurrence",
         domaine: "Domaine de compétence",
         secteur: "Secteur du Client",
-        typeEntreprise: "Type d'entreprise"
+        typeEntreprise: "Type d'entreprise",
+        prestation: "Prestation"
     }),
     /**  
      * Différents états possible dans la prospection (dans le suivi de la prospection).

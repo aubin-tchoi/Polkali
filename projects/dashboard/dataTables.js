@@ -26,16 +26,16 @@ function totalDistribution(key, data) {
  * @param {Array} data Données d'entrée.
  * @returns {DataTable} Table des données permettant de créer le graphe correspondant.
  */
-function turnoverDistribution(key, data) {
+function turnoverDistribution(key, data, price = HEADS.caPot) {
     let dataTable = Charts.newDataTable();
     // Columns
     dataTable.addColumn(Charts.ColumnType.STRING, key);
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
     // Rows
-    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0);
+    let ca = data.reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0);
     Logger.log(`CA calculé à partir du suivi de la prospection : ${ca}`);
     uniqueValues(key, data).forEach(currentType => {
-        dataTable.addRow([currentType, prcnt(data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
+        dataTable.addRow([currentType, prcnt(data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0), ca)]);
     });
     return dataTable;
 }
@@ -47,7 +47,7 @@ function turnoverDistribution(key, data) {
  * @returns {Array} Table des données permettant de créer le graphe correspondant
  * et tableau des valeurs à indiquer selon l'axe vertical.
  */
-function performance(key, data) {
+function performance(key, data, price = HEADS.caPot) {
     let dataTable = Charts.newDataTable();
     // Columns
     dataTable.addColumn(Charts.ColumnType.STRING, key);
@@ -56,8 +56,8 @@ function performance(key, data) {
     // Rows
     let maxTick = 0;
     uniqueValues(key, data).forEach(currentType => {
-        maxTick = Math.max(maxTick, data.filter(row => row[key] == currentType).length, parseInt(data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000, 10) + 1);
-        dataTable.addRow([currentType, data.filter(row => row[key] == currentType).length, data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000]);
+        maxTick = Math.max(maxTick, data.filter(row => row[key] == currentType).length, parseInt(data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0) / 1000, 10) + 1);
+        dataTable.addRow([currentType, data.filter(row => row[key] == currentType).length, data.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0) / 1000]);
     });
     return [dataTable, Array.from(Array(maxTick + 1).keys())];
 }
@@ -112,17 +112,17 @@ function conversionRate(key, data) {
  * @param {Array} data Données d'entrée.
  * @returns {DataTable} Table des données permettant de créer le graphe correspondant.
  */
- function turnoverDistributionBinary(key, data) {
+ function turnoverDistributionBinary(key, data, price = HEADS.prix) {
     let dataTable = Charts.newDataTable();
     // Columns
     dataTable.addColumn(Charts.ColumnType.STRING, `${key}/Hors ${key}`);
     dataTable.addColumn(Charts.ColumnType.NUMBER, "Proportion du CA");
     // Rows
-    let ca = data.reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0);
+    let ca = data.reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0);
     Logger.log(`CA calculé à partir du suivi d'études : ${ca}.`);
-    Logger.log(`CA alumni : ${data.filter(row => row[key] || false).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0)}.`);
-    dataTable.addRow([key, prcnt(data.filter(row => row[key] || false).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0), ca)]);
-    dataTable.addRow([`Hors ${key}`, prcnt(data.filter(row => !(row[key] || false)).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0), ca)]);
+    Logger.log(`CA alumni : ${data.filter(row => row[key] || false).reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0)}.`);
+    dataTable.addRow([key, prcnt(data.filter(row => row[key] || false).reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0), ca)]);
+    dataTable.addRow([`Hors ${key}`, prcnt(data.filter(row => !(row[key] || false)).reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0), ca)]);
     return dataTable;
 }
 
