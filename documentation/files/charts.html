@@ -135,7 +135,14 @@
                             class="signature">(chartBuilder, title, options)</span><span class="type-signature"></span>
                     </h4>
                     <div class="description">
-                        Ajouter des options à un chartBuilder (appelée par createChart).
+                        Ajouter des options à un chartBuilder (appelée par createChart).<br/>
+                        Liste des options disponibles :
+                        <ul>
+                            <li><code>colors</code> : Couleurs des graphes sous forme d'Array, valeur par défaut : <code>Object.values(COLORS)</code>.</li>
+                            <li><code>percent</code> : Booléen qui fixe l'intervalle des ordonnées à [0, 100] (correspondant alors à des pourcentages), valeur par défaut : <code>false</code>.</li>
+                            <li><code>hticks</code> : Array correspondant aux valeurs indiquées sur l'axe des abscisses, ces valeurs sont déterminées automatiquement par défaut.</li>
+                            <li><code>vticks</code> : Array correspondant aux valeurs indiquées sur l'axe des ordonnées, ces valeurs sont déterminées automatiquement par défaut.</li>
+                        </ul>
                     </div>
                     <h5>Parameters:</h5>
                     <table class="params">
@@ -193,7 +200,14 @@
                             class="signature">(chartType, dataTable, title, options)</span><span class="type-signature">
                             &rarr; {Chart}</span></h4>
                     <div class="description">
-                        Creation d'un graphe au type <a href="https://developers.google.com/apps-script/reference/charts/chart?hl=en">Chart</a>.
+                        Creation d'un graphe au type <a href="https://developers.google.com/apps-script/reference/charts/chart?hl=en">Chart</a>.<br/>
+                        Liste des options disponibles :
+                            <ul>
+                                <li><code>colors</code> : Couleurs des graphes sous forme d'Array, valeur par défaut : <code>Object.values(COLORS)</code>.</li>
+                                <li><code>percent</code> : Booléen qui fixe l'intervalle des ordonnées à [0, 100] (correspondant alors à des pourcentages), valeur par défaut : <code>false</code>.</li>
+                                <li><code>hticks</code> : Array correspondant aux valeurs indiquées sur l'axe des abscisses, ces valeurs sont déterminées automatiquement par défaut.</li>
+                                <li><code>vticks</code> : Array correspondant aux valeurs indiquées sur l'axe des ordonnées, ces valeurs sont déterminées automatiquement par défaut.</li>
+                            </ul>
                     </div>
 
                     <h5>Parameters:</h5>
@@ -243,7 +257,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table><br/>
                     <div class="section-returns">
                         <h5>Returns:</h5>
                         <dl class="param-type">
