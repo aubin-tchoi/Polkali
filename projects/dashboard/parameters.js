@@ -74,7 +74,11 @@ const ui = SpreadsheetApp.getUi(),
         contactTypology: "Typologie des contacts",
         competitiveness: "Compétitivité face aux autres JE",
         sizeComparison: "Performance sur différentes tailles d'étude",
-        contributions: "Mesure des différentes contributions au CA"
+        contributions: "Mesure des différentes contributions au CA",
+        sector: "Performance sur différents secteurs d'activité du Client",
+        companySize: "Performance sur différentes tailles d'entreprises",
+        contactType: "Performance sur différents types de contact",
+        missionType: "Performance sur différentes prestations"
     },
 
     /* ----- Paramètres d'accès ----- */

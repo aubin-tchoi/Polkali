@@ -69,7 +69,7 @@ function performance(key, data, price = HEADS.caPot) {
  * @returns {Array} Table des données permettant de créer le graphe correspondant
  * et tableau des valeurs à indiquer selon l'axe horizontal.
  */
- function numberOfMissions(key, data) {
+function numberOfMissions(key, data) {
     let dataTable = Charts.newDataTable();
     // Columns
     dataTable.addColumn(Charts.ColumnType.NUMBER, key);
@@ -112,7 +112,7 @@ function conversionRate(key, data) {
  * @param {Array} data Données d'entrée.
  * @returns {DataTable} Table des données permettant de créer le graphe correspondant.
  */
- function turnoverDistributionBinary(key, data, price = HEADS.prix) {
+function turnoverDistributionBinary(key, data, price = HEADS.prix) {
     let dataTable = Charts.newDataTable();
     // Columns
     dataTable.addColumn(Charts.ColumnType.STRING, `${key}/Hors ${key}`);
@@ -238,4 +238,29 @@ function prospectionTurnover(data) {
     dataTable.addRow(["Prospection", prcnt(data.filter(row => !([CONTACT_TYPE.site, CONTACT_TYPE.spontané].includes(row[HEADS.typeContact]))).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
     dataTable.addRow(["Hors prospection", prcnt(data.filter(row => [CONTACT_TYPE.site, CONTACT_TYPE.spontané].includes(row[HEADS.typeContact])).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0), ca)]);
     return dataTable;
+}
+
+function performanceByContact(key, data) {
+    let dataTable = Charts.newDataTable();
+    // Columns
+    dataTable.addColumn(Charts.ColumnType.STRING, key);
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre de devis envoyés");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "Nombre d'études signées");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, "CA (en milliers d'euros)");
+    // Rows
+    let maxTick = 0;
+    uniqueValues(key, data).forEach(currentType => {
+        maxTick = Math.max(
+            maxTick,
+            data.filter(row => !!row[HEADS.devis] && row[key] == currentType).length,
+            data.filter(row => row[HEADS.état] == ETAT_PROSP.etude && row[key] == currentType).length,
+            parseInt(data.filter(row => row[HEADS.état] == ETAT_PROSP.etude && row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000, 10) + 1);
+        dataTable.addRow([
+            currentType,
+            data.filter(row => !!row[HEADS.devis] && row[key] == currentType).length,
+            data.filter(row => row[HEADS.état] == ETAT_PROSP.etude && row[key] == currentType).length,
+            data.filter(row => row[HEADS.état] == ETAT_PROSP.etude && row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.caPot], 10) || 0, 0) / 1000
+        ]);
+    });
+    return [dataTable, Array.from(Array(maxTick + 1).keys())];
 }
