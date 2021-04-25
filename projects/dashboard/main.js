@@ -180,14 +180,14 @@ function generateKPI() {
   // ----- PERFORMANCE SELON LE TYPE DE CONTACTS -----
 
   // KPI : nombre d'études, CA par type de contact
-  [dataTable, ticks] = performanceByContact(HEADS.typeContact, dataProspection.filter(row => row[HEADS.secteur] != ""));
+  [dataTable, ticks] = performanceByContact(HEADS.typeContact, dataProspection.filter(row => row[HEADS.typeContact] != ""));
   charts.contactType.push(createChart(CHART_TYPE.COLUMN, dataTable, "Performance par type de contact", {
     vticks: ticks,
     colors: COLORS_OFFICE
   }));
 
   // KPI : Proportion du CA venant de chaque type de contact
-  dataTable = turnoverDistribution(HEADS.typeContact, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != ""));
+  dataTable = turnoverDistribution(HEADS.typeContact, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.typeContact] != ""));
   charts.contactType.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA venant de chaque type de contact", {
     colors: COLORS_OFFICE
   }));
