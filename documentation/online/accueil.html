@@ -459,7 +459,7 @@
                 </li>
                 <li class="mb-1">
                     <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#parameters-collapse" aria-expanded="false">
+                        data-bs-target="#parameters-collapse" aria-expanded="true">
                         <a class="navparameters">parameters</a>
                     </button>
                     <div class="collapse show" id="parameters-collapse">
@@ -493,6 +493,12 @@
                     <header>
                         <h2>
                         </h2>
+                        <ul>
+                            <li>Ce fichier contient des fonctions qui permettent de créer des graphes à partir de <a href="https://developers.google.com/apps-script/reference/charts/data-table?hl=en">DataTables</a> obtenues grâce aux fonctions du fichier <code><a href="#" class="navdataTables">dataTables.js</a></code>.</li>
+                            <li>En pratique seule la fonction <code>createChart</code> sera utilisée, elle prend plusieurs arguments détaillés ci-dessous.</li>
+                            <li>Le premier est un enum qui s'écrit de la manière suivante : <code>CHART_TYPE.</code> suivi de <code>PIE</code>, <code>COLUMN</code> ou <code>LINE</code> en fonction du type de graphe désiré.</li>
+                            <li>Les options contiennent tous des valeurs par défaut détaillées ci-dessous, pour imposer des options différentes il suffit de passer un 4e argument à <code>createChart</code> sous la forme d'un Object, par exemple <code>createChart(CHART_TYPE.PIE, dataTable, "A Pie Chart", {colors: ["#D66BA0"]})</code>.</li>
+                        </ul><br>
                     </header>
                     <article>
                         <div class="container-overview">
@@ -744,6 +750,11 @@
                     <header>
                         <h2>
                         </h2>
+                        <ul>
+                            <li>Ce fichier contient des fonctions qui permettent de créer des <a href="https://developers.google.com/apps-script/reference/charts/data-table?hl=en">DataTables</a> à partir des Arrays d'Objects de données.</li>
+                            <li>En pratique on recode souvent une fonction pour chaque KPI, ajoutez la à la fin de ce fichier.</li>
+                            <li>Dans cette documentation sont présentés quelques exemples types de KPI qui sont facilement déclinables en remplaçant un seul champ.</li>
+                        </ul><br>
                     </header>
                     <article>
                         <div class="container-overview">
@@ -1423,6 +1434,11 @@
                     <header>
                         <h2>
                         </h2>
+                        <ul>
+                            <li>Ce fichier contient des fonctions qui permettent d'implémenter différentes fonctionnalités.</li>
+                            <li>Ces fonctions sont appelées dans l'Object qui est return par la fonction <code>generateKPI</code> du fichier <code><a href="#" class="navMain">main.js</a></code>.</li>
+                            <li>Si vous souhaitez ajouter d'autres fonctionnalités aux KPI, ajoutez des fonctions correspondantes à ce fichier et ajoutez des éléments à l'Object return par la fonction <code>generateKPI</code> pour les utiliser.</li>
+                        </ul><br>
                     </header>
                     <article>
                         <div class="container-overview">
@@ -1770,6 +1786,13 @@
                     <header>
                         <h2>
                         </h2>
+                        <ul>
+                            <li>Ce fichier contient les fonctions qui sont liées à un trigger (menu ou horaire) ainsi que la fonction principale <code>generateKPI</code>.</li>
+                            <li>Cette fonction est organisée de la manière suivante : on fetch les données des différents scripts sous la forme d'Arrays d'Objects (<code>extractSheetData</code>), on génère les <code>Charts</code> des KPI dans les listes de l'Object <code>charts</code>
+                                puis on les convertis en images dans l'Object <code>attachments</code>. Dans le return on utilise ces données dans des appels aux différentes fonctionnalités codées dans le fichier <code><a href="#" class="navfeatures">features.js</a></code>.</li>
+                            <li>Les KPI sont stockés dans des Objects <code>charts</code> et <code>attachments</code> afin de pouvoir les regrouper par thématique.</li>
+                            <li>A chaque nouvelle thématique sera ajoutée une ligne du display ainsi qu'une slide du Point KPI généré automatiquement. Le contenu de la ligne (identique au titre de la slide) est encodé dans l'Object <code>TITLES</code> du fichier <code><a href="#TITLES" class="navparameters">parameters.js</a></code>.</li>
+                        </ul><br>
                     </header>
                     <article>
                         <div class="container-overview">
@@ -2294,6 +2317,12 @@
                     <header>
                         <h2>
                         </h2>
+                        <ul>
+                            <li>Ce fichier contient un ensemble de paramètres constants.</li>
+                            <li>Il s'agit de paramètres d'affichage (dimensions et couleurs des graphes, contenu affiché dans le display et par mail)
+                                et de paramètres d'accès (adresses des Sheets, du template Slides, contenu exact des headers et de certains champs).</li>
+                            <li>Les mois affichés dans les KPI ayant pour abscisses les mois sont exactement ceux de l'Object <code><a href="#MONTH_LIST">MONTH_LIST</a></code>.</li>
+                        </ul><br>
                     </header>
                     <article>
                         <div class="container-overview">
@@ -2862,6 +2891,12 @@
                     <header>
                         <h2>
                         </h2>
+                        <ul>
+                            <li>Ce fichier contient des fonctions de relativement bas-niveau utiles à multiples reprises.</li>
+                            <li>Il s'agit de fonctions d'extraction de données (extraction des données et du nombre de lignes d'un Sheet),
+                                de calcul avec la conversion d'un <code><a href="https://developers.google.com/apps-script/reference/charts/chart?hl=en">Chart</a></code> en image
+                                et d'interfaçage utilisateur.</li>
+                        </ul><br>
                     </header>
                     <article>
                         <div class="container-overview">
