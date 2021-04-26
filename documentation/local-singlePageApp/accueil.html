@@ -22,6 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link href="styles/carousel.css" rel="stylesheet">
     <link href="styles/features.css" rel="stylesheet">
+    <link href="styles/sidebars.css" rel="stylesheet">
 
     <meta name="theme-color" content="#7952b3">
 
@@ -327,105 +328,164 @@
             </div>
         </div>
 
-        <navf id="navFiles" style="display: none;">
-            <li class="nav-link nav-home-link"><a href="#" id="navHome"> Accueil</a></li>
-            <li class="nav-heading"><a href="#" class="navMain">main.js</a></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#autoSaveKPI" class="navMain">autoSaveKPI</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#displayKPI" class="navMain">displayKPI</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#generateKPI" class="navMain">generateKPI</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#installTrigger" class="navMain">installTrigger</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#prepCA" class="navMain">prepCA</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#saveKPI" class="navMain">saveKPI</a></span></li>
+        <div class="p-3 bg-white" id="navFiles" style="width: 250px; display: none; float: left;">
+            <ul id="navbarF" class="list-unstyled ps-0">
+                <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#main-collapse" aria-expanded="true">
+                        <a class="navMain">main</a>
+                    </button>
+                    <div class="collapse show" id="main-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#autoSaveKPI" class="navMain">autoSaveKPI</a></a>
+                            </li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#displayKPI" class="navMain">displayKPI</a></a>
+                            </li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#generateKPI" class="navMain">generateKPI</a></a>
+                            </li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#installTrigger"
+                                        class="navMain">installTrigger</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#prepCA" class="navMain">prepCA</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#saveKPI" class="navMain">saveKPI</a></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#features-collapse" aria-expanded="true">
+                        <a class="navfeatures">features</a>
+                    </button>
+                    <div class="collapse show" id="features-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#generateSlides"
+                                        class="navfeatures">generateSlides</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#saveOnDrive"
+                                        class="navfeatures">saveOnDrive</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#sendMail" class="navfeatures">sendMail</a></a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="border-top my-3"></li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#dataTables-collapse" aria-expanded="true">
+                        <a class="navdataTables">dataTables</a>
+                    </button>
+                    <div class="collapse show" id="dataTables-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#conversionRate"
+                                        class="navdataTables">conversionRate</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#numberOfMissions"
+                                        class="navdataTables">numberOfMissions</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#performance"
+                                        class="navdataTables">performance</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#totalDistribution"
+                                        class="navdataTables">totalDistribution</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#turnoverDistribution"
+                                        class="navdataTables">turnoverDistribution</a></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#charts-collapse" aria-expanded="true">
+                        <a class="navcharts">charts</a>
+                    </button>
+                    <div class="collapse show" id="charts-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#addOptions" class="navcharts">addOptions</a></a>
+                            </li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#createChart"
+                                        class="navcharts">createChart</a></a></li>
+                        </ul>
+                    </div>
+                </li>
 
-            <li class="nav-heading"><a href="#" class="navdataTables">dataTables</a></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#conversionRate" class="navdataTables">conversionRate</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#numberOfMissions" class="navdataTables">numberOfMissions</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#performance" class="navdataTables">performance</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#totalDistribution" class="navdataTables">totalDistribution</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#turnoverDistribution" class="navdataTables">turnoverDistribution</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#turnoverDistributionBinary"
-                        class="navdataTables">turnoverDistributionBinary</a></span>
-            </li>
-
-            <li class="nav-heading"><a href="#" class="navcharts">charts</a></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#addOptions" class="navcharts">addOptions</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#createChart" class="navcharts">createChart</a></span></li>
-
-            <li class="nav-heading"><a href="#" class="navfeatures">features</a></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#generateSlides" class="navfeatures">generateSlides</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#saveOnDrive" class="navfeatures">saveOnDrive</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#sendMail" class="navfeatures">sendMail</a></span></li>
-
-            <li class="nav-heading"><a href="#" class="navtools">tools</a></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#addHTMLLine" class="navtools">addHTMLLine</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#convertChart" class="navtools">convertChart</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#displayLoadingScreen" class="navtools">displayLoadingScreen</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#extractSheetData" class="navtools">extractSheetData</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#manuallyGetRowNumber" class="navtools">manuallyGetRowNumber</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#measureTime" class="navtools">measureTime</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#prcnt" class="navtools">prcnt</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#sameMonth" class="navtools">sameMonth</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#uniqueValues" class="navtools">uniqueValues</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
-                        href="#userQuery" class="navtools">userQuery</a></span></li>
-
-            <li class="nav-heading"><a href="#" class="navparameters">parameters</a></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#ADDRESSES" class="navparameters">ADDRESSES</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#CHART_TYPE" class="navparameters">CHART_TYPE</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#COLORS" class="navparameters">COLORS</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#CONTACT_TYPE" class="navparameters">CONTACT_TYPE</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#DIMS" class="navparameters">DIMS</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#ETAT_ETUDE" class="navparameters">ETAT_ETUDE</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#ETAT_PROSP" class="navparameters">ETAT_PROSP</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#ETAT_PROSP_BIS" class="navparameters">ETAT_PROSP_BIS</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#HEADS" class="navparameters">HEADS</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#HTML_CONTENT" class="navparameters">HTML_CONTENT</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#IMGS" class="navparameters">IMGS</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#MONTH_LIST" class="navparameters">MONTH_LIST</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#MONTH_NAMES" class="navparameters">MONTH_NAMES</a></span></li>
-            <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
-                        href="#TITLES" class="navparameters">TITLES</a></span></li>
-        </navf>
-
+                <li class="border-top my-3"></li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#tools-collapse" aria-expanded="true">
+                        <a class="navtools">tools</a>
+                    </button>
+                    <div class="collapse show" id="tools-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#addHTMLLine"
+                                        class="navtools">addHTMLLine</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#convertChart"
+                                        class="navtools">convertChart</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#displayLoadingScreen"
+                                        class="navtools">displayLoadingScreen</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#extractSheetData"
+                                        class="navtools">extractSheetData</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#manuallyGetRowNumber"
+                                        class="navtools">manuallyGetRowNumber</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#measureTime"
+                                        class="navtools">measureTime</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#prcnt" class="navtools">prcnt</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#sameMonth" class="navtools">sameMonth</a></a>
+                            </li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#uniqueValues"
+                                        class="navtools">uniqueValues</a></a></li>
+                            <li><span class="nav-item-type type-function">F</span><a href="#"
+                                    class="link-dark rounded"><a href="#userQuery" class="navtools">userQuery</a></a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#parameters-collapse" aria-expanded="false">
+                        <a class="navparameters">parameters</a>
+                    </button>
+                    <div class="collapse show" id="parameters-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><span class="nav-item-type type-member">M</span><a href="#" class="link-dark rounded"><a
+                                        href="#ADDRESSES" class="navparameters">ADDRESSES</a></a></li>
+                            <li><span class="nav-item-type type-member">M</span><a href="#" class="link-dark rounded"><a
+                                        href="#COLORS" class="navparameters">COLORS</a></a></li>
+                            <li><span class="nav-item-type type-member">M</span><a href="#" class="link-dark rounded"><a
+                                        href="#DIMS" class="navparameters">DIMS</a></a></li>
+                            <li><span class="nav-item-type type-member">M</span><a href="#" class="link-dark rounded"><a
+                                        href="#ETAT_ETUDE" class="navparameters">ETAT_ETUDE</a></a></li>
+                            <li><span class="nav-item-type type-member">M</span><a href="#" class="link-dark rounded"><a
+                                        href="#ETAT_PROSP" class="navparameters">ETAT_PROSP</a></a></li>
+                            <li><span class="nav-item-type type-member">M</span><a href="#" class="link-dark rounded"><a
+                                        href="#HEADS" class="navparameters">HEADS</a></a></li>
+                            <li><span class="nav-item-type type-member">M</span><a href="#" class="link-dark rounded"><a
+                                        href="#MONTH_LIST" class="navparameters">MONTH_LIST</a></a></li>
+                            <li><span class="nav-item-type type-member">M</span><a href="#" class="link-dark rounded"><a
+                                        href="#TITLES" class="navparameters">TITLES</a></a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
         <div id="Doc">
             <div id="chartsDoc" style="display: none; margin-left: 300px;">
@@ -447,13 +507,18 @@
                                     class="type-signature"></span>
                             </h4>
                             <div class="description">
-                                Ajouter des options à un chartBuilder (appelée par createChart). <br/>
+                                Ajouter des options à un chartBuilder (appelée par createChart). <br />
                                 Liste des options disponibles :
                                 <ul>
-                                    <li><code>colors</code> : Couleurs des graphes sous forme d'Array, valeur par défaut : <code>Object.values(COLORS)</code>.</li>
-                                    <li><code>percent</code> : Booléen qui fixe l'intervalle des ordonnées à [0, 100] (correspondant alors à des pourcentages), valeur par défaut : <code>false</code>.</li>
-                                    <li><code>hticks</code> : Array correspondant aux valeurs indiquées sur l'axe des abscisses, ces valeurs sont déterminées automatiquement par défaut.</li>
-                                    <li><code>vticks</code> : Array correspondant aux valeurs indiquées sur l'axe des ordonnées, ces valeurs sont déterminées automatiquement par défaut.</li>
+                                    <li><code>colors</code> : Couleurs des graphes sous forme d'Array, valeur par défaut
+                                        : <code>Object.values(COLORS)</code>.</li>
+                                    <li><code>percent</code> : Booléen qui fixe l'intervalle des ordonnées à [0, 100]
+                                        (correspondant alors à des pourcentages), valeur par défaut :
+                                        <code>false</code>.</li>
+                                    <li><code>hticks</code> : Array correspondant aux valeurs indiquées sur l'axe des
+                                        abscisses, ces valeurs sont déterminées automatiquement par défaut.</li>
+                                    <li><code>vticks</code> : Array correspondant aux valeurs indiquées sur l'axe des
+                                        ordonnées, ces valeurs sont déterminées automatiquement par défaut.</li>
                                 </ul>
                             </div>
                             <h5>Parameters:</h5>
@@ -515,13 +580,20 @@
                                     class="type-signature">
                                     &rarr; {Chart}</span></h4>
                             <div class="description">
-                                Creation d'un graphe au type <a href="https://developers.google.com/apps-script/reference/charts/chart?hl=en">Chart</a>. <br/>
+                                Creation d'un graphe au type <a
+                                    href="https://developers.google.com/apps-script/reference/charts/chart?hl=en">Chart</a>.
+                                <br />
                                 Liste des options disponibles :
                                 <ul>
-                                    <li><code>colors</code> : Couleurs des graphes sous forme d'Array, valeur par défaut : <code>Object.values(COLORS)</code>.</li>
-                                    <li><code>percent</code> : Booléen qui fixe l'intervalle des ordonnées à [0, 100] (correspondant alors à des pourcentages), valeur par défaut : <code>false</code>.</li>
-                                    <li><code>hticks</code> : Array correspondant aux valeurs indiquées sur l'axe des abscisses, ces valeurs sont déterminées automatiquement par défaut.</li>
-                                    <li><code>vticks</code> : Array correspondant aux valeurs indiquées sur l'axe des ordonnées, ces valeurs sont déterminées automatiquement par défaut.</li>
+                                    <li><code>colors</code> : Couleurs des graphes sous forme d'Array, valeur par défaut
+                                        : <code>Object.values(COLORS)</code>.</li>
+                                    <li><code>percent</code> : Booléen qui fixe l'intervalle des ordonnées à [0, 100]
+                                        (correspondant alors à des pourcentages), valeur par défaut :
+                                        <code>false</code>.</li>
+                                    <li><code>hticks</code> : Array correspondant aux valeurs indiquées sur l'axe des
+                                        abscisses, ces valeurs sont déterminées automatiquement par défaut.</li>
+                                    <li><code>vticks</code> : Array correspondant aux valeurs indiquées sur l'axe des
+                                        ordonnées, ces valeurs sont déterminées automatiquement par défaut.</li>
                                 </ul>
                             </div>
 
@@ -547,7 +619,8 @@
                                     <tr>
                                         <td class="name"><code>dataTable</code></td>
                                         <td class="type">
-                                            <span class="param-type"><code><a href="https://developers.google.com/apps-script/reference/charts/data-table-builder?hl=en">DataTable</a></code></span>
+                                            <span class="param-type"><code><a
+                                                        href="https://developers.google.com/apps-script/reference/charts/data-table-builder?hl=en">DataTable</a></code></span>
                                         </td>
                                         <td class="description last">
                                             Table de données à utiliser.
@@ -572,7 +645,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table> <br/>
+                            </table> <br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -744,7 +817,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table> <br/>
+                            </table> <br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -808,7 +881,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table><br/>
+                            </table><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -876,7 +949,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table><br/>
+                            </table><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -941,7 +1014,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table><br/>
+                            </table><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -1008,7 +1081,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table><br/>
+                            </table><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -1078,7 +1151,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table><br/>
+                            </table><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -1788,7 +1861,7 @@
                                         </li>
                                     </ul>
                                 </dd>
-                            </dl><br/>
+                            </dl><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -2434,7 +2507,7 @@
                                     <ul class="dummy">
                                         <li>
                                             <a class="navparameters.js" href="#">parameters.js</a>, <a
-                                                class = "navparameters.js" href="#line52">line 52</a>
+                                                class="navparameters.js" href="#line52">line 52</a>
                                         </li>
                                     </ul>
                                 </dd>
@@ -3046,7 +3119,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table><br/>
+                            </table><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -3129,7 +3202,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table><br/>
+                            </table><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -3195,7 +3268,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table><br/>
+                            </table><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -3259,7 +3332,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table><br/>
+                            </table><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -3324,7 +3397,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table><br/>
+                            </table><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -3390,7 +3463,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table><br/>
+                            </table><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -3461,7 +3534,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table><br/>
+                            </table><br />
 
                             <div class="section-returns">
                                 <h5>Returns:</h5>
@@ -3670,7 +3743,7 @@
 
         /** Home button */
         document.getElementById("HomeButton").addEventListener("click", showHome);
-        document.getElementById("navHome").addEventListener("click", showHome);
+        //document.getElementById("navHome").addEventListener("click", showHome);
 
         /** Adding onClick events to some buttons (on the front page and inside of the navbar) */
         buttons.forEach(button => {
@@ -3722,7 +3795,7 @@
             document.getElementById("Home").style.display = "";
         }
     </script>
-    
+
     <script>
         /** Making sure that the navbar will stop at the footer */
         /*
@@ -3730,9 +3803,7 @@
             footer = document.querySelector('#stopLine');
 
         function checkOffset() {
-            function getRectTop(el) {
-                return el.getBoundingClientRect().top;
-            }
+            const getRectTop = (el) => el.getBoundingClientRect().top;
 
             // Scrolling down until the navbar reaches the footer
             if ((getRectTop(socialFloat) + document.body.scrollTop) + socialFloat.offsetHeight >= (getRectTop(footer) +
@@ -3757,7 +3828,7 @@
 
     <script>
         /*global document */
-        (function() {
+        (function () {
             var source = document.getElementsByClassName('prettyprint source linenums');
             var i = 0;
             var lineNumber = 0;
