@@ -16,7 +16,11 @@ function sendMail(address, htmlOutput, subject, attachments) {
         htmlBody: msgHtml,
         attachments: [].concat(...Object.values(attachments))
     });
-    ui.alert("Envoi des diagrammes par mail", `Les diagrammes ont été envoyés par mail à : ${address}.`, ui.ButtonSet.OK);
+    try {
+        ui.alert("Envoi des diagrammes par mail", `Les diagrammes ont été envoyés par mail à : ${address}.`, ui.ButtonSet.OK);
+    } catch(e) {
+        Logger.log(e);
+    }
 }
 
 /**

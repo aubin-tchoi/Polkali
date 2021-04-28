@@ -2,15 +2,19 @@
 
 // Parameters : do not put here hardcoded values that are not parameters
 
-const ui = SpreadsheetApp.getUi(),
+try {
+    var ui = SpreadsheetApp.getUi();
+} catch (e) {
+    Logger.log(e);
+}
 
-    /* ----- Paramètres d'affichage ----- */
-    /** 
-     * Couleurs des graphes.
-     * @constant
-     * @readonly
-     */
-    COLORS = Object.freeze({
+/* ----- Paramètres d'affichage ----- */
+/** 
+ * Couleurs des graphes.
+ * @constant
+ * @readonly
+ */
+const COLORS = Object.freeze({
         plum: "#934683",
         wildOrchid: "#D66BA0",
         silverPink: "#C9ADA1",
@@ -173,14 +177,14 @@ const ui = SpreadsheetApp.getUi(),
      * @constant
      * @readonly
      */
-     ETAT_ETUDE_BIS = Object.freeze({
+    ETAT_ETUDE_BIS = Object.freeze({
         enAttente: "En attente",
         sanSuite: "Sans suite",
         aRelancer: "A relancer",
         negoc: "En négociation",
         redac: "En rédaction"
     }),
-    
+
 
     /* ----- Paramètres portant sur les mois ----- */
     /** 

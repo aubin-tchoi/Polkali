@@ -85,7 +85,11 @@ function convertChart(chart, title, htmlOutput, attachments) {
  * @param {string} msg Message à afficher en titre. 
  */
 function displayLoadingScreen(msg) {
-    ui.showModelessDialog(HTML_CONTENT.loadingScreen, msg);
+    try {
+        ui.showModelessDialog(HTML_CONTENT.loadingScreen, msg);
+    } catch (e) {
+        Logger.log(`Couldn't display loading screen with message : ${msg}, error : ${e}`);
+    }
 }
 
 /**
@@ -95,7 +99,9 @@ function displayLoadingScreen(msg) {
  * @param {function} test Fonction booléenne permettant de tester l'entrée.
  * @returns {string} Réponse de l'utilisateur.
  */
-const userQuery = (message, test = (input) => {DriveApp.getFolderById(input);}) => {
+const userQuery = (message, test = (input) => {
+    DriveApp.getFolderById(input);
+}) => {
     let response = "";
     if (message.incorrectInput != undefined) {
         while (true) {
