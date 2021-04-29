@@ -16,3 +16,8 @@ function doPost(e) {
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
+
+function generateSlides() {
+  let KPI = Aubin.generateKPI();
+  KPI.slides();
+}

@@ -1,7 +1,19 @@
 {
   "timeZone": "Europe/Paris",
-  "dependencies": {
-  },
   "exceptionLogging": "STACKDRIVER",
-  "runtimeVersion": "V8"
+  "runtimeVersion": "V8",
+  "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "Aubin",
+        "libraryId": "10vPBYv5blTHPJEd6xDv16ZFzwMepCY4Qc2fYh8zD6h8pYR0PPfiCP7Kw",
+        "version": "0",
+        "developmentMode": true
+      }
+    ]
+  },
+  "webapp": {
+    "executeAs": "USER_ACCESSING",
+    "access": "DOMAIN"
+  }
 }
