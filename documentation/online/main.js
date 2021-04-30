@@ -21,3 +21,8 @@ function generateSlides() {
   let KPI = Aubin.generateKPI();
   KPI.slides();
 }
+
+function sendMail(mailAddress) {
+  let KPI = Aubin.generateKPI();
+  KPI.mail(mailAddress);
+}

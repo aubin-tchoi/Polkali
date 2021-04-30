@@ -104,6 +104,7 @@
         <div id="Home">
 
             <div class="b-example-divider"></div>
+            <!-- Carousel -->
             <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"
@@ -113,7 +114,9 @@
                     <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2"
                         aria-label="Slide 3"></button>
                 </div>
+                <!-- Carousel items -->
                 <div class="carousel-inner">
+                    <!-- First item -->
                     <div class="carousel-item active">
                         <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -138,6 +141,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Second item -->
                     <div class="carousel-item">
                         <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -147,20 +151,18 @@
                         <div class="container">
                             <div class="carousel-caption">
                                 <h1 style="color:#8E3232;">Recevoir les KPI par mail</h1>
-                                <p style="color: #404040;"></p>
+                                <p style="color: #404040;">Entrez votre adresse mail</p>
                                 <form>
-                                    <h1 class="h3 mb-3 fw-normal">Entrez votre adresse mail</h1>
-                                
-                                    <div class="form-floating">
-                                      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                                      <label for="floatingInput">Adresse mail</label>
+                                    <div class="form-signin">
+                                      <input type="email" class="form-control" id="floatingInput" placeholder="prénom.nom@junior-pep.fr">
                                     </div>
 
-                                    <button class="w-100 btn btn-lg btn-primary" type="submit">Envoyer</button>
+                                    <p><a class="btn btn-lg btn-primary" id="mailButton">Envoyer</a></p>
                                   </form>
                             </div>
                         </div>
                     </div>
+                    <!-- Third item -->
                     <div class="carousel-item">
                         <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -172,11 +174,12 @@
                                 <h1 style="color:#8E3232;">Préparer le CA</h1>
                                 <p style="color: #404040;">Générer un Slides regroupant les KPI dans le <a href="https://drive.google.com/drive/u/0/folders/1dPi0dht-q_rI8fUmheA1j861huYPPcAy" target="_blank">Drive du Pôle Qualité</a>.
                                 </p>
-                                <p><a id="genSlides" class="btn btn-lg btn-primary">Créer les slides</a></p>
+                                <p><a id="slidesButton" class="btn btn-lg btn-primary">Créer les slides</a></p>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Carousel controls -->
                 <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
@@ -187,7 +190,9 @@
                 </button>
             </div>
             
+            <!-- Guides & Documentation -->
             <div class="container py-5" id="hanging-icons">
+                <!-- Guides -->
                 <h2 class="pb-2 border-bottom">Guides</h2><br><br>
                 <div class="container-overview" style="display: block;
                 margin-left: auto;
@@ -237,6 +242,8 @@
                         </div><!-- /.col-lg-4 -->
                     </div><!-- /.row -->
                 </div>
+
+                <!-- Documentation -->
                 <h2 class="pb-2 border-bottom">Documentation</h2>
                 <div class="row g-5 py-5">
                     <div class="col-md-4 d-flex align-items-start">
@@ -373,6 +380,7 @@
             </div>
         </div>
 
+        <!-- Navbar to navigate between files -->
         <div class="p-3 bg-white" id="navFiles" style="width: 250px; display: none; float: left;">
             <ul id="navbarF" class="list-unstyled ps-0">
                 <li class="mb-1">
@@ -532,6 +540,7 @@
             </ul>
         </div>
 
+        <!-- Doc files -->
         <div id="Doc">
             <div id="chartsDoc" style="display: none; margin-left: 300px;">
                 <h1 class="page-title">Génération de graphes à partir de tables de données</h1>
@@ -3929,25 +3938,48 @@
     </script>
 
     <script>
-        // Slides generation
+        /** Slides generation */
         function loadSlides() {
-            let element = document.getElementById("genSlides");
+            let element = document.getElementById("slidesButton");
             element.className = "";
             element.innerHTML = `<svg width="160" height="47" fill="currentColor" viewBox="0 0 16 16">
                                 <image width=100% height=100% href="https://kodular-community.s3.dualstack.eu-west-1.amazonaws.com/original/2X/c/c09b32fba2ce347fd7bc63c4fba681bac039e7ca.gif">
                                 </image></svg>`;
             console.log("Generating slides");
-            google.script.run.withSuccessHandler(restore).generateSlides();
+            google.script.run.withSuccessHandler(restoreThirdSlide).generateSlides();
         }
 
-        function restore() {
+        function restoreThirdSlide() {
             console.log("Generation completed");
-            let element = document.getElementById("genSlides");
+            let element = document.getElementById("slidesButton");
             element.className = "btn btn-lg btn-primary";
-            element.innerHTML = `<a href="https://drive.google.com/drive/u/0/folders/1dPi0dht-q_rI8fUmheA1j861huYPPcAy" target="_blank">Succès de l'opération</a>`;
+            element.innerHTML = `Slides générées avec succès`;
         }
 
-        document.getElementById("genSlides").addEventListener("click", loadSlides);
+        document.getElementById("slidesButton").addEventListener("click", loadSlides);
+    </script>
+
+    <script>
+        /** Sending KPI in a mail */
+        document.getElementById("mailButton").addEventListener("click", sendKPIByMail);
+
+        function sendKPIByMail() {
+            let mailAddress = document.getElementById("floatingInput").value;
+            google.script.run.withSuccessHandler(restoreSecondSlide).sendMail(mailAddress);
+            let element = document.getElementById("mailButton");
+            element.className = "";
+            element.innerHTML = `<svg width="160" height="47" fill="currentColor" viewBox="0 0 16 16">
+                                <image width=100% height=100% href="https://kodular-community.s3.dualstack.eu-west-1.amazonaws.com/original/2X/c/c09b32fba2ce347fd7bc63c4fba681bac039e7ca.gif">
+                                </image></svg>`;
+            console.log("Sending mail");
+        }
+
+        function restoreSecondSlide() {
+            console.log("Mail sent");
+            let element = document.getElementById("mailButton");
+            element.className = "btn btn-lg btn-primary";
+            element.innerHTML = `Mail envoyé avec succès`;
+        }
     </script>
 
 </body>
