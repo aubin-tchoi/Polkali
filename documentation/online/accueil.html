@@ -3930,28 +3930,24 @@
 
     <script>
         // Slides generation
-        function loadSlides(callback) {
-            return new Promise(function(resolve, reject) {
-                setTimeout(function() {
-                    let element = document.getElementById("genSlides");
-                element.className = "";
-                element.innerHTML = `<svg width="160" height="47" fill="currentColor" viewBox="0 0 16 16">
-                                    <image width=100% height=100% href="https://kodular-community.s3.dualstack.eu-west-1.amazonaws.com/original/2X/c/c09b32fba2ce347fd7bc63c4fba681bac039e7ca.gif">
-                                    </image></svg>`;
-                google.script.run.generateSlides();
-                callback();
-                resolve();
-                }, 3000);
-            })
+        function loadSlides() {
+            let element = document.getElementById("genSlides");
+            element.className = "";
+            element.innerHTML = `<svg width="160" height="47" fill="currentColor" viewBox="0 0 16 16">
+                                <image width=100% height=100% href="https://kodular-community.s3.dualstack.eu-west-1.amazonaws.com/original/2X/c/c09b32fba2ce347fd7bc63c4fba681bac039e7ca.gif">
+                                </image></svg>`;
+            console.log("Generating slides");
+            google.script.run.withSuccessHandler(restore).generateSlides();
         }
 
         function restore() {
+            console.log("Generation completed");
             let element = document.getElementById("genSlides");
             element.className = "btn btn-lg btn-primary";
-            element.innerHTML = "Créer les slides";
+            element.innerHTML = `<a href="https://drive.google.com/drive/u/0/folders/1dPi0dht-q_rI8fUmheA1j861huYPPcAy" target="_blank">Succès de l'opération</a>`;
         }
 
-        document.getElementById("genSlides").addEventListener("click", loadSlides().then(restore));
+        document.getElementById("genSlides").addEventListener("click", loadSlides);
     </script>
 
 </body>
