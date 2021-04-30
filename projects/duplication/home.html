@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Drive folders duplication">
+    <meta name="author" content="Aubin Tchoï">
+    <title>Folder duplication</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="https://junior-pep.fr/img/logo.png" sizes="180x180">
+    <link rel="icon" href="https://junior-pep.fr/img/logo.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="https://junior-pep.fr/img/logo.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="https://junior-pep.fr/img/logo.png">
+    <meta name="theme-color" content="#8e3232">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+    <!-- Custom styles -->
+    <style>
+        <?!= include("style-css"); ?>
+    </style>
+
+</head>
+
+<body class="text-center">
+
+    <main class="form-signin">
+        <form>
+            <img class="mb-4" src="https://junior-pep.fr/img/logo.png" alt="" width="72" height="57">
+            <h1 class="h3 mb-3 fw-normal">Duplication de dossier Drive</h1>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingSource" placeholder="">
+                <label for="floatingSource">ID du dossier source</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingTarget" placeholder="">
+                <label for="floatingTarget">ID du dossier de desination</label>
+            </div>
+
+            <p><a class="w-100 btn btn-lg btn-primary" id="launch" type="submit">Et z'est bartiiii</a></p>
+            <p class="mt-5 mb-3 text-muted">&copy; Aubin-022</p>
+        </form>
+    </main>
+
+    <script>
+        document.getElementById("launch").addEventListener("click", duplicate);
+
+        function duplicate() {
+            let IDs = {
+                source: document.getElementById("floatingSource").value,
+                target: document.getElementById("floatingTarget").value
+            };
+
+            google.script.run.withSuccessHandler(successHandler).withFailureHandler(failureHandler).duplication(IDs);
+            let element = document.getElementById("launch");
+            element.className = "";
+            element.innerHTML = `<svg width="160" height="47" fill="currentColor" viewBox="0 0 16 16">
+                                <image width=100% height=100% href="https://kodular-community.s3.dualstack.eu-west-1.amazonaws.com/original/2X/c/c09b32fba2ce347fd7bc63c4fba681bac039e7ca.gif">
+                                </image></svg>`;
+            console.log("Duplicating folders");
+        }
+
+        function successHandler() {
+            console.log("Folders duplicated");
+            let element = document.getElementById("launch");
+            element.className = "w-100 btn btn-lg btn-primary";
+            element.innerHTML = `Succès de l'opération`;
+        }
+
+        function failureHandler() {
+            console.log("An error occured");
+            let element = document.getElementById("launch");
+            element.className = "w-100 btn btn-lg btn-primary";
+            element.innerHTML = `Échec de l'opération`;
+        }
+    </script>
+
+</body>
+
+</html>
