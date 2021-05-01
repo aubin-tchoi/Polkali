@@ -20,18 +20,26 @@
     <meta name="theme-color" content="#8e3232">
 
     <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
+        .front {
+            position: relative; 
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
+        
+        .front::before {    
+            content: "";
+            background-image: url(<?!= findURL(); ?>);
+            background-size: cover;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            opacity: 0.4;
+            background-repeat: no-repeat;
         }
     </style>
 
@@ -43,27 +51,30 @@
 </head>
 
 <body class="text-center">
+    <div class="front">
+        <main class="form-signin" style="position: relative;">
+            <form>
+                <img class="mb-4" src="https://junior-pep.fr/img/logo.png" alt="" width="72" height="72">
+                <h1 class="h3 mb-3 fw-normal">Duplication de dossier Drive</h1>
 
-    <main class="form-signin">
-        <form>
-            <img class="mb-4" src="https://junior-pep.fr/img/logo.png" alt="" width="72" height="57">
-            <h1 class="h3 mb-3 fw-normal">Duplication de dossier Drive</h1>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingSource" placeholder="">
+                    <label for="floatingSource">ID du dossier source</label>
+                </div>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingTarget" placeholder="">
+                    <label for="floatingTarget">ID du dossier de desination</label>
+                </div>
 
-            <div class="form-floating">
-                <input type="text" class="form-control" id="floatingSource" placeholder="">
-                <label for="floatingSource">ID du dossier source</label>
-            </div>
-            <div class="form-floating">
-                <input type="text" class="form-control" id="floatingTarget" placeholder="">
-                <label for="floatingTarget">ID du dossier de desination</label>
-            </div>
-
-            <p><a class="w-100 btn btn-lg btn-primary" id="launch" type="submit">Et z'est bartiiii</a></p>
-            <p class="mt-5 mb-3 text-muted">&copy; Aubin-022</p>
-        </form>
-    </main>
+                <p><a class="w-100 btn btn-lg btn-primary" id="launch" type="submit">Et z'est bartiiii</a></p>
+                <p class="mt-5 mb-3 text-muted">&reg; Aubin-022</p>
+            </form>
+            
+        </main>
+    </div>
 
     <script>
+        /** Running a server-side script to duplicate the given folders */
         document.getElementById("launch").addEventListener("click", duplicate);
 
         function duplicate() {
@@ -85,14 +96,14 @@
             console.log("Folders duplicated");
             let element = document.getElementById("launch");
             element.className = "w-100 btn btn-lg btn-primary";
-            element.innerHTML = `Succès de l'opération`;
+            element.innerHTML = `c bon`;
         }
 
         function failureHandler() {
             console.log("An error occured");
             let element = document.getElementById("launch");
             element.className = "w-100 btn btn-lg btn-primary";
-            element.innerHTML = `Échec de l'opération`;
+            element.innerHTML = `Et c'est raté !`;
         }
     </script>
 
