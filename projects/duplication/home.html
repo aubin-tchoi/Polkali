@@ -59,14 +59,17 @@
 
                 <div class="form-floating">
                     <input type="text" class="form-control" id="floatingSource" placeholder="">
-                    <label for="floatingSource">ID du dossier source</label>
+                    <label for="floatingSource">URL du dossier source</label>
                 </div>
                 <div class="form-floating">
                     <input type="text" class="form-control" id="floatingTarget" placeholder="">
-                    <label for="floatingTarget">ID du dossier de desination</label>
+                    <label for="floatingTarget">URL du dossier de desination</label>
                 </div>
-
-                <p><a class="w-100 btn btn-lg btn-primary" id="launch" type="submit">Et z'est bartiiii</a></p>
+                <br>
+                <p>
+                    <a class="btn btn-lg btn-primary" id="launch" type="submit">Et z'est bartiiii &#128640;</a>
+                    <a class="btn btn-lg btn-success" id="openFolder" style="display: none;" target="_blank">Ouvrir le dossier</a>
+                </p>
                 <p class="mt-5 mb-3 text-muted">&reg; Aubin-022</p>
             </form>
             
@@ -78,12 +81,17 @@
         document.getElementById("launch").addEventListener("click", duplicate);
 
         function duplicate() {
-            let IDs = {
+            // Retrieving the 2 inputs
+            let URLs = {
                 source: document.getElementById("floatingSource").value,
                 target: document.getElementById("floatingTarget").value
             };
-
-            google.script.run.withSuccessHandler(successHandler).withFailureHandler(failureHandler).duplication(IDs);
+            // Hiding the second button
+            let openButton = document.getElementById("openFolder");
+            openButton.style.display = "none";
+            // Running a server-side script
+            google.script.run.withSuccessHandler(successHandler).withFailureHandler(failureHandler).duplication(URLs);
+            // Displaying a loading screen
             let element = document.getElementById("launch");
             element.className = "";
             element.innerHTML = `<svg width="160" height="47" fill="currentColor" viewBox="0 0 16 16">
@@ -94,16 +102,22 @@
 
         function successHandler() {
             console.log("Folders duplicated");
-            let element = document.getElementById("launch");
-            element.className = "w-100 btn btn-lg btn-primary";
-            element.innerHTML = `c bon`;
+            // Updating the label on the first button
+            let launchButton = document.getElementById("launch");
+            launchButton.className = "btn btn-lg btn-primary";
+            launchButton.innerHTML = `c bon &#128077;`;
+            // Displaying a second button
+            let openButton = document.getElementById("openFolder");
+            openButton.style.display = "";
+            openButton.setAttribute("href", document.getElementById("floatingTarget").value);
         }
 
         function failureHandler() {
             console.log("An error occured");
+            // Updating the label on the first button
             let element = document.getElementById("launch");
-            element.className = "w-100 btn btn-lg btn-primary";
-            element.innerHTML = `Et c'est raté !`;
+            element.className = "btn btn-lg btn-primary";
+            element.innerHTML = `Et c'est raté ! &#128169`;
         }
     </script>
 

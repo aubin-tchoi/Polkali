@@ -18,3 +18,8 @@ function duplicateFolder(source, target) {
     duplicateFolder(subFolder, targetSubFolder);
   }
 }
+
+/** Extracting an ID from an URL */
+function URLtoID(url) {
+  return url.replace("?usp=sharing", "").split("/").slice(-1)[0];
+}
