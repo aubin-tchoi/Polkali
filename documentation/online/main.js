@@ -4,12 +4,12 @@
 
 // GET method
 function doGet(e) {
-    return HtmlService.createTemplateFromFile("accueil").evaluate();
+    return HtmlService.createTemplateFromFile("layout").evaluate();
 }
 
 // POST method
 function doPost(e) {
-  return HtmlService.createTemplateFromFile("accueil").evaluate();
+  return HtmlService.createTemplateFromFile("layout").evaluate();
 }
 
 // Including a file

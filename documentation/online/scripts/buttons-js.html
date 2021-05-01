@@ -1,0 +1,57 @@
+<script>
+    const buttons = ["charts", "dataTables", "features", "Main", "parameters", "tools"];
+
+    /** Home button */
+    document.getElementById("HomeButton").addEventListener("click", showHome);
+    // document.getElementById("navHome").addEventListener("click", showHome);
+
+    /** Adding onClick events to some buttons (on the front page and inside of the navbar) */
+    buttons.forEach(button => {
+        /** Buttons leading to a certain file */
+        document.getElementById(button).addEventListener("click", showFile(button));
+        /** Buttons leading to file of code */
+        document.getElementById(`${button}.js`).addEventListener("click", showFile(`${button}.js`));
+        /** Buttons leading to each file inside of the navbar */
+        Array.prototype.forEach.call(document.getElementsByClassName(`nav${button}`), el => {
+            el.addEventListener("click", showFile(button));
+        });
+        /** Buttons leading from a file to its code */
+        Array.prototype.forEach.call(document.getElementsByClassName(`nav${button}.js`), el => {
+            el.addEventListener("click", showFile(`${button}.js`));
+        });
+    });
+
+    /** Hiding all files */
+    function hideFiles() {
+        buttons.forEach(f => {
+            document.getElementById(`${f}Doc`).style.display = "None";
+            document.getElementById(`${f}.jsDoc`).style.display = "None";
+        });
+    }
+
+    /** Hiding the home page */
+    function hideHome() {
+        document.getElementById("Home").style.display = "None";
+    }
+
+    /** Showing a specific file */
+    function showFile(file) {
+        return () => {
+            // Hiding the home page + all the files
+            hideHome();
+            hideFiles();
+            // Showing the navbar + 1 specific file
+            document.getElementById("navFiles").style.display = "";
+            document.getElementById(`${file}Doc`).style.display = "";
+        }
+    }
+
+    /** Showing the home page */
+    function showHome() {
+        // Hiding files + navbar
+        hideFiles();
+        document.getElementById("navFiles").style.display = "None";
+        // Displaying the home page
+        document.getElementById("Home").style.display = "";
+    }
+</script>
