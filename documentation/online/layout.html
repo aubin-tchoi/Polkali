@@ -33,15 +33,11 @@
             -moz-user-select: none;
             user-select: none;
         }
-    </style>
 
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
         }
     </style>
 
@@ -68,17 +64,17 @@
         <!-- Doc files -->
         <div id="Doc">
             <?!= include("docfiles/charts"); ?>
-            <?!= include("docfiles/chartsjs"); ?>
+            <?!= include("jsfiles/chartsjs"); ?>
             <?!= include("docfiles/dataTables"); ?>
-            <?!= include("docfiles/dataTablesjs"); ?>
+            <?!= include("jsfiles/dataTablesjs"); ?>
             <?!= include("docfiles/features"); ?>
-            <?!= include("docfiles/featuresjs"); ?>
+            <?!= include("jsfiles/featuresjs"); ?>
             <?!= include("docfiles/main"); ?>
-            <?!= include("docfiles/mainjs"); ?>
+            <?!= include("jsfiles/mainjs"); ?>
             <?!= include("docfiles/parameters"); ?>
-            <?!= include("docfiles/parametersjs"); ?>
+            <?!= include("jsfiles/parametersjs"); ?>
             <?!= include("docfiles/tools"); ?>
-            <?!= include("docfiles/toolsjs"); ?>
+            <?!= include("jsfiles/toolsjs"); ?>
         </div>
 
         <!-- Footer -->
