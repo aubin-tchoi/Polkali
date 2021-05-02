@@ -3,7 +3,7 @@ function copyFiles(source, target) {
   let files = source.getFiles();
   while (files.hasNext()) {
     let file = files.next();
-    file.makeCopy(target);
+    file.makeCopy(file.getName().replace("Copie de ", ""), target);
   }
 }
 
@@ -21,5 +21,5 @@ function duplicateFolder(source, target) {
 
 /** Extracting an ID from an URL */
 function URLtoID(url) {
-  return url.replace("?usp=sharing", "").split("/").slice(-1)[0];
+  return url.replace(/\?.+/, "").split("/").slice(-1)[0];
 }
