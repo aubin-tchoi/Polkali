@@ -291,10 +291,14 @@ function generateKPI() {
   }));
 
   // KPI : Nombre de contact venant du site
+  try {
   let contactBySiteTable = contactBySite(dataSite);
   charts.contributions.push(createChart(CHART_TYPE.COLUMN, contactBySiteTable,"Nombre de contact venant du site", {
     colors: [COLORS.pine, COLORS.silverPink]
-  }));
+  }));}
+  catch(e){
+  Logger.log(e);
+  }
 
   currentTime = measureTime(currentTime, "create the charts");
 
