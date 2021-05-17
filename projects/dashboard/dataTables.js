@@ -268,7 +268,7 @@ function performanceByContact(key, data) {
 // Nombre de contact du au site par mois
 function contactBySite(data) {
     let dataTable = Charts.newDataTable();
-    let dateData = data.map(row => row[row.indexOf("Horodateur")]);
+    let dateData = data.map(row => row["Horodateur"]);
     // Columns : month, all 3 conversion rates
     dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
     dataTable.addColumn(Charts.ColumnType.NUMBER, `Nombre de contact par le site`);
