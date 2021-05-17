@@ -78,7 +78,7 @@ function generateKPI() {
           x : 1,
           y : 1
         },
-      trustColumn: 7
+      trustColumn: 1
     }),
     dataEtudesBis = extractSheetData(ADDRESSES.etudesIdBis, ADDRESSES.etudesName, {
       data: {
