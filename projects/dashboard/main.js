@@ -5,7 +5,7 @@ vous devriez voir essentiellement des commentaires en français. */
 
 // Main file (triggers + main functions for KPI)
 
-/* ----- Triggers ----- Bonjour */
+/* ----- Triggers ----- */
 /**
  * Fonction exécutée à l'ouverture du dashboard, permet la création du menu 'KPI'.
  * @ignore
