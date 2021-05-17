@@ -264,3 +264,17 @@ function performanceByContact(key, data) {
     });
     return [dataTable, Array.from(Array(maxTick + 1).keys())];
 }
+
+// Nombre de contact du au site par mois
+function contactBySite(data) {
+    let dataTable = Charts.newDataTable();
+    let dateData = data.map(row => row[row.indexOf("Horodateur")]);
+    // Columns : month, all 3 conversion rates
+    dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
+    dataTable.addColumn(Charts.ColumnType.NUMBER, `Nombre de contact par le site`);
+    // Rows
+    MONTH_LIST.forEach(function (month, idx) {
+        dataTable.addRow([`${MONTH_NAMES[month.month]} ${month.year}`,dateData.filter(date => (date.getMonth() == month.month && date.getFullYear() == month.year)).length]);
+    });
+    return dataTable;
+}

@@ -98,7 +98,9 @@ const COLORS = Object.freeze({
         etudesName: "Suivi",
         etudesIdBis: "1XY8CVuvPpscU2BkkpX0HZ4TqQo0SDWMIh3kzDSvvhcM",
         driveId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy",
-        slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU"
+        slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU",
+        devisSiteId : "1gYRsgfM86D0dw1lsrbEhsIIUxBo-o0bA93vEBHyfCHM",
+        devisSiteName : "Réponses au formulaire 1"
     }),
     /**  
      * Header des fichiers de données.
