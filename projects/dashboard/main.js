@@ -68,6 +68,18 @@ function generateKPI() {
       },
       trustColumn: 3
     }).filter(row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état]))),
+    dataSite = extractSheetData(ADRESSES.devisSiteId, ADRESSES.devisSiteName,
+      {
+        data : {
+          x : 2,
+          y : 1
+        },
+        header :{
+          x : 1,
+          y : 1
+        },
+      trustColumn: 7
+    }),
     dataEtudesBis = extractSheetData(ADDRESSES.etudesIdBis, ADDRESSES.etudesName, {
       data: {
         x: 5,
