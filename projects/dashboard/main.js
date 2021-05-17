@@ -67,9 +67,20 @@ function generateKPI() {
         y: 3
       },
       trustColumn: 3
-    }).filter(row => row[HEADS.état] != ETAT_ETUDE.sanSuite);
-
-  currentTime = measureTime(currentTime, "extract data from the two sheets");
+    }).filter(row => row[HEADS.état] != ETAT_ETUDE.sanSuite),
+    dataSite = extractSheetData(ADRESSES.devisSiteId, ADRESSES.devisSiteName,
+      {
+        data : {
+          x : 2,
+          y : 1
+        },
+        header :{
+          x : 1,
+          y : 1
+        },
+      trustColumn: 7
+    }),
+    currentTime = measureTime(currentTime, "extract data from the two sheets");
 
   /**
    * Output qui sera affiché lors du display (type HtmlOutput).
@@ -219,6 +230,14 @@ function generateKPI() {
   charts.contributions.push(createChart(CHART_TYPE.PIE, prospectionTurnoverTable, "Proportion du CA venant de la prospection", {
     colors: [COLORS.pine, COLORS.silverPink]
   }));
+
+  // KPI : Nombre de contact venant du site
+  let contactBySiteTable = contactBySite(dataSite);
+  charts.contributions.push(createChart(CHART_TYPE.COLUMN, contactBySiteTable,"Nombre de contact venant du site", {
+    colors: [COLORS.pine, COLORS.silverPink]
+  }))
+
+  //KPI : 
 
   currentTime = measureTime(currentTime, "create the charts");
 
