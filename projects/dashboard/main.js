@@ -141,6 +141,16 @@ function generateKPI() {
     colors: [COLORS.burgundy]
   }));
 
+  // KPI : Nombre de contact venant du site
+  try {
+    let contactBySiteTable = contactBySite(dataSite);
+    charts.contributions.push(createChart(CHART_TYPE.COLUMN, contactBySiteTable,"Nombre de contact venant du site", {
+      colors: [COLORS.pine, COLORS.silverPink]
+    }));}
+    catch(e){
+    Logger.log(e);
+    }  
+
   // KPI : Taux de conversion entre chaque étape
   dataTable = conversionRateByType(conversionChart);
   charts.summary.push(createChart(CHART_TYPE.COLUMN, dataTable, "Taux de conversion sur chaque étape", {
@@ -289,16 +299,6 @@ function generateKPI() {
   charts.contributions.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA venant de la prospection", {
     colors: [COLORS.pine, COLORS.silverPink]
   }));
-
-  // KPI : Nombre de contact venant du site
-  try {
-  let contactBySiteTable = contactBySite(dataSite);
-  charts.contributions.push(createChart(CHART_TYPE.COLUMN, contactBySiteTable,"Nombre de contact venant du site", {
-    colors: [COLORS.pine, COLORS.silverPink]
-  }));}
-  catch(e){
-  Logger.log(e);
-  }
 
   currentTime = measureTime(currentTime, "create the charts");
 
