@@ -14,6 +14,9 @@ try {
  * @constant
  * @readonly
  */
+const TOCHANGE = Object.freeze({
+         nameDirQualiteAndPromo: "Paul Invernizzi, Responsable Qualité 022"
+})
 const COLORS = Object.freeze({
         plum: "#934683",
         wildOrchid: "#D66BA0",
@@ -267,6 +270,7 @@ const COLORS = Object.freeze({
     MONTH_NAMES = Object.freeze(["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"]);
 
 
+
 /** 
  * Enum utilisé pour identifier les différents types de graphes.
  * @enum {Symbol}
@@ -278,3 +282,4 @@ const CHART_TYPE = Object.freeze({
     PIE: Symbol("pie"),
     LINE: Symbol("line")
 });
+

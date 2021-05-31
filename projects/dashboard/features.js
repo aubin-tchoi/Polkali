@@ -71,7 +71,7 @@ function generateSlides(template, chartImages, folderId) {
     // First slide
     let currentSlide = presentation.appendSlide(SlidesApp.PredefinedLayout.SECTION_HEADER);
     currentSlide.getShapes()[0].getText().setText(today);
-    currentSlide.getShapes()[1].getText().setText("Aubin Tchoï, Directeur Qualité 022");
+    currentSlide.getShapes()[1].getText().setText(TOCHANGE.nameDirQualiteAndPromo);
     presentation.getSlides()[0].remove();
 
     let box = currentSlide.insertShape(SlidesApp.ShapeType.RECTANGLE).setLeft(650).setTop(140).setWidth(300).setHeight(380),
