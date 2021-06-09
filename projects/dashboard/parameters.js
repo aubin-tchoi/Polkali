@@ -103,8 +103,25 @@ const COLORS = Object.freeze({
         driveId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy",
         slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU",
         devisSiteId : "1gYRsgfM86D0dw1lsrbEhsIIUxBo-o0bA93vEBHyfCHM",
-        devisSiteName : "Réponses au formulaire 1"
+        devisSiteName : "Réponses au formulaire 1",
+        bddProspectionId : "1dKE_5-Yoi_ACJeq0R7nDY0U1Vz3ccvQo",
     }),
+
+    /* ----- Paramètres d'accès bdd ----- */
+    /**  
+     * IDs et noms de sheets.
+     * @constant
+     * @readonly
+     */
+    BDDPROSP = Object.freeze({
+        bddFC023Id : "1LeAwWXSPEYQu-m24mdjyBjvs7DnecHDatpIyJugB43w",
+        bddT023Id :"1AGNmN3qJeS4M2SwKFgPiad6L-SesxJpzc2ANROO71jU",
+        bddIng023Id : "1fbvkVGqTUohNY0mbtCXNUEBXL-X2qSPz03EKzfXqHH0",
+        bddInd023 : "1jP3UMeBRBGXaFbVxA8NuGu7o1a4zm-xLpe-G9j0QuYE",
+        bddBTP023 : "1wbnP5qAHuQBizKMOXYsoXjQTuXtivpoNZXevBGaBDLU",
+        bddBA023 :  "1SiZy8T7ZyvWvq6KD2cujuWTtHKWMnrEUpx9kGMtL-Dw"
+    }),
+
     /**  
      * Header des fichiers de données.
      * @constant

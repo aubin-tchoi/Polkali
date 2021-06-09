@@ -158,6 +158,16 @@ function generateKPI() {
     percent: true
   }));
 
+  //KPI : Nombres de mails envoyés avec une différence entre quali et automatique
+  try {
+  dataTable = mailSent(BDDPROSP);
+  charts.summary.push(createChart(CHART_TYPE.COLUMN, dataTable, "Mails Prospection", {
+    colors: COLORS_OFFICE
+  }));}
+  catch(e){
+    Logger.log(e);
+  }
+
   // KPI : CA
   /* dataTable = turnover(dataProspection);
   charts.summary.push(createColumnChart(dataTable, Object.values(COLORS), "Chiffre d'affaires", DIMS)); */

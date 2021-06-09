@@ -278,3 +278,22 @@ function contactBySite(data) {
     });
     return dataTable;
 }
+
+function mailSent(obj){
+    let dataTable = Charts.newDataTable();
+    // Columns : month, nb of quali mail, nb of quanti mail
+    dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
+    dataTable.addColumn(Charts.ColumnType.STRING, "Mails Quali");
+    dataTable.addColumn(Charts.ColumnType.STRING, "Mails Quanti");
+    // Rows
+    tables = []
+    Object.values(obj).forEach(tableId => {
+        sheet= SpreadSheet.openById(tableId).getSheetByName("BDD");
+        arr = sheet.getRange(2,2,sheet.getLastRow(),sheet.getLastColumn()).getValues();
+        heads = sheet.getRange(1,1,1,sheet.getLastColumn()).getValues();
+        data = arr.map(row => ArrayToObj(row,heads));
+        tables.push(data);})
+    MONTH_LIST.forEach(function (month, idx) {
+    dataTable.addRow([`${MONTH_NAMES[month.month]} ${month.year}`,tables.reduce(compteur,data => (data.filter(row => row["Mail Normal"] == Quali).length + compteur),0),tables.reduce(compteur,data => (data.filter(row => row["Mail Normal"]== VRAI).length + compteur),0)]);});
+    return dataTable;
+}
