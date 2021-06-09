@@ -144,7 +144,7 @@ function generateKPI() {
   // KPI : Nombre de contact venant du site
   try {
     let contactBySiteTable = contactBySite(dataSite);
-    charts.contributions.push(createChart(CHART_TYPE.COLUMN, contactBySiteTable,"Nombre de contact venant du site", {
+    charts.summary.push(createChart(CHART_TYPE.COLUMN, contactBySiteTable,"Nombre de contact venant du site", {
       colors: [COLORS.pine, COLORS.silverPink]
     }));}
     catch(e){
@@ -339,6 +339,7 @@ function generateKPI() {
       generateSlides(ADDRESSES.slidesTemplate, attachments, folderId = ADDRESSES.driveId);
       measureTime(initialTime, "generate the slides");
     }
+
   }
 }
 
