@@ -1,0 +1,232 @@
+<div id="featuresDoc" style="display: none; margin-left: 300px;">
+    <h1 class="page-title">Fonctionnalités supplémentaires</h1>
+    <section>
+        <header>
+            <h2>
+            </h2>
+            <ul>
+                <li>Ce fichier contient des fonctions qui permettent d'implémenter différentes fonctionnalités.</li>
+                <li>Ces fonctions sont appelées dans l'Object qui est return par la fonction <code>generateKPI</code> du fichier <code><a href="#" class="navMain">main.js</a></code>.</li>
+                <li>Si vous souhaitez ajouter d'autres fonctionnalités aux KPI, ajoutez des fonctions correspondantes à ce fichier et ajoutez des éléments à l'Object return par la fonction <code>generateKPI</code> pour les utiliser.</li>
+            </ul><br>
+        </header>
+        <article>
+            <div class="container-overview">
+                <dl class="details">
+
+
+
+
+                </dl>
+            </div>
+
+            <h3 class="subsection-title">Methods</h3>
+            <div class="section-method">
+                <h4 class="name" id="generateSlides"><span class="type-signature"></span>generateSlides<span
+                        class="signature">(template, chartImages, folderId)</span><span
+                        class="type-signature"></span></h4>
+                <div class="description">
+                    Génération d'un fichier Slides à partir d'un template et d'un ensemble d'images,
+                    enregistré dans le dossier spécifié (par défaut dans <a
+                        href="https://drive.google.com/drive/u/0/folders/1dPi0dht-q_rI8fUmheA1j861huYPPcAy">Pôle
+                        Qualité -> KPI -> KPI archivés</a>).
+                </div>
+                <dl class="details">
+
+
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navfeatures.js" href="#">features.js</a>, <a
+                                    class="navfeatures.js" href="#line57">line
+                                    57</a>
+                            </li>
+                        </ul>
+                    </dd>
+
+                </dl>
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>template</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>string</code></span>
+                            </td>
+                            <td class="description last">
+                                ID du fichier Slides qui servira de template.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name"><code>chartImages</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>Object</code></span>
+                            </td>
+                            <td class="description last">
+                                Object dont les valeurs sont des Array de <a
+                                    href="https://developers.google.com/apps-script/reference/base/blob">blobs</a>
+                                (titrés) correspondant aux images
+                                des graphes.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name"><code>folderId</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>string</code></span>
+                            </td>
+                            <td class="description last">
+                                ID du dossier Drive dans lequel seront enregistrées les slides.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section-method">
+                <h4 class="name" id="saveOnDrive"><span class="type-signature"></span>saveOnDrive<span
+                        class="signature">(imageBlobs, folderId)</span><span class="type-signature"></span>
+                </h4>
+                <div class="description">
+                    Enregistrement des graphes (sous format .png) dans un sous dossier daté à la date
+                    d'aujourd'hui
+                    du dossier spécifié
+                    (par défaut dans <a
+                        href="https://drive.google.com/drive/u/0/folders/1dPi0dht-q_rI8fUmheA1j861huYPPcAy">Pôle
+                        Qualité -> KPI -> KPI archivés</a>).
+                </div>
+                <dl class="details">
+
+
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navfeatures.js" href="#">features.js</a>, <a
+                                    class="navfeatures.js" href="#line28">line
+                                    28</a>
+                            </li>
+                        </ul>
+                    </dd>
+
+                </dl>
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>imageBlobs</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>Object</code></span>
+                            </td>
+                            <td class="description last">
+                                Object dont les valeurs sont des Array de <a
+                                    href="https://developers.google.com/apps-script/reference/base/blob">blobs</a>
+                                correspondant aux images des
+                                graphes.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name"><code>folderId</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>string</code></span>
+                            </td>
+                            <td class="description last">
+                                ID du fichier de destination.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section-method">
+                <h4 class="name" id="sendMail"><span class="type-signature"></span>sendMail<span
+                        class="signature">(address, htmlOutput, subject, attachments)</span><span
+                        class="type-signature"></span></h4>
+                <div class="description">
+                    Envoi des graphes (en pièces jointes, sous format .png) à l'adresse mail spécifiée.
+                </div>
+                <dl class="details">
+
+
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navfeatures.js" href="#">features.js</a>, <a
+                                    class="navfeatures.js" href="#line12">line
+                                    12</a>
+                            </li>
+                        </ul>
+                    </dd>
+
+                </dl>
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>address</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>string</code></span>
+                            </td>
+                            <td class="description last">
+                                Adresse mail de destination.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name"><code>htmlOutput</code></td>
+                            <td class="type">
+                                <span class="param-type"><code><a
+                                            href="https://developers.google.com/apps-script/reference/html/html-output?hl=en">HtmlOutput</a></code></span>
+                            </td>
+                            <td class="description last">
+                                Contenu Html à faire parvenir.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name"><code>subject</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>string</code></span>
+                            </td>
+                            <td class="description last">
+                                Objet du mail.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name"><code>attachments</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>Object</code></span>
+                            </td>
+                            <td class="description last">
+                                Pièces jointes du mail (sous forme d'Object car les KPI sont groupés par
+                                catégorie).
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </article>
+    </section>
+</div>

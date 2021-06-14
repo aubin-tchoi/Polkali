@@ -1,0 +1,31 @@
+<script>
+    /** Making sure that the navbar will stop at the footer */
+
+    let socialFloat = document.querySelector('#navFiles'),
+        footer = document.querySelector('#stopLine');
+
+    function checkOffset() {
+        function getRectTop(el) {
+            return el.getBoundingClientRect().top;
+        }
+
+        // Scrolling down until the navbar reaches the footer
+        if ((getRectTop(socialFloat) + document.body.scrollTop) + socialFloat.offsetHeight >= (getRectTop(footer) +
+                document.body.scrollTop)) {
+            //socialFloat.style.top = `${document.getElementById("Doc").clientHeight - window.screen.height}px`;
+            socialFloat.scrollTop = window.screen.height - getRectTop(footer);
+            socialFloat.style.position = 'relative';
+            console.log(`Window innerHeight : ${document.getElementById("Doc").clientHeight}`);
+            console.log(`Footer : ${getRectTop(footer)}`);
+        }
+        // Scrolling up to make the navbar stick again
+        if (document.body.scrollTop + window.innerHeight < (getRectTop(footer) + document.body.scrollTop)) {
+            socialFloat.style.position = 'relative';
+            socialFloat.style.top = "0px";
+        }
+    }
+
+    document.addEventListener("scroll", function () {
+        checkOffset();
+    });
+</script>

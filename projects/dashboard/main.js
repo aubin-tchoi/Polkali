@@ -67,8 +67,8 @@ function generateKPI() {
         y: 3
       },
       trustColumn: 3
-    }).filter(row => row[HEADS.état] != ETAT_ETUDE.sanSuite),
-    dataSite = extractSheetData(ADRESSES.devisSiteId, ADRESSES.devisSiteName,
+    }).filter(row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état]))),
+    dataSite = extractSheetData(ADDRESSES.devisSiteId, ADDRESSES.devisSiteName,
       {
         data : {
           x : 2,
@@ -78,9 +78,21 @@ function generateKPI() {
           x : 1,
           y : 1
         },
-      trustColumn: 7
+      trustColumn: 1
     }),
-    currentTime = measureTime(currentTime, "extract data from the two sheets");
+    dataEtudesBis = extractSheetData(ADDRESSES.etudesIdBis, ADDRESSES.etudesName, {
+      data: {
+        x: 5,
+        y: 3
+      },
+      header: {
+        x: 1,
+        y: 3
+      },
+      trustColumn: 3
+    }).filter(row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])));
+
+  currentTime = measureTime(currentTime, "extract data from the two sheets");
 
   /**
    * Output qui sera affiché lors du display (type HtmlOutput).
@@ -100,10 +112,17 @@ function generateKPI() {
     charts = {
       summary: [],
       contactTypology: [],
+      contactType: [],
+      companySize: [],
+      sector: [],
+      missionType: [],
       competitiveness: [],
       sizeComparison: [],
       contributions: []
-    };
+    },
+    dataTable,
+    ticks,
+    conversionChart;
 
   currentTime = measureTime(currentTime, "load the HTML content");
 
@@ -111,123 +130,183 @@ function generateKPI() {
   // ----- BILAN PROSPECTION -----
 
   // KPI : Contacts par mois
-  let [contactsTable, conversionChart] = contacts(dataProspection); // conversionChart is a 2D array : [month][number of contact in a given state]
-  charts.summary.push(createChart(CHART_TYPE.COLUMN, contactsTable, "Contacts", {
-    colors: COLORS_ANATOLE
+  [dataTable, conversionChart] = contacts(dataProspection); // conversionChart is a 2D array : [month][number of contact in a given state]
+  charts.summary.push(createChart(CHART_TYPE.COLUMN, dataTable, "Contacts", {
+    colors: COLORS_OFFICE
   }));
 
   // KPI : Taux de conversion global par mois
-  let conversionRateTable = conversionRate(conversionChart);
-  charts.summary.push(createChart(CHART_TYPE.LINE, conversionRateTable, "Taux de conversion global", {
+  dataTable = conversionRateOverTime(conversionChart);
+  charts.summary.push(createChart(CHART_TYPE.LINE, dataTable, "Taux de conversion global", {
     colors: [COLORS.burgundy]
   }));
 
+  // KPI : Nombre de contact venant du site
+  try {
+    let contactBySiteTable = contactBySite(dataSite);
+    charts.summary.push(createChart(CHART_TYPE.COLUMN, contactBySiteTable,"Nombre de contact venant du site", {
+      colors: [COLORS.pine, COLORS.silverPink]
+    }));}
+    catch(e){
+    Logger.log(e);
+    }  
+
   // KPI : Taux de conversion entre chaque étape
-  let conversionRateByTypeTable = conversionRateByType(conversionChart);
-  charts.summary.push(createChart(CHART_TYPE.COLUMN, conversionRateByTypeTable, "Taux de conversion sur chaque étape", {
+  dataTable = conversionRateByType(conversionChart);
+  charts.summary.push(createChart(CHART_TYPE.COLUMN, dataTable, "Taux de conversion sur chaque étape", {
     colors: [COLORS.burgundy],
     percent: true
   }));
 
+  //KPI : Nombres de mails envoyés avec une différence entre quali et automatique
+  try {
+  dataTable = mailSent(BDDPROSP);
+  charts.summary.push(createChart(CHART_TYPE.COLUMN, dataTable, "Mails Prospection", {
+    colors: COLORS_OFFICE
+  }));}
+  catch(e){
+    Logger.log(e);
+  }
+
   // KPI : CA
-  /* let turnoverTable = turnover(dataProspection);
-  charts.summary.push(createColumnChart(turnoverTable, Object.values(COLORS), "Chiffre d'affaires", DIMS)); */
+  /* dataTable = turnover(dataProspection);
+  charts.summary.push(createColumnChart(dataTable, Object.values(COLORS), "Chiffre d'affaires", DIMS)); */
 
 
   // ----- TYPOLOGIE DES CONTACTS -----
 
   // KPI : Répartition des contacts par type
-  let contactTypeTable = contactType(dataProspection);
-  charts.contactTypology.push(createChart(CHART_TYPE.PIE, contactTypeTable, "Type de contact", {
-    colors: COLORS_ANATOLE
+  dataTable = totalDistribution(HEADS.typeContact, dataProspection);
+  charts.contactTypology.push(createChart(CHART_TYPE.PIE, dataTable, "Type de contact", {
+    colors: COLORS_OFFICE
   }));
 
   // KPI : Taux de conversion par type de contact
-  let conversionRateByContactTable = conversionRateByContact(dataProspection);
-  charts.contactTypology.push(createChart(CHART_TYPE.COLUMN, conversionRateByContactTable, "Taux de conversion par type de contact", {
-    colors: COLORS_ANATOLE_2COLUMNS,
+  dataTable = conversionRate(HEADS.typeContact, dataProspection);
+  charts.contactTypology.push(createChart(CHART_TYPE.COLUMN, dataTable, "Taux de conversion par type de contact", {
+    colors: COLORS_DUO,
     percent: true
   }));
 
   // KPI : Répartition des contacts par domaine de compétence
-  let contactByDomainTable = contactByDomain(dataProspection.filter(row => row[HEADS.domaine] != ""));
-  charts.contactTypology.push(createChart(CHART_TYPE.PIE, contactByDomainTable, "Répartition des contacts par domaine de compétence", {
-    colors: COLORS_ANATOLE
+  dataTable = totalDistribution(HEADS.domaine, dataProspection.filter(row => row[HEADS.domaine] != ""));
+  charts.contactTypology.push(createChart(CHART_TYPE.PIE, dataTable, "Répartition des contacts par domaine de compétence", {
+    colors: COLORS_OFFICE
   }));
 
 
   // ----- CONCURRENCE AVEC D'AUTRES JE
 
   // KPI : Contacts qui sont en lien avec d'autres JE
-  /*let [contactsConcurrenceTable, conversionConcurrenceChart] = contacts(dataProspection.filter(row => row[HEADS.concurrence] || false));
-  charts.competitiveness.push(createChart(CHART_TYPE.COLUMN, contactsConcurrenceTable, "Contacts en lien avec d'autres JE")); */
+  /*let [dataTableBis, conversionConcurrenceChart] = contacts(dataProspection.filter(row => row[HEADS.concurrence] || false));
+  charts.competitiveness.push(createChart(CHART_TYPE.COLUMN, dataTableBis, "Contacts en lien avec d'autres JE")); */
 
   // KPI : Taux de conversion en concurrence
-  /* let conversionRateConcurrenceTable = conversionRateByType(conversionConcurrenceChart);
-  charts.competitiveness.push(createChart(CHART_TYPE.COLUMN, conversionRateConcurrenceTable, "Taux de conversion sur chaque étape (en situation de concurrence)", {
+  /* dataTable = conversionRateByType(conversionConcurrenceChart);
+  charts.competitiveness.push(createChart(CHART_TYPE.COLUMN, dataTable, "Taux de conversion sur chaque étape (en situation de concurrence)", {
     colors: [COLORS.burgundy],
     percent: true
   })); */
 
 
+  // ----- PERFORMANCE SELON LE TYPE DE CONTACTS -----
+
+  // KPI : nombre d'études, CA par type de contact
+  [dataTable, ticks] = performanceByContact(HEADS.typeContact, dataProspection.filter(row => row[HEADS.typeContact] != ""));
+  charts.contactType.push(createChart(CHART_TYPE.COLUMN, dataTable, "Performance par type de contact", {
+    vticks: ticks,
+    colors: COLORS_OFFICE
+  }));
+
+  // KPI : Proportion du CA venant de chaque type de contact
+  dataTable = turnoverDistribution(HEADS.typeContact, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.typeContact] != ""));
+  charts.contactType.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA venant de chaque type de contact", {
+    colors: COLORS_OFFICE
+  }));
+
+
+  // ----- PERFORMANCE SELON LE TYPE D'ENTREPRISE -----
+
+  // KPI : nombre d'études, CA par type d'entreprise
+  [dataTable, ticks] = performance(HEADS.typeEntreprise, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != ""));
+  charts.companySize.push(createChart(CHART_TYPE.COLUMN, dataTable, "Performance par type d'entreprise", {
+    colors: COLORS_DUO,
+    vticks: ticks
+  }));
+
+  // KPI : Proportion du CA venant de chaque type d'entreprise
+  dataTable = turnoverDistribution(HEADS.typeEntreprise, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != ""));
+  charts.companySize.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA venant de chaque type d'entreprise", {
+    colors: COLORS_OFFICE
+  }));
+  
+
+  // ----- PERFORMANCE PAR SECTEUR D'ACTIVITE DU CLIENT -----
+
+  // KPI : nombre d'études, CA par secteur
+  [dataTable, ticks] = performance(HEADS.secteur, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != ""));
+  charts.sector.push(createChart(CHART_TYPE.COLUMN, dataTable, "Performance par secteur", {
+    colors: COLORS_DUO,
+    vticks: ticks
+  }));
+
+  // KPI : Proportion du CA venant de chaque secteur
+  dataTable = turnoverDistribution(HEADS.secteur, dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != ""));
+  charts.sector.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA venant de chaque secteur", {
+    colors: COLORS_OFFICE
+  }));
+
+
+  // ----- PERFORMANCE SELON LE TYPE DE PRESTATION -----
+
+  // KPI : nombre d'études, CA par type de prestation
+  [dataTable, ticks] = performance(HEADS.prestation, dataEtudesBis, HEADS.prix);
+  charts.missionType.push(createChart(CHART_TYPE.COLUMN, dataTable, "Performance par type de prestation", {
+    colors: COLORS_DUO,
+    vticks: ticks
+  }));
+
+  // KPI : Proportion du CA obtenue sur chaque type de prestation
+  dataTable = turnoverDistribution(HEADS.prestation, dataEtudesBis, HEADS.prix);
+  charts.missionType.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA obtenue sur chaque type de prestation", {
+    colors: COLORS_OFFICE
+  }));
+
+  
   // ----- PERFORMANCE SELON LA TAILLE DES ETUDES -----
 
   // KPI : Nombre d'étude pour différents intervalles de prix
-  let priceRangeTable = priceRange(dataEtudes.filter(row => row[HEADS.prix] != ""), 500, 4500, 8);
-  charts.sizeComparison.push(createChart(CHART_TYPE.COLUMN, priceRangeTable, "Nombre d'études par tranche de prix", {
+  dataTable = priceRange(dataEtudes.filter(row => row[HEADS.prix] != ""), 500, 4500, 8);
+  charts.sizeComparison.push(createChart(CHART_TYPE.COLUMN, dataTable, "Nombre d'études par tranche de prix (en €)", {
     colors: [COLORS.burgundy]
   }));
 
   // KPI : Nombre d'étude pour différents intervalles de prix
-  let [JEHRangeTable, JEHTicks] = JEHRange(dataEtudes.filter(row => row[HEADS.JEH] != ""));
-  charts.sizeComparison.push(createChart(CHART_TYPE.COLUMN, JEHRangeTable, "Nombre d'études par nombre de JEHs", {
+  [dataTable, ticks] = numberOfMissions(HEADS.JEH, dataEtudes.filter(row => row[HEADS.JEH] != ""));
+  charts.sizeComparison.push(createChart(CHART_TYPE.COLUMN, dataTable, "Nombre d'études par nombre de JEHs", {
     colors: [COLORS.burgundy],
-    hticks: JEHTicks
+    hticks: ticks
   }));
 
   // KPI : Nombre d'étude pour différents intervalles de prix
-  let [lengthRangeTable, lengthTicks] = lengthRange(dataEtudes.filter(row => row[HEADS.durée] != ""));
-  charts.sizeComparison.push(createChart(CHART_TYPE.COLUMN, lengthRangeTable, "Nombre d'études par durée d'étude (en nombre de semaines)", {
+  [dataTable, ticks] = numberOfMissions(HEADS.durée, dataEtudes.filter(row => row[HEADS.durée] != ""));
+  charts.sizeComparison.push(createChart(CHART_TYPE.COLUMN, dataTable, "Nombre d'études par durée d'étude (en nombre de semaines)", {
     colors: [COLORS.burgundy],
-    hticks: lengthTicks
+    hticks: ticks
   }));
 
 
   // ----- MESURE DES DIFFERENTES CONTRIBUTIONS AU CA -----
 
-  // KPI : nombre d'études, CA par type d'entreprise
-  let performanceByCompanyTypeTable = performanceByCompanyType(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
-  charts.contributions.push(createChart(CHART_TYPE.COLUMN, performanceByCompanyTypeTable, "Performance par type d'entreprise", {
-    colors: COLORS_ANATOLE_2COLUMNS
-  }));
-
-  // KPI : Proportion du CA venant de chaque type d'entreprise
-  let turnoverByCompanyTypeTable = turnoverByCompanyType(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
-  charts.contributions.push(createChart(CHART_TYPE.PIE, turnoverByCompanyTypeTable, "Proportion du CA venant de chaque type d'entreprise", {
-    colors: COLORS_ANATOLE
-  }));
-
-  // KPI : nombre d'études, CA par secteur
-  let performanceBySectorTable = performanceBySector(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
-  charts.contributions.push(createChart(CHART_TYPE.COLUMN, performanceBySectorTable, "Performance par secteur", {
-    colors: COLORS_ANATOLE_2COLUMNS
-  }));
-
-  // KPI : Proportion du CA venant de chaque secteur
-  let turnoverBySectorTable = turnoverBySector(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude).filter(row => row[HEADS.secteur] != ""));
-  charts.contributions.push(createChart(CHART_TYPE.PIE, turnoverBySectorTable, "Proportion du CA venant de chaque secteur", {
-    colors: COLORS_ANATOLE
-  }));
-
   // KPI : Proportion du CA due aux alumni
-  let alumniContributionTable = alumniContribution(dataEtudes);
-  charts.contributions.push(createChart(CHART_TYPE.PIE, alumniContributionTable, "Proportion du CA due aux alumni", {
+  dataTable = turnoverDistributionBinary(HEADS.alumni, dataEtudes);
+  charts.contributions.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA due aux alumni", {
     colors: [COLORS.pine, COLORS.silverPink]
   }));
 
   // KPI : Proportion du CA venant de la prospection
-  let prospectionTurnoverTable = prospectionTurnover(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude));
-  charts.contributions.push(createChart(CHART_TYPE.PIE, prospectionTurnoverTable, "Proportion du CA venant de la prospection", {
+  dataTable = prospectionTurnover(dataProspection.filter(row => row[HEADS.état] == ETAT_PROSP.etude));
+  charts.contributions.push(createChart(CHART_TYPE.PIE, dataTable, "Proportion du CA venant de la prospection", {
     colors: [COLORS.pine, COLORS.silverPink]
   }));
 
@@ -258,40 +337,27 @@ function generateKPI() {
 
   // Returning functions within an Object for later use, all functions are manually decorated with an execution time logger
   return {
-    /**
-     * Ouvre une fenêtre sur le dashboard et y affiche les graphes.
-     */
     display: function () {
       let initialTime = new Date();
       ui.showModalDialog(htmlOutput, "KPI");
       measureTime(initialTime, "display the charts");
     },
-    /**
-     * Enregistre les graphes sous forme d'images (au format .png) dans le dossier spécifié (par défaut dans Pôle Qualité -> KPI -> KPI archivés).
-     * @param {string} folderId ID du dossier de destination.
-     */
     save: function (folderId = ADDRESSES.driveId) {
       let initialTime = new Date();
       saveOnDrive(attachments, folderId);
       measureTime(initialTime, "save the charts");
     },
-    /**
-     * Envoie par mail les graphes sous forme d'images (au format .png) à l'adresse spécifiée.
-     * @param {string} address Adresse mail du destinataire.
-     */
     mail: function (address) {
       let initialTime = new Date();
       sendMail(address, htmlMail, "KPI", attachments);
       measureTime(initialTime, "mail the charts");
     },
-    /**
-     * Crée un fichier Slides (il s'agit du Point KPI) contenant les KPI regroupés par catégorie.
-     */
     slides: function () {
       let initialTime = new Date();
       generateSlides(ADDRESSES.slidesTemplate, attachments, folderId = ADDRESSES.driveId);
       measureTime(initialTime, "generate the slides");
     }
+
   }
 }
 
@@ -316,14 +382,14 @@ function saveKPI() {
       query: "Entrez l'id du dossier de destination :",
       incorrectInput: "L'ID entré est invalide, veuillez recommencer."
     }) : "",
-    mailAdress = mailResults ? userQuery({
+    mailAddress = mailResults ? userQuery({
       title: "Envoi des diagrammes par mail",
       query: "Entrez l'adresse mail de destination :"
     }) : "",
     KPI = generateKPI();
 
   if (mailResults) {
-    KPI.mail(mailAdress);
+    KPI.mail(mailAddress);
   }
   if (saveResults) {
     KPI.save(folderId);

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Documentation - PEP KPI</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+    <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+    <label for="nav-trigger" class="navicon-button x">
+        <div class="navicon"></div>
+    </label>
+    <label for="nav-trigger" class="overlay"></label>
+    <nav>
+        <li class="nav-link nav-home-link"><a href="../accueil.html"> Accueil</a></li>
+        <li class="nav-heading"><a href="main.html">main.js</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#autoSaveKPI">autoSaveKPI</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#displayKPI">displayKPI</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#generateKPI">generateKPI</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#installTrigger">installTrigger</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#prepCA">prepCA</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#saveKPI">saveKPI</a></span></li>
+
+        <li class="nav-heading"><a href="dataTables.html">dataTables</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#conversionRate">conversionRate</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#numberOfMissions">numberOfMissions</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#performance">performance</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#totalDistribution">totalDistribution</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#turnoverDistribution">turnoverDistribution</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#turnoverDistributionBinary">turnoverDistributionBinary</a></span></li>
+
+        <li class="nav-heading"><a href="charts.html">charts</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="charts.html#addOptions">addOptions</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="charts.html#createChart">createChart</a></span></li>
+
+        <li class="nav-heading"><a href="features.html">features</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="features.html#generateSlides">generateSlides</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="features.html#saveOnDrive">saveOnDrive</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="features.html#sendMail">sendMail</a></span></li>
+
+        <li class="nav-heading"><a href="tools.html">tools</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#addHTMLLine">addHTMLLine</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#convertChart">convertChart</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#displayLoadingScreen">displayLoadingScreen</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#extractSheetData">extractSheetData</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#manuallyGetRowNumber">manuallyGetRowNumber</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#measureTime">measureTime</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#prcnt">prcnt</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#sameMonth">sameMonth</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#uniqueValues">uniqueValues</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#userQuery">userQuery</a></span></li>
+
+        <li class="nav-heading"><a href="parameters.html">parameters</a></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#ADDRESSES">ADDRESSES</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#CHART_TYPE">CHART_TYPE</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#COLORS">COLORS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#CONTACT_TYPE">CONTACT_TYPE</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#DIMS">DIMS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#ETAT_ETUDE">ETAT_ETUDE</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#ETAT_PROSP">ETAT_PROSP</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#ETAT_PROSP_BIS">ETAT_PROSP_BIS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#HEADS">HEADS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#HTML_CONTENT">HTML_CONTENT</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#IMGS">IMGS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#MONTH_LIST">MONTH_LIST</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#MONTH_NAMES">MONTH_NAMES</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#TITLES">TITLES</a></span></li>
+    </nav>
+    <div id="main">
+        <h1 class="page-title">Liste des paramètres</h1>
+        <section>
+            <header>
+                <h2>
+                </h2>
+            </header>
+            <article>
+                <div class="container-overview">
+                    <dl class="details">
+
+
+                    </dl>
+                </div>
+                <h3 class="subsection-title">Members</h3>
+                <div class="section-members">
+                    <h4 class="name" id="ADDRESSES"><span class="type-signature">(constant) </span>ADDRESSES<span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        IDs et noms de sheets.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line86">line 86</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="CHART_TYPE"><span class="type-signature">(constant) </span>CHART_TYPE<span
+                            class="type-signature"> :Symbol</span></h4>
+                    <div class="description">
+                        Enum utilisé pour identifier les différents types de graphes.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line251">line 251</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <h5>Type:</h5>
+                    <ul>
+                        <li>
+                            <span class="param-type"><code>Symbol</code></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="COLORS"><span class="type-signature">(constant) </span>COLORS<span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Couleurs des graphes.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line13">line 13</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="CONTACT_TYPE"><span class="type-signature">(constant) </span>CONTACT_TYPE<span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Différents types de contact.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line141">line 141</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="DIMS"><span class="type-signature">(constant) </span>DIMS<span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Dimensions des graphes.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line34">line 34</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="ETAT_ETUDE"><span class="type-signature">(constant) </span>ETAT_ETUDE<span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Différents états possible d'une étude (dans le suivi des études).
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line156">line 156</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="ETAT_PROSP"><span class="type-signature">(constant) </span>ETAT_PROSP<span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Différents états possible dans la prospection (dans le suivi de la prospection).
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line121">line 121</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="ETAT_PROSP_BIS"><span class="type-signature">(constant)
+                        </span>ETAT_PROSP_BIS<span class="type-signature"></span></h4>
+                    <div class="description">
+                        États correspondant à un contact qui n'a pas abouti sur une étude (dans le suivi de la
+                        prospection).
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line132">line 132</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="HEADS"><span class="type-signature">(constant) </span>HEADS<span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Header des fichiers de données.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line99">line 99</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="HTML_CONTENT"><span class="type-signature">(constant) </span>HTML_CONTENT<span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Contenu HTML (mail, affichage des KPI et écran de chargement).
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line52">line 52</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="IMGS"><span class="type-signature">(constant) </span>IMGS<span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Liens vers différentes images/gif.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line43">line 43</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="MONTH_LIST"><span class="type-signature">(constant) </span>MONTH_LIST<span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Index des mois à représenter.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line172">line 172</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="MONTH_NAMES"><span class="type-signature">(constant) </span>MONTH_NAMES<span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Manière dont les mois sont écrits.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line242">line 242</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="section-members">
+                    <h4 class="name" id="TITLES"><span class="type-signature">(constant) </span>TITLES<span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Titres des slides de transition.
+                    </div>
+                    <dl class="details">
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="parameters.js.html">parameters.js</a>, <a
+                                        href="parameters.js.html#line72">line 72</a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </article>
+        </section>
+    </div>
+    <br class="clear">
+    <footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
+        <div class="container">
+            <p class="float-end"><a href="#">Retour en haut</a></p>
+            <ul class="bd-footer-links ps-0 mb-3">
+                <li class="d-inline-block"><a
+                        href="https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app">Documentation
+                        Google</a></li>
+            </ul>
+            <p class="mb-0">Ponts Études Projets &middot; Pôle Qualité &middot; mandat 022</a></p>
+        </div>
+    </footer>
+    <script>
+        prettyPrint();
+    </script>
+    <script src="scripts/linenumber.js"></script>
+</body>
+
+</html>

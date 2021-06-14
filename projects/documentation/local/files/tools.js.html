@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>tools.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="../accueil.html"> Accueil</a></li>
+    <li class="nav-heading"><a href="main.html">main.js</a></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="main.html#autoSaveKPI">autoSaveKPI</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="main.html#displayKPI">displayKPI</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="main.html#generateKPI">generateKPI</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="main.html#installTrigger">installTrigger</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="main.html#prepCA">prepCA</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="main.html#saveKPI">saveKPI</a></span></li>
+
+    <li class="nav-heading"><a href="dataTables.html">dataTables</a></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="dataTables.html#conversionRate">conversionRate</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="dataTables.html#numberOfMissions">numberOfMissions</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="dataTables.html#performance">performance</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="dataTables.html#totalDistribution">totalDistribution</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="dataTables.html#turnoverDistribution">turnoverDistribution</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="dataTables.html#turnoverDistributionBinary">turnoverDistributionBinary</a></span></li>
+
+    <li class="nav-heading"><a href="charts.html">charts</a></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="charts.html#addOptions">addOptions</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="charts.html#createChart">createChart</a></span></li>
+
+    <li class="nav-heading"><a href="features.html">features</a></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="features.html#generateSlides">generateSlides</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="features.html#saveOnDrive">saveOnDrive</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="features.html#sendMail">sendMail</a></span></li>
+
+    <li class="nav-heading"><a href="tools.html">tools</a></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#addHTMLLine">addHTMLLine</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#convertChart">convertChart</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#displayLoadingScreen">displayLoadingScreen</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#extractSheetData">extractSheetData</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#manuallyGetRowNumber">manuallyGetRowNumber</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#measureTime">measureTime</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#prcnt">prcnt</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#sameMonth">sameMonth</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#uniqueValues">uniqueValues</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                href="tools.html#userQuery">userQuery</a></span></li>
+
+    <li class="nav-heading"><a href="parameters.html">parameters</a></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#ADDRESSES">ADDRESSES</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#CHART_TYPE">CHART_TYPE</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#COLORS">COLORS</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#CONTACT_TYPE">CONTACT_TYPE</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#DIMS">DIMS</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#ETAT_ETUDE">ETAT_ETUDE</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#ETAT_PROSP">ETAT_PROSP</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#ETAT_PROSP_BIS">ETAT_PROSP_BIS</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#HEADS">HEADS</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#HTML_CONTENT">HTML_CONTENT</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#IMGS">IMGS</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#MONTH_LIST">MONTH_LIST</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#MONTH_NAMES">MONTH_NAMES</a></span></li>
+    <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                href="parameters.html#TITLES">TITLES</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">tools.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
+
+// ----- Data extraction tools -----
+
+// I chose to keep the data as an array of objects (other possibility : object of objects, the keys being the months' names and the values the data in each row)
+/**
+ * Extrait les données d'un sheet sous forme d'un tableau d'Objects afin d'en faciliter la lecture.
+ * @param {string} spreadsheetId ID du spreadsheet.
+ * @param {string} sheetName Nom de l'onglet à extraire.
+ * @param {Object} pos Object contenant deux clés : data et pos pour indiquer la position du header ainsi que des données. 
+ * @returns {Array} Array d'Object décrivant l'ensemble des données extraites (1 ligne correspond à une ligne du fichier et les clés sont alors les valeurs du header).
+ */
+function extractSheetData(spreadsheetId, sheetName, pos) {
+    const sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName(sheetName),
+        data = sheet.getRange(pos.data.x, pos.data.y, manuallyGetRowNumber(sheet, pos.data.x, pos.trustColumn), (sheet.getLastColumn() - pos.data.y + 1)).getValues(),
+        heads = sheet.getRange(pos.header.x, pos.header.y, 1, (sheet.getLastColumn() - pos.header.y + 1)).getValues().shift();
+    return data.map(row => heads.reduce((obj, key, idx) => (obj[key] = (row[idx] != "") ? row[idx] : obj[key] || '', obj), {}));
+}
+
+/**
+ * Renvoie le nombre de lignes non-vide dans un Sheet (pas toujours possible avec getLastRow à cause de la validation des données).
+ * @param {Sheet} sheet Onglet du sheet à considérer.
+ * @param {number} start Indice de la 1ère ligne contenant des données.
+ * @param {number} trustColumn Indice d'une colonne qui sera vide ssi la ligne est vide.
+ * @returns {number} Nombre de lignes de données.
+ */
+function manuallyGetRowNumber(sheet, start, trustColumn) {
+    // 100 is considered as a higher bound for the number of rows inside of this sheet
+    let data = sheet.getRange(start, trustColumn, (100 - start + 1), 1).getValues();
+    for (row = 0; row &lt; 100; row++) {
+        if ((data[row][0]) == "") {
+            return row;
+        }
+    }
+}
+
+
+// ----- Computation tools -----
+
+/**
+ * Renvoie un tableau des valeurs uniques trouvées pour une certaine colonne des données entrées.
+ * @param {string} key Clé à considérer (doit être présente dans les éléments de data).
+ * @param {Array} data Données à considérer.
+ * @returns {Array} Valeurs uniques se trouvant dans cette colonne.
+ */
+const uniqueValues = (key, data) => data.map((row) => row[key]).filter((val, idx, arr) => arr.indexOf(val) == idx);
+
+/**
+ * Renvoie a / b * 100 si b est non nul, 0 sinon.
+ * @param {number} a Numérateur.
+ * @param {number} b Dénominateur.
+ * @returns {number} a / b * 100.
+ */
+const prcnt = (a, b) => (parseInt(b, 10) == 0) ? 0 : a / b * 100;
+
+/**
+ * Test vérifiant si une ligne de données correspond à un mois donné.
+ * @param {Object} row Ligne de donnée à considérer.
+ * @param {Object} month Object à deux éléments: month et year.
+ * @returns {Boolean} true ssi le champ "Premier contact" de la ligne correspond bien au mois spécifié.
+ */
+const sameMonth = (row, month) => parseInt(row[HEADS.premierContact].getMonth(), 10) == month.month &amp;&amp; parseInt(row[HEADS.premierContact].getFullYear(), 10) == month.year;
+
+/**
+ * Conversion d'un graphe de type Chart en une image qui sera ajoutée à un HtmlOutput ainsi qu'à une liste.
+ * @param {Chart} chart Graphe.
+ * @param {string} title Titre du graphe.
+ * @param {HtmlOutput} htmlOutput Contenu html qui servira à afficher les graphes à l'écran.
+ * @param {Array} attachments Liste des blobs des images.
+ */
+function convertChart(chart, title, htmlOutput, attachments) {
+    // Loading the blob for this chart (this part takes the most time)
+    let chartBlob = chart.getAs('image/png');
+    // Adding the chart to the HtmlOutput
+    htmlOutput.append(`&lt;img border="1" src="data:image/png;base64,${encodeURI(Utilities.base64Encode(chartBlob.getBytes()))}">`);
+    // Adding the chart to the attachments
+    attachments.push(chartBlob.setName(title));
+}
+
+
+// ----- User's side features -----
+
+/**
+ * Affichage d'un écran de chargement.
+ * @param {string} msg Message à afficher en titre. 
+ */
+function displayLoadingScreen(msg) {
+    ui.showModelessDialog(HTML_CONTENT.loadingScreen, msg);
+}
+
+/**
+ * Récupère une entrée de l'utilisateur en ouvrant une fenêtre.
+ * Si l'argument message contient une clé 'incorrectInput' l'entrée sera testée et demandée à nouveau jusqu'à ce qu'elle soit validée.
+ * @param {Object} message Object décrivant les messages à afficher: titre de la fenêtre, question à poser et message indiquant une entrée non valide (ce dernier est optionnel).
+ * @param {function} test Fonction booléenne permettant de tester l'entrée.
+ * @returns {string} Réponse de l'utilisateur.
+ */
+const userQuery = (message, test = (input) => {DriveApp.getFolderById(input);}) => {
+    let response = "";
+    if (message.incorrectInput != undefined) {
+        while (true) {
+            try {
+                response = ui.prompt(message.title, message.query, ui.ButtonSet.OK).getResponseText();
+                // Checking whether the input is valid or not
+                test(response);
+                return response;
+            } catch (e) {
+                ui.alert(message.title, message.incorrectInput, ui.ButtonSet.OK);
+            }
+        }
+    } else {
+        return ui.prompt(message.title, message.query, ui.ButtonSet.OK).getResponseText();
+    }
+}
+
+/**
+ * Ajout d'une ligne (dont le contenu est hardcodé et correspond à ajouter une ligne de titre).
+ * @param {string} key Clé permettant de retrouver le titre de la ligne à ajouter.
+ * @param {HtmlOutput} htmlOutput Contenu html à modifier.
+ */
+const addHTMLLine = (key, htmlOutput) => {
+    htmlOutput.append(`&lt;br/>&lt;br/>&lt;br/>&lt;br/>&lt;span style='font-size: 16pt;'> &lt;span style="font-family: 'roboto', sans-serif;">${TITLES[key]}&lt;br/>&lt;/span> &lt;/span> &lt;br/>`)
+};
+
+/**
+ * Log le temps écoulé depuis le checkpoint puis renvoit un nouveau checkpoint.
+ * @param {Date} checkpoint Date à partir de laquelle le décompte sera fait.
+ * @param {string} message Message à afficher dans le log (il s'agit seulement de la fin du message, le début est hardcodé ici).
+ * @returns {Date} Nouveau checkpoint.
+ */
+const measureTime = (checkpoint, message) => {
+    let newCheckpoint = new Date();
+    Logger.log(`It took ${(newCheckpoint.getTime() - checkpoint.getTime()) / 1000} s to ${message}.`);
+    return newCheckpoint;
+};
+
+// There will be a time when this decorator will be put to a good use
+const logTime = (message) => ((target, name, descriptor) => {
+    let initialTime = new Date();
+    descriptor.value();
+    measureTime(initialTime, message);
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+<footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
+    <div class="container">
+        <p class="float-end"><a href="#">Retour en haut</a></p>
+        <ul class="bd-footer-links ps-0 mb-3">
+            <li class="d-inline-block"><a
+                    href="https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app">Documentation
+                    Google</a></li>
+        </ul>
+        <p class="mb-0">Ponts Études Projets &middot; Pôle Qualité &middot; mandat 022</a></p>
+    </div>
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

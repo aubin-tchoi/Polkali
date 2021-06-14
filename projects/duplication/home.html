@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Drive folders duplication">
+    <meta name="author" content="Aubin Tchoï">
+    <title>Folder duplication</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="https://junior-pep.fr/img/logo.png" sizes="180x180">
+    <link rel="icon" href="https://junior-pep.fr/img/logo.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="https://junior-pep.fr/img/logo.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="https://junior-pep.fr/img/logo.png">
+    <meta name="theme-color" content="#8e3232">
+
+    <style>
+        .front {
+            position: relative; 
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .front::before {    
+            content: "";
+            background-image: url(<?!= findURL(); ?>);
+            background-size: cover;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            opacity: 0.4;
+            background-repeat: no-repeat;
+        }
+    </style>
+
+    <!-- Custom styles -->
+    <style>
+        <?!= include("style-css"); ?>
+    </style>
+
+</head>
+
+<body class="text-center">
+    <div class="front">
+        <main class="form-signin" style="position: relative;">
+            <form>
+                <img class="mb-4" src="https://junior-pep.fr/img/logo.png" alt="" width="72" height="72">
+                <h1 class="h3 mb-3 fw-normal">Duplication de dossier Drive</h1>
+
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingSource" placeholder="">
+                    <label for="floatingSource">URL du dossier source</label>
+                </div>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingTarget" placeholder="">
+                    <label for="floatingTarget">URL du dossier de desination</label>
+                </div>
+                <br>
+                <p>
+                    <a class="btn btn-lg btn-primary" id="launch" type="submit">Et z'est bartiiii &#128640;</a>
+                    <a class="btn btn-lg btn-success" id="openFolder" style="display: none;" target="_blank">Ouvrir le dossier</a>
+                </p>
+                <p class="mt-5 mb-3 text-muted">&reg; Aubin-022</p>
+            </form>
+            
+        </main>
+    </div>
+
+    <script>
+        /** Running a server-side script to duplicate the given folders */
+        document.getElementById("launch").addEventListener("click", duplicate);
+
+        function duplicate() {
+            // Retrieving the 2 inputs
+            let URLs = {
+                source: document.getElementById("floatingSource").value,
+                target: document.getElementById("floatingTarget").value
+            };
+            // Hiding the second button
+            let openButton = document.getElementById("openFolder");
+            openButton.style.display = "none";
+            // Running a server-side script
+            google.script.run.withSuccessHandler(successHandler).withFailureHandler(failureHandler).duplication(URLs);
+            // Displaying a loading screen
+            let element = document.getElementById("launch");
+            element.className = "";
+            element.innerHTML = `<svg width="160" height="47" fill="currentColor" viewBox="0 0 16 16">
+                                <image width=100% height=100% href="https://kodular-community.s3.dualstack.eu-west-1.amazonaws.com/original/2X/c/c09b32fba2ce347fd7bc63c4fba681bac039e7ca.gif">
+                                </image></svg>`;
+            console.log("Duplicating folders");
+        }
+
+        function successHandler() {
+            console.log("Folders duplicated");
+            // Updating the label on the first button
+            let launchButton = document.getElementById("launch");
+            launchButton.className = "btn btn-lg btn-primary";
+            launchButton.innerHTML = `c bon &#128077;`;
+            // Displaying a second button
+            let openButton = document.getElementById("openFolder");
+            openButton.style.display = "";
+            openButton.setAttribute("href", document.getElementById("floatingTarget").value);
+        }
+
+        function failureHandler() {
+            console.log("An error occured");
+            // Updating the label on the first button
+            let element = document.getElementById("launch");
+            element.className = "btn btn-lg btn-primary";
+            element.innerHTML = `Et c'est raté ! &#128169`;
+        }
+    </script>
+
+</body>
+
+</html>

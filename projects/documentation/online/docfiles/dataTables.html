@@ -1,0 +1,426 @@
+<div id="dataTablesDoc" style="display: none; margin-left: 300px;">
+    <h1 class="page-title">Extraction de données sous forme de tables</h1>
+    <section>
+        <header>
+            <h2>
+            </h2>
+            <ul>
+                <li>Ce fichier contient des fonctions qui permettent de créer des <a
+                        href="https://developers.google.com/apps-script/reference/charts/data-table?hl=en">DataTables</a>
+                    à partir des Arrays d'Objects de données.</li>
+                <li>En pratique on recode souvent une fonction pour chaque KPI, ajoutez la à la fin de ce fichier.</li>
+                <li>Dans cette documentation sont présentés quelques exemples types de KPI qui sont facilement
+                    déclinables en remplaçant un seul champ.</li>
+            </ul><br>
+        </header>
+        <article>
+            <div class="container-overview">
+                <dl class="details">
+
+
+                </dl>
+            </div>
+            <h3 class="subsection-title">Methods</h3>
+            <div class="section-method">
+                <h4 class="name" id="conversionRate"><span class="type-signature"></span>conversionRate<span
+                        class="signature">(key, data)</span><span class="type-signature"> &rarr;
+                        {Array}</span>
+                </h4>
+                <div class="description">
+                    Calcul du taux de conversion décliné selon les différentes catégories présentes dans une
+                    colonne
+                    spécifiée (uniquement pour le suivi de la prospection).
+                </div>
+                <dl class="details">
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navdataTables.js" href="#">dataTables.js</a>, <a class="navdataTables.js"
+                                    href="#line92">line 92</a>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>key</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>string</code></span>
+                            </td>
+                            <td class="description last">
+                                Nom de la colonne selon laquelle sera évalué le taux de conversion.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name"><code>data</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>Array</code></span>
+                            </td>
+                            <td class="description last">
+                                Données d'entrée.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table> <br />
+
+                <div class="section-returns">
+                    <h5>Returns:</h5>
+                    <dl class="param-type">
+                        <dt>
+                            Type:
+                        </dt>
+                        <dd>
+                            <span class="param-type"><code>Array</code></span>
+                        </dd>-
+                        Table des données permettant de créer le graphe correspondant.
+                    </dl>
+                </div>
+            </div>
+            <div class="section-method">
+                <h4 class="name" id="numberOfMissions"><span class="type-signature"></span>numberOfMissions<span
+                        class="signature">(key,
+                        data)</span><span class="type-signature"> &rarr; {Array}</span>
+                </h4>
+                <div class="description">
+                    Calcul du nombre d'études selon les valeurs présente dans une colonne du fichier étudié.
+                </div>
+                <dl class="details">
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navdataTables.js" href="#">dataTables.js</a>, <a class="navdataTables.js"
+                                    href="#line71">line 71</a>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>key</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>string</code></span>
+                            </td>
+                            <td class="description last">
+                                Nom de la colonne selon laquelle sera compté le nombre d'études.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name"><code>data</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>Array</code></span>
+                            </td>
+                            <td class="description last">
+                                Données d'entrée.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br />
+
+                <div class="section-returns">
+                    <h5>Returns:</h5>
+                    <dl class="param-type">
+                        <dt>
+                            Type:
+                        </dt>
+                        <dd>
+                            <span class="param-type"><code>Array</code></span>
+                        </dd>-
+                        Table des données permettant de créer le graphe correspondant
+                        et tableau des valeurs à indiquer selon l'axe horizontal.
+                    </dl>
+                </div>
+            </div>
+            <div class="section-method">
+                <h4 class="name" id="performance"><span class="type-signature"></span>performance<span
+                        class="signature">(key, data)</span><span class="type-signature"> &rarr;
+                        {Array}</span>
+                </h4>
+                <div class="description">
+                    Calcul du CA et du nombre d'études selon les valeurs présentes dans une colonne du
+                    fichier
+                    de
+                    suivi de la prospection (transposable au suivi d'étude en remplaçant caPot en prix).
+                </div>
+                <dl class="details">
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navdataTables.js" href="#">dataTables.js</a>, <a class="navdataTables.js"
+                                    href="#line49">line 49</a>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>key</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>string</code></span>
+                            </td>
+                            <td class="description last">
+                                Nom de la colonne selon laquelle sera évaluée la performance de la JE.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name"><code>data</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>Array</code></span>
+                            </td>
+                            <td class="description last">
+                                Données d'entrée.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br />
+
+                <div class="section-returns">
+                    <h5>Returns:</h5>
+                    <dl class="param-type">
+                        <dt>
+                            Type:
+                        </dt>
+                        <dd>
+                            <span class="param-type"><code>Array</code></span>
+                        </dd>-
+                        Table des données permettant de créer le graphe correspondant
+                        et tableau des valeurs à indiquer selon l'axe vertical.
+                    </dl>
+                </div>
+            </div>
+            <div class="section-method">
+                <h4 class="name" id="totalDistribution"><span class="type-signature"></span>totalDistribution<span
+                        class="signature">(key,
+                        data)</span><span class="type-signature"> &rarr; {DataTable}</span>
+                </h4>
+                <div class="description">
+                    Calcul de la réparition des contacts selon la colonne dont le nom est spécifié.
+                </div>
+                <dl class="details">
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navdataTables.js" href="#">dataTables.js</a>, <a class="navdataTables.js"
+                                    href="#line11">line 11</a>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>key</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>string</code></span>
+                            </td>
+                            <td class="description last">
+                                Nom de la colonne selon laquelle sera effectuée la répartition.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name"><code>data</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>Array</code></span>
+                            </td>
+                            <td class="description last">
+                                Données d'entrée.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br />
+
+                <div class="section-returns">
+                    <h5>Returns:</h5>
+                    <dl class="param-type">
+                        <dt>
+                            Type:
+                        </dt>
+                        <dd>
+                            <span class="param-type"><code><a
+                                        href="https://developers.google.com/apps-script/reference/charts/data-table-builder?hl=en">DataTable</a></code></span>
+                        </dd>-
+                        Table des données permettant de créer le graphe correspondant.
+                    </dl>
+                </div>
+            </div>
+            <div class="section-method">
+                <h4 class="name" id="turnoverDistribution"><span class="type-signature"></span>turnoverDistribution<span
+                        class="signature">(key,
+                        data)</span><span class="type-signature"> &rarr; {DataTable}</span></h4>
+                <div class="description">
+                    Calcul de la répartition du CA selon les valeurs présentes dans une colonne du fichier
+                    de
+                    suivi
+                    de la prospection (transposable au suivi d'étude en remplaçant caPot en prix).
+                </div>
+                <dl class="details">
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navdataTables.js" href="#">dataTables.js</a>, <a class="navdataTables.js"
+                                    href="#line29">line 29</a>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>key</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>string</code></span>
+                            </td>
+                            <td class="description last">
+                                Nom de la colonne selon laquelle sera évaluée la répartition du CA.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name"><code>data</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>Array</code></span>
+                            </td>
+                            <td class="description last">
+                                Données d'entrée.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br />
+
+                <div class="section-returns">
+                    <h5>Returns:</h5>
+                    <dl class="param-type">
+                        <dt>
+                            Type:
+                        </dt>
+                        <dd>
+                            <span class="param-type"><code><a
+                                        href="https://developers.google.com/apps-script/reference/charts/data-table-builder?hl=en">DataTable</a></code></span>
+                        </dd>-
+                        Table des données permettant de créer le graphe correspondant.
+                    </dl>
+                </div>
+            </div>
+            <div class="section-method">
+                <h4 class="name" id="turnoverDistributionBinary"><span
+                        class="type-signature"></span>turnoverDistributionBinary<span class="signature">(key,
+                        data)</span><span class="type-signature"> &rarr; {DataTable}</span></h4>
+                <div class="description">
+                    Calcul de la répartition du CA selon les valeurs présentes dans une colonne du fichier
+                    de
+                    suivi
+                    de la prospection (transposable au suivi de la prospection en remplaçant prix par
+                    caPot).
+                    On suppose que la colonne contient des cases à cocher (deux catégories uniquement).
+                </div>
+                <dl class="details">
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navdataTables.js" href="#">dataTables.js</a>, <a class="navdataTables.js"
+                                    href="#line114">line 114</a>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>key</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>string</code></span>
+                            </td>
+                            <td class="description last">
+                                Nom de la colonne selon laquelle sera évaluée la répartition du CA.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name"><code>data</code></td>
+                            <td class="type">
+                                <span class="param-type"><code>Array</code></span>
+                            </td>
+                            <td class="description last">
+                                Données d'entrée.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br />
+
+                <div class="section-returns">
+                    <h5>Returns:</h5>
+                    <dl class="param-type">
+                        <dt>
+                            Type:
+                        </dt>
+                        <dd>
+                            <span class="param-type"><code><a
+                                        href="https://developers.google.com/apps-script/reference/charts/data-table-builder?hl=en">DataTable</a></code></span>
+                        </dd>-
+                        Table des données permettant de créer le graphe correspondant.
+                    </dl>
+                </div>
+            </div>
+        </article>
+    </section>
+</div>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Documentation - PEP KPI</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+    <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+    <label for="nav-trigger" class="navicon-button x">
+        <div class="navicon"></div>
+    </label>
+    <label for="nav-trigger" class="overlay"></label>
+    <nav>
+        <li class="nav-link nav-home-link"><a href="../accueil.html"> Accueil</a></li>
+        <li class="nav-heading"><a href="main.html">main.js</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#autoSaveKPI">autoSaveKPI</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#displayKPI">displayKPI</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#generateKPI">generateKPI</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#installTrigger">installTrigger</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#prepCA">prepCA</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="main.html#saveKPI">saveKPI</a></span></li>
+
+        <li class="nav-heading"><a href="dataTables.html">dataTables</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#conversionRate">conversionRate</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#numberOfMissions">numberOfMissions</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#performance">performance</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#totalDistribution">totalDistribution</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#turnoverDistribution">turnoverDistribution</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="dataTables.html#turnoverDistributionBinary">turnoverDistributionBinary</a></span></li>
+
+        <li class="nav-heading"><a href="charts.html">charts</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="charts.html#addOptions">addOptions</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="charts.html#createChart">createChart</a></span></li>
+
+        <li class="nav-heading"><a href="features.html">features</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="features.html#generateSlides">generateSlides</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="features.html#saveOnDrive">saveOnDrive</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="features.html#sendMail">sendMail</a></span></li>
+
+        <li class="nav-heading"><a href="tools.html">tools</a></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#addHTMLLine">addHTMLLine</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#convertChart">convertChart</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#displayLoadingScreen">displayLoadingScreen</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#extractSheetData">extractSheetData</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#manuallyGetRowNumber">manuallyGetRowNumber</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#measureTime">measureTime</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#prcnt">prcnt</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#sameMonth">sameMonth</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#uniqueValues">uniqueValues</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a
+                    href="tools.html#userQuery">userQuery</a></span></li>
+
+        <li class="nav-heading"><a href="parameters.html">parameters</a></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#ADDRESSES">ADDRESSES</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#CHART_TYPE">CHART_TYPE</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#COLORS">COLORS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#CONTACT_TYPE">CONTACT_TYPE</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#DIMS">DIMS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#ETAT_ETUDE">ETAT_ETUDE</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#ETAT_PROSP">ETAT_PROSP</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#ETAT_PROSP_BIS">ETAT_PROSP_BIS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#HEADS">HEADS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#HTML_CONTENT">HTML_CONTENT</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#IMGS">IMGS</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#MONTH_LIST">MONTH_LIST</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#MONTH_NAMES">MONTH_NAMES</a></span></li>
+        <li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a
+                    href="parameters.html#TITLES">TITLES</a></span></li>
+    </nav>
+    <div id="main">
+        <h1 class="page-title">Fonctionnalités supplémentaires</h1>
+        <section>
+            <header>
+                <h2>
+                </h2>
+            </header>
+            <article>
+                <div class="container-overview">
+                    <dl class="details">
+
+
+
+
+                    </dl>
+                </div>
+
+                <h3 class="subsection-title">Methods</h3>
+                <div class="section-method">
+                    <h4 class="name" id="generateSlides"><span class="type-signature"></span>generateSlides<span
+                            class="signature">(template, chartImages, folderId)</span><span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Génération d'un fichier Slides à partir d'un template et d'un ensemble d'images,
+                        enregistré dans le dossier spécifié (par défaut dans <a href="https://drive.google.com/drive/u/0/folders/1dPi0dht-q_rI8fUmheA1j861huYPPcAy">Pôle Qualité -> KPI -> KPI archivés</a>).
+                    </div>
+                    <dl class="details">
+
+
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="features.js.html">features.js</a>, <a href="features.js.html#line57">line
+                                        57</a>
+                                </li>
+                            </ul>
+                        </dd>
+
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>template</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>string</code></span>
+                                </td>
+                                <td class="description last">
+                                    ID du fichier Slides qui servira de template.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>chartImages</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>Object</code></span>
+                                </td>
+                                <td class="description last">
+                                    Object dont les valeurs sont des Array de <a href="https://developers.google.com/apps-script/reference/base/blob">blobs</a> (titrés) correspondant aux images
+                                    des graphes.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>folderId</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>string</code></span>
+                                </td>
+                                <td class="description last">
+                                    ID du dossier Drive dans lequel seront enregistrées les slides.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section-method">
+                    <h4 class="name" id="saveOnDrive"><span class="type-signature"></span>saveOnDrive<span
+                            class="signature">(imageBlobs, folderId)</span><span class="type-signature"></span></h4>
+                    <div class="description">
+                        Enregistrement des graphes (sous format .png) dans un sous dossier daté à la date d'aujourd'hui
+                        du dossier spécifié
+                        (par défaut dans <a href="https://drive.google.com/drive/u/0/folders/1dPi0dht-q_rI8fUmheA1j861huYPPcAy">Pôle Qualité -> KPI -> KPI archivés</a>).
+                    </div>
+                    <dl class="details">
+
+
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="features.js.html">features.js</a>, <a href="features.js.html#line28">line
+                                        28</a>
+                                </li>
+                            </ul>
+                        </dd>
+
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>imageBlobs</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>Object</code></span>
+                                </td>
+                                <td class="description last">
+                                    Object dont les valeurs sont des Array de <a href="https://developers.google.com/apps-script/reference/base/blob">blobs</a> correspondant aux images des
+                                    graphes.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>folderId</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>string</code></span>
+                                </td>
+                                <td class="description last">
+                                    ID du fichier de destination.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section-method">
+                    <h4 class="name" id="sendMail"><span class="type-signature"></span>sendMail<span
+                            class="signature">(address, htmlOutput, subject, attachments)</span><span
+                            class="type-signature"></span></h4>
+                    <div class="description">
+                        Envoi des graphes (en pièces jointes, sous format .png) à l'adresse mail spécifiée.
+                    </div>
+                    <dl class="details">
+
+
+
+                        <dt class="tag-source">Source:</dt>
+                        <dd class="tag-source">
+                            <ul class="dummy">
+                                <li>
+                                    <a href="features.js.html">features.js</a>, <a href="features.js.html#line12">line
+                                        12</a>
+                                </li>
+                            </ul>
+                        </dd>
+
+                    </dl>
+                    <h5>Parameters:</h5>
+                    <table class="params">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th class="last">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name"><code>address</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>string</code></span>
+                                </td>
+                                <td class="description last">
+                                    Adresse mail de destination.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>htmlOutput</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code><a href="https://developers.google.com/apps-script/reference/html/html-output?hl=en">HtmlOutput</a></code></span>
+                                </td>
+                                <td class="description last">
+                                    Contenu Html à faire parvenir.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>subject</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>string</code></span>
+                                </td>
+                                <td class="description last">
+                                    Objet du mail.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name"><code>attachments</code></td>
+                                <td class="type">
+                                    <span class="param-type"><code>Object</code></span>
+                                </td>
+                                <td class="description last">
+                                    Pièces jointes du mail (sous forme d'Object car les KPI sont groupés par catégorie).
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </article>
+        </section>
+    </div>
+    <br class="clear">
+    <footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-start">
+        <div class="container">
+            <p class="float-end"><a href="#">Retour en haut</a></p>
+            <ul class="bd-footer-links ps-0 mb-3">
+                <li class="d-inline-block"><a
+                        href="https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app">Documentation
+                        Google</a></li>
+            </ul>
+            <p class="mb-0">Ponts Études Projets &middot; Pôle Qualité &middot; mandat 022</a></p>
+        </div>
+    </footer>
+    <script>
+        prettyPrint();
+    </script>
+    <script src="scripts/linenumber.js"></script>
+</body>
+
+</html>

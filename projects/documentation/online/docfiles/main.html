@@ -1,0 +1,189 @@
+<div id="MainDoc" style="display: none; margin-left: 300px;">
+    <h1 class="page-title">Fichier main</h1>
+    <section>
+        <header>
+            <h2>
+            </h2>
+            <ul>
+                <li>Ce fichier contient les fonctions qui sont liées à un trigger (menu ou horaire) ainsi que la fonction principale <code>generateKPI</code>.</li>
+                <li>Cette fonction est organisée de la manière suivante : on fetch les données des différents scripts sous la forme d'Arrays d'Objects (<code>extractSheetData</code>), on génère les <code>Charts</code> des KPI dans les listes de l'Object <code>charts</code>
+                    puis on les convertis en images dans l'Object <code>attachments</code>. Dans le return on utilise ces données dans des appels aux différentes fonctionnalités codées dans le fichier <code><a href="#" class="navfeatures">features.js</a></code>.</li>
+                <li>Les KPI sont stockés dans des Objects <code>charts</code> et <code>attachments</code> afin de pouvoir les regrouper par thématique.</li>
+                <li>A chaque nouvelle thématique sera ajoutée une ligne du display ainsi qu'une slide du Point KPI généré automatiquement. Le contenu de la ligne (identique au titre de la slide) est encodé dans l'Object <code>TITLES</code> du fichier <code><a href="#TITLES" class="navparameters">parameters.js</a></code>.</li>
+            </ul><br>
+        </header>
+        <article>
+            <div class="container-overview">
+                <dl class="details">
+
+
+                </dl>
+            </div>
+            <h3 class="subsection-title">Methods</h3>
+            <div class="section-method">
+                <h4 class="name" id="autoSaveKPI"><span class="type-signature"></span>autoSaveKPI<span
+                        class="signature">()</span><span class="type-signature"></span></h4>
+                <div class="description">
+                    Enregistre les graphes sous forme d'images (au format .png) dans
+                    <a href="https://drive.google.com/drive/u/0/folders/1dPi0dht-q_rI8fUmheA1j861huYPPcAy">Pôle
+                        Qualité -> KPI -> KPI archivés.</a>
+                    Reliée à un trigger mensuel (le 11 du mois).
+                </div>
+                <dl class="details">
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navMain.js" href="#">main.js</a>, <a class="navMain.js"
+                                    href="#line307">line
+                                    307</a>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+
+            </div>
+            <div class="section-method">
+                <h4 class="name" id="displayKPI"><span class="type-signature"></span>displayKPI<span
+                        class="signature">()</span><span class="type-signature"></span></h4>
+                <div class="description">
+                    Affichage des KPI dans le dashboard. Reliée à l'item "Affichage des KPI" dans le menu
+                    "KPI".
+                </div>
+                <dl class="details">
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navMain.js" href="#">main.js</a>, <a class="navMain.js"
+                                    href="#line270">line
+                                    270</a>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+
+            </div>
+            <div class="section-method">
+                <h4 class="name" id="generateKPI"><span class="type-signature"></span>generateKPI<span
+                        class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+                <div class="description">
+                    Fonction main - Génération des KPI, log régulièrement le temps écoulé entre chaque
+                    étape.
+                    Dans le return vous disposez des graphes dans les Objects charts (type Chart) et
+                    attachments
+                    (type <a href="https://developers.google.com/apps-script/reference/base/blob">Blob</a>)
+                    ainsi que dans le htmlOutput.
+                </div>
+                <dl class="details">
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navMain.js" href="#">main.js</a>, <a class="navMain.js"
+                                    href="#line38">line
+                                    38</a>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl><br/>
+
+                <div class="section-returns">
+                    <h5>Returns:</h5>
+                    <dl class="param-type">
+                        <dt>
+                            Type:
+                        </dt>
+                        <dd>
+                            <span class="param-type"><code>Object</code></span>
+                        </dd>-
+                        Méthodes display, save, mail, slides qui correspondent chacune à une fonctionnalité
+                        associée
+                        aux KPI.
+                    </dl>
+                </div>
+            </div>
+            <div class="section-method">
+                <h4 class="name" id="installTrigger"><span class="type-signature"></span>installTrigger<span
+                        class="signature">()</span><span class="type-signature"></span></h4>
+                <div class="description">
+                    Fonction qui à l'exécution crée le trigger de sauvegarde automatique (a besoin d'être
+                    exécuté
+                    une seule fois).
+                </div>
+                <dl class="details">
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navMain.js" href="#">main.js</a>, <a class="navMain.js"
+                                    href="#line25">line
+                                    25</a>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+
+            </div>
+            <div class="section-method">
+                <h4 class="name" id="prepCA"><span class="type-signature"></span>prepCA<span
+                        class="signature">()</span><span class="type-signature"></span></h4>
+                <div class="description">
+                    Crée un fichier Slides (il s'agit du Point KPI) contenant les KPI regroupés par
+                    catégorie,
+                    il se trouvera dans <a
+                        href="https://drive.google.com/drive/u/0/folders/1dPi0dht-q_rI8fUmheA1j861huYPPcAy">Pôle
+                        Qualité -> KPI -> KPI archivés</a>. Reliée à l'item "Préparation du CA"
+                    dans le menu "KPI".
+                </div>
+                <dl class="details">
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navMain.js" href="#">main.js</a>, <a class="navMain.js"
+                                    href="#line316">line
+                                    316</a>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+
+            </div>
+            <div class="section-method">
+                <h4 class="name" id="saveKPI"><span class="type-signature"></span>saveKPI<span
+                        class="signature">()</span><span class="type-signature"></span></h4>
+                <div class="description">
+                    Enregistre les graphes sous forme d'images (au format .png) dans le dossier spécifié
+                    (par
+                    défaut
+                    dans <a
+                        href="https://drive.google.com/drive/u/0/folders/1dPi0dht-q_rI8fUmheA1j861huYPPcAy">Pôle
+                        Qualité -> KPI -> KPI archivés</a>)
+                    puis les envoie par mail à l'adresse spécifiée. Reliée à l'item "Enregistrement des KPI"
+                    dans le
+                    menu "KPI".
+                </div>
+                <dl class="details">
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a class="navMain.js" href="#">main.js</a>, <a class="navMain.js"
+                                    href="#line279">line
+                                    279</a>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+
+            </div>
+        </article>
+    </section>
+</div>

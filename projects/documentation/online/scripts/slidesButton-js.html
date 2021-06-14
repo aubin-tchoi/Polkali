@@ -1,0 +1,21 @@
+<script>
+    /** Slides generation */
+    function loadSlides() {
+        let element = document.getElementById("slidesButton");
+        element.className = "";
+        element.innerHTML = `<svg width="160" height="47" fill="currentColor" viewBox="0 0 16 16">
+                        <image width=100% height=100% href="https://kodular-community.s3.dualstack.eu-west-1.amazonaws.com/original/2X/c/c09b32fba2ce347fd7bc63c4fba681bac039e7ca.gif">
+                        </image></svg>`;
+        console.log("Generating slides");
+        google.script.run.withSuccessHandler(restoreThirdSlide).generateSlides();
+    }
+
+    function restoreThirdSlide() {
+        console.log("Generation completed");
+        let element = document.getElementById("slidesButton");
+        element.className = "btn btn-lg btn-primary";
+        element.innerHTML = `Slides générées avec succès`;
+    }
+
+    document.getElementById("slidesButton").addEventListener("click", loadSlides);
+</script>
