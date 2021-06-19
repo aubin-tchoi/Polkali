@@ -13,7 +13,7 @@ function syncOnEdit(rowidx) {
         // ref is gonna be the mission's reference, obtained by incrementing the most recent one
         const heads = sheet.getRange(1, 2, 1, (sheet.getLastColumn() - 1)).getValues().shift(),
             lastRow = manuallyGetLastRow(sheet),
-            ref = `'20e${Math.floor(sheet.getRange(lastRow, 2, 1, 1).getValues()[0][0].toString().match(/([0-9]+)/gi)[1]) + 1}`;
+            ref = `'21e${Math.floor(sheet.getRange(lastRow, 2, 1, 1).getValues()[0][0].toString().match(/([0-9]+)/gi)[1]) + 1}`;
 
         // Creating a new row with the destination sheet's header's informations
         let rnew = [row[HEADS["entreprise"]]];
@@ -47,7 +47,7 @@ function syncOnSelec() {
         // ref is gonna be the mission's reference, obtained by incrementing the most recent one
         const heads = sheet.getRange(1, 2, 1, (sheet.getLastColumn() - 1)).getValues().shift(),
             lastRow = manuallyGetLastRow(sheet),
-            ref = `'20e${Math.floor(sheet.getRange(lastRow, 2, 1, 1).getValues()[0][0].toString().match(/([0-9]+)/gi)[1]) + 1}`;
+            ref = `'21e${Math.floor(sheet.getRange(lastRow, 2, 1, 1).getValues()[0][0].toString().match(/([0-9]+)/gi)[1]) + 1}`;
 
         // Creating a new row with the destination sheet's header's informations
         let rnew = [row[HEADS["entreprise"]]];
@@ -59,7 +59,7 @@ function syncOnSelec() {
 
     // -- MAIN --
     const sheetscr = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet(),
-        sheetdst = SpreadsheetApp.openById("1gmJLAKvUOYFeS32raOiSTYiE_ozr7YSk26Y0t0blm04").getSheetByName("Suivi"),
+        sheetdst = SpreadsheetApp.openById("1h1rObRvdb2GKxdzgTZD3Kvwde_TUTlTOLC3l8BKzOBQ").getSheetByName("Suivi"),
         ui = SpreadsheetApp.getUi();
 
     // Confirm selection
