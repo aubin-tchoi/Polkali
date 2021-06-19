@@ -25,7 +25,7 @@ function syncOnEdit(rowidx) {
 
     // -- MAIN --
     const sheetscr = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet(),
-        sheetdst = SpreadsheetApp.openById("1gmJLAKvUOYFeS32raOiSTYiE_ozr7YSk26Y0t0blm04").getSheetByName("Suivi");
+        sheetdst = SpreadsheetApp.openById("1h1rObRvdb2GKxdzgTZD3Kvwde_TUTlTOLC3l8BKzOBQ").getSheetByName("Suivi");
 
     // heads is the sheet's header, data a js object of the edited row
     let heads = sheetscr.getRange(1, 1, 1, sheetscr.getLastColumn()).getValues().shift(),
