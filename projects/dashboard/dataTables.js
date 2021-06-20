@@ -420,7 +420,7 @@ function mailSent(obj, options) {
         sheet = SpreadSheet.openById(tableId).getSheetByName("BDD");
         arr = sheet.getRange(2, 2, sheet.getLastRow(), sheet.getLastColumn()).getValues();
         heads = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues();
-        data = arr.map(row => ArrayToObj(row, heads));
+        data = arr.map(row => heads.reduce((obj, key, idx) => (obj[key] = (row[idx] != "") ? row[idx] : obj[key] || '', obj), {}));
         tables.push(data);
     })
 

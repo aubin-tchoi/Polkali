@@ -247,3 +247,18 @@ const MONTH_LIST = Object.freeze([{
      * @readonly
      */
     MONTH_NAMES = Object.freeze(["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"]);
+
+/* ----- Paramètres des Charts ----- */
+/**
+ * Valeurs par défaut des options utilisées dans la création des Charts.
+ * @constant
+ * @readonly
+ */
+const DEFAULT_PARAMS = Object.freeze({
+    colors: Object.values(COLORS),
+    percent: false,
+    hticks: 'auto',
+    vticks: 'auto',
+    width: DIMS.width,
+    height: DIMS.height
+});

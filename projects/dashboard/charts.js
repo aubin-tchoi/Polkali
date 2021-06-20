@@ -61,12 +61,12 @@ function createEmbeddedChart(chartType, dataTable, title, options = {}, idSpread
             }
         })
         .setOption('colors', options.colors || Object.values(COLORS))
-        .setOption('vAxis.minValue', (options.percent || false) ? 0 : 'automatic')
-        .setOption('vAxis.maxValue', (options.percent || false) ? 100 : 'automatic')
-        .setOption('hAxis.ticks', options.hticks || 'auto')
-        .setOption('vAxis.ticks', options.vticks || 'auto')
+        .setOption('vAxis.minValue', (options.percent) ? 0 : 'automatic')
+        .setOption('vAxis.maxValue', (options.percent) ? 100 : 'automatic')
+        .setOption('hAxis.ticks', options.hticks)
+        .setOption('vAxis.ticks', options.vticks)
         .setTitle(title)
-        .setDimensions(options.width || DIMS.width, options.height || DIMS.height)
+        .setDimensions(options.width, options.height)
         .build();
     sheet.insertChart(chart);
 }
@@ -78,6 +78,9 @@ function createEmbeddedChart(chartType, dataTable, title, options = {}, idSpread
  * @param {Object} options - Options modifiant les propriétés du graphe (dimensions, couleurs, ...).
  */
 function addOptions(chartBuilder, title, options) {
+    // Adding default values
+    options = {...DEFAULT_PARAMS, ...options};
+
     return chartBuilder
         .setOption('legend', {
             textStyle: {
@@ -85,12 +88,12 @@ function addOptions(chartBuilder, title, options) {
                 fontSize: 11
             }
         })
-        .setOption('colors', options.colors || Object.values(COLORS))
-        .setOption('vAxis.minValue', (options.percent || false) ? 0 : 'automatic')
-        .setOption('vAxis.maxValue', (options.percent || false) ? 100 : 'automatic')
-        .setOption('hAxis.ticks', options.hticks || 'auto')
-        .setOption('vAxis.ticks', options.vticks || 'auto')
+        .setOption('colors', options.colors)
+        .setOption('vAxis.minValue', (options.percent) ? 0 : 'automatic')
+        .setOption('vAxis.maxValue', (options.percent) ? 100 : 'automatic')
+        .setOption('hAxis.ticks', options.hticks)
+        .setOption('vAxis.ticks', options.vticks)
         .setTitle(title)
-        .setDimensions(options.width || DIMS.width, options.height || DIMS.height)
+        .setDimensions(options.width, options.height)
         .build();
 }
