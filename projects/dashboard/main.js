@@ -1,9 +1,6 @@
 /* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
-/* Certains commentaires sont en anglais, d'autres en français.
-Si vous vous contenez à une modification en surface du code (ajout d'un KPI par exemple),
-vous devriez voir essentiellement des commentaires en français. */
 
-// Main file (triggers + main functions for KPI)
+/** Main file (triggers + main functions for KPI). */
 
 /* ----- Triggers ----- */
 /**
@@ -41,43 +38,32 @@ function generateKPI() {
 
   displayLoadingScreen("Chargement des KPI..");
 
-  // Initialization (names in franglish because why not)
-  /**
-   * Données sous forme d'Array d'Object
-   * (1 ligne correspond à une ligne du Sheets, les clés correspondent aux champs du header indiqués dans HEADS)
-   */
   let data = {};
-  Object.values(ACCESS).forEach(spreadsheet => {
-    data[spreadsheet.name] = extractSheetData(spreadsheet.id, spreadsheet.sheetName, spreadsheet.pos).filter(spreadsheet.filter);
+
+  // Data extracted from each sheet as an Array of Object, each element being 1 line in the Sheet with keys that match the columns given in HEADS.
+  Object.entries(DATA_LINKS).forEach(spreadsheet => {
+    data[spreadsheet[0]] = extractSheetData(spreadsheet[1].id, spreadsheet[1].sheetName, spreadsheet[1].pos).filter(spreadsheet[1].filter);
   });
 
   currentTime = measureTime(currentTime, "extract data from the two sheets");
 
-  /**
-   * Output qui sera affiché lors du display (type HtmlOutput).
-   */
+  // HtmlOutput that will be displayed with the display functionnality.
   let htmlOutput = HTML_CONTENT.display,
-    /** 
-     * Contenu Html du mail qui peut être envoyé sur demande dans le menu "Enregistrement des KPI".
-     */
+    // Html content used in the mail that will be sent by the sendMail functionnality.
     htmlMail = HTML_CONTENT.mail,
-    /**
-     * Object regroupant les blobs des graphes (au format .png) en différentes catégories décrites par les clés de l'Object.
-     */
+    // Object containing blobs of each graph (png) regrouped by category (using the different keys).
     attachments = {},
-    /**
-     * Object regroupant les graphes (au type Chart) en différentes catégories décrites par les clés de l'Object.
-     */
+    // Object containing each graph (class Chart) regrouped by category (using the different keys).
     charts = {};
 
   currentTime = measureTime(currentTime, "load the HTML content");
 
-  // Boucle sur les catégories
+  // Loop on each category of KPI.
   Object.entries(CATEGORIES).forEach(
     category => {
       charts[category[0]] = [];
       if (Object.keys(category[1].KPIs).length > 0) {
-        // Boucle sur les KPIs de la catégorie
+        // Loop on each KPI within this category.
         Object.values(category[1].KPIs).forEach(
           KPI => {
             output = KPI.extract(data[KPI.data].filter(KPI.filter || (_ => true)), KPI.options);
@@ -88,14 +74,14 @@ function generateKPI() {
 
   currentTime = measureTime(currentTime, "create the charts");
 
-  // Adding the charts to the htmlOutput and the list of attachments
+  // Adding the charts to the htmlOutput and the list of attachments.
   Object.keys(charts).forEach(key => {
-    // Adding a line that describe the category of KPI
+    // Adding a line that describe the category of KPI.
     if (charts[key].length > 0) {
       addHTMLLine(key, htmlOutput);
     }
     attachments[key] = [];
-    // Converting every chart
+    // Converting every chart.
     charts[key].forEach(c => {
       convertChart(c, c.getOptions().get("title"), htmlOutput, attachments[key]);
     });
@@ -103,7 +89,7 @@ function generateKPI() {
 
   currentTime = measureTime(currentTime, "convert the charts");
 
-  // Returning functions within an Object for later use, all functions are manually decorated with an execution time logger
+  // Returning functions within an Object for later use, all functions are manually decorated with an execution time logger.
   return {
     display: function () {
       let initialTime = new Date();

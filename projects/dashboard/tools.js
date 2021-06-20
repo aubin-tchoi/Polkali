@@ -1,5 +1,7 @@
 /* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
 
+/** Various tools. */
+
 // ----- Data extraction tools -----
 
 // I chose to keep the data as an array of objects (other possibility : object of objects, the keys being the months' names and the values the data in each row)
@@ -125,7 +127,7 @@ const userQuery = (message, test = (input) => {
  * @param {HtmlOutput} htmlOutput Contenu html à modifier.
  */
 const addHTMLLine = (key, htmlOutput) => {
-    htmlOutput.append(`<br/><br/><br/><br/><span style='font-size: 16pt;'> <span style="font-family: 'roboto', sans-serif;">${TITLES[key]}<br/></span> </span> <br/>`)
+    htmlOutput.append(`<br/><br/><br/><br/><span style='font-size: 16pt;'> <span style="font-family: 'roboto', sans-serif;">${CATEGORIES[key].slideTitle}<br/></span> </span> <br/>`)
 };
 
 /**

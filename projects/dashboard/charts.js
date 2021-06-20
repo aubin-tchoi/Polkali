@@ -1,8 +1,7 @@
 /* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
 
-// Creating charts using a data table as input
+/** Creating charts using a DataTable as input. */
 
-// Creating a chart using one of the different builders among PieChart, ColumnChart and LineChart
 /**
  * Creation d'un graphe au type Chart.
  * @param {Enum} chartType - Type du graphe (Pie, Line, Column).
@@ -26,7 +25,6 @@ function createChart(chartType, dataTable, title, options = {}) {
     }
 }
 
-// Create an Embedded Chart allowing to see directly KPI on sites.
 /** 
  * Créer des charts incrustés aux sheets.
  * @param {Enum} chartType - Type du graphe (Pie, Line, Column).
@@ -73,7 +71,6 @@ function createEmbeddedChart(chartType, dataTable, title, options = {}, idSpread
     sheet.insertChart(chart);
 }
 
-// Add options to a chartBuilder
 /** 
  * Ajouter des options à un chartBuilder (appelée par createChart).
  * @param {ChartBuilder} chartBuilder - ChartBuilder utilisé.

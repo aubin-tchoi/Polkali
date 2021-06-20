@@ -1,6 +1,7 @@
 /* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
 
-// Extracting data from an array of Objects and returning a dataTable
+/** Extracting data from an array of Objects and returning an Object that contains a DataTable and the options that will help building the charts.
+ * Some functions are using a key, these are templates for mainstream KPIs. */
 
 /**
  * Calcul de la réparition des contacts selon la colonne dont le nom est spécifié.

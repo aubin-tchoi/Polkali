@@ -1,6 +1,6 @@
 /* Si vous avez des questions à propos de ce script contactez Aubin Tchoï (Directeur Qualité 022) */
 
-// Features aiming at interfacing the generation of KPI with other tools from the G-Suite
+/** Features aiming at interfacing the generation of KPI with other tools from Google Workspace. */
 
 /**
  * Envoi des graphes (en pièces jointes, sous format .png) à l'adresse mail spécifiée.
