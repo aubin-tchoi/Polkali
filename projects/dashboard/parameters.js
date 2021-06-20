@@ -8,14 +8,26 @@ try {
     Logger.log(e);
 }
 
+/** 
+ * Enum utilisé pour identifier les différents types de graphes.
+ * @enum {Symbol}
+ * @constant
+ * @readonly
+ */
+const CHART_TYPE = Object.freeze({
+    COLUMN: Symbol("column"),
+    PIE: Symbol("pie"),
+    LINE: Symbol("line")
+});
+
 /* ----- Paramètres d'affichage ----- */
 /** 
  * Couleurs des graphes.
  * @constant
  * @readonly
  */
-const TOCHANGE = Object.freeze({
-    nameDirQualiteAndPromo: "Paul Invernizzi, Responsable Qualité 022"
+const qualityResp = Object.freeze({
+    nameTitle: "Paul Invernizzi, Responsable Qualité 022"
 })
 const COLORS = Object.freeze({
         plum: "#934683",
@@ -102,18 +114,16 @@ const COLORS = Object.freeze({
         etudesIdBis: "1XY8CVuvPpscU2BkkpX0HZ4TqQo0SDWMIh3kzDSvvhcM",
         driveId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy",
         slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU",
-<<<<<<< HEAD
         devisSiteId: "1gYRsgfM86D0dw1lsrbEhsIIUxBo-o0bA93vEBHyfCHM",
         devisSiteName: "Réponses au formulaire 1",
         bddProspectionId: "1dKE_5-Yoi_ACJeq0R7nDY0U1Vz3ccvQo",
     }),
-    /* ----- Marqueurs----- */
+    /* ----- Marqueurs ----- */
     /**  
      * Marqueurs des sheets importants.
      * @constant
      * @readonly
      */
-
     ACCESS = Object.freeze({
         etude2021: {
             name: "etude2021",
@@ -200,20 +210,13 @@ const COLORS = Object.freeze({
             },
             filter: _ => true
         }
-=======
-        devisSiteId : "1gYRsgfM86D0dw1lsrbEhsIIUxBo-o0bA93vEBHyfCHM",
-        devisSiteName : "Réponses au formulaire 1",
-        bddProspectionId : "1dKE_5-Yoi_ACJeq0R7nDY0U1Vz3ccvQo"
->>>>>>> b87de6b5406b119ffcd967b834184c2ec5c56a67
     }),
-
     /* ----- Paramètres d'accès bdd ----- */
     /**  
      * IDs et noms de sheets.
      * @constant
      * @readonly
      */
-<<<<<<< HEAD
     BDDPROSP = Object.freeze({
         bddFC023Id: "1LeAwWXSPEYQu-m24mdjyBjvs7DnecHDatpIyJugB43w",
         bddT023Id: "1AGNmN3qJeS4M2SwKFgPiad6L-SesxJpzc2ANROO71jU",
@@ -221,15 +224,6 @@ const COLORS = Object.freeze({
         bddInd023: "1jP3UMeBRBGXaFbVxA8NuGu7o1a4zm-xLpe-G9j0QuYE",
         bddBTP023: "1wbnP5qAHuQBizKMOXYsoXjQTuXtivpoNZXevBGaBDLU",
         bddBA023: "1SiZy8T7ZyvWvq6KD2cujuWTtHKWMnrEUpx9kGMtL-Dw"
-=======
-     BDDPROSP = Object.freeze({
-        bddFC023Id : "1LeAwWXSPEYQu-m24mdjyBjvs7DnecHDatpIyJugB43w",
-        bddT023Id :"1AGNmN3qJeS4M2SwKFgPiad6L-SesxJpzc2ANROO71jU",
-        bddIng023Id : "1fbvkVGqTUohNY0mbtCXNUEBXL-X2qSPz03EKzfXqHH0",
-        bddInd023 : "1jP3UMeBRBGXaFbVxA8NuGu7o1a4zm-xLpe-G9j0QuYE",
-        bddBTP023 : "1wbnP5qAHuQBizKMOXYsoXjQTuXtivpoNZXevBGaBDLU",
-        bddBA023 :  "1SiZy8T7ZyvWvq6KD2cujuWTtHKWMnrEUpx9kGMtL-Dw"
->>>>>>> b87de6b5406b119ffcd967b834184c2ec5c56a67
     }),
 
     /**  
@@ -317,6 +311,240 @@ const COLORS = Object.freeze({
         redac: "En rédaction"
     }),
 
+    /* ----- Liste des KPIs groupés par catégorie ----- */
+    /**  
+     * Liste des KPIs.
+     * @constant
+     * @readonly
+     */
+    CATEGORIES = {
+        summary: {
+            id: "",
+            slideTitle: "Bilan",
+            KPIs: {
+                contacts: {
+                    name: "Contacts",
+                    extract: contacts,
+                    data: "prosp2021",
+                    options: {
+                        colors: COLORS_OFFICE
+                    },
+                    chartType: CHART_TYPE.COLUMN
+                },
+                conversionMensuel: {
+                    name: "Taux de conversion global",
+                    extract: conversionRateOverTime,
+                    data: "prosp2021",
+                    options: {
+                        colors: [COLORS.burgundy]
+                    },
+                    chartType: CHART_TYPE.LINE
+                },
+                site: {
+                    name: "Nombre de contact venant du site",
+                    extract: contactBySite,
+                    data: "devisSite",
+                    options: {
+                        colors: [COLORS.pine, COLORS.silverPink]
+                    },
+                    chartType: CHART_TYPE.COLUMN
+                },
+                conversionEtapes: {
+                    name: "Taux de conversion sur chaque étape",
+                    extract: conversionRateByType,
+                    data: "prosp2021",
+                    options: {
+                        colors: [COLORS.burgundy],
+                        percent: true
+                    },
+                    chartType: CHART_TYPE.COLUMN
+                },
+            }
+        },
+        contactTypology: {
+            id: "",
+            slideTitle: "Typologie des contacts",
+            KPIs: {
+                repartitionDesContactsParType: {
+                    name: "Type de contact",
+                    extract: (data, options) => totalDistribution(HEADS.typeContact, data, options),
+                    data: "prosp2021",
+                    options: {
+                        colors: COLORS_OFFICE
+                    },
+                    chartType: CHART_TYPE.PIE
+                },
+                tauxDeConversionParTypeDeContact: {
+                    name: "Taux de conversion par type de contact",
+                    extract: (data, options) => conversionRate(HEADS.typeContact, data, options),
+                    data: "prosp2021",
+                    options: {
+                        colors: COLORS_DUO,
+                        percent: true
+                    },
+                    chartType: CHART_TYPE.COLUMN
+                },
+                repartitionDesContactsParDomaineDeCompétence: {
+                    name: "Répartition des contacts par domaine de compétence",
+                    extract: (data, options) => totalDistribution(HEADS.domaine, data, options),
+                    data: "prosp2021",
+                    filter: row => row[HEADS.domaine] != "",
+                    options: {
+                        colors: COLORS_OFFICE
+                    },
+                    chartType: CHART_TYPE.PIE
+                },
+            }
+        },
+        competitiveness: {
+            id: "",
+            slideTitle: "Compétitivité face aux autres JE",
+            KPIs: {}
+        },
+        contactType: {
+            id: "",
+            slideTitle: "Performance sur différents types de contact",
+            KPIs: {
+                etudeTypeContact: {
+                    name: "Performance par type de contact",
+                    extract: (data, options) => performanceByContact(HEADS.typeContact, data, options),
+                    data: "prosp2021",
+                    filter: row => row[HEADS.typeContact] != "",
+                    options: {
+                        colors: COLORS_OFFICE
+                    },
+                    chartType: CHART_TYPE.COLUMN
+                },
+                CATypeContact: {
+                    name: "Proportion du CA venant de chaque type de contact",
+                    extract: (data, options) => turnoverDistribution(HEADS.typeContact, data, options),
+                    data: "prosp2021",
+                    filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.typeContact] != "",
+                    options: {
+                        colors: COLORS_OFFICE
+                    },
+                    chartType: CHART_TYPE.PIE
+                }
+            }
+        },
+        companyType: {
+            id: "",
+            slideTitle: "Performance sur différents types d'entreprises",
+            KPIs: {
+                etudesTypeEntreprise: {
+                    name: "Performance par type d'entreprise",
+                    extract: (data, options) => performance(HEADS.typeEntreprise, data, options),
+                    data: "prosp2021",
+                    filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+                    options: {
+                        colors: COLORS_DUO
+                    },
+                    chartType: CHART_TYPE.COLUMN
+                },
+                CATypeEntreprise: {
+                    name: "Proportion du CA venant de chaque type d'entreprise",
+                    extract: (data, options) => turnoverDistribution(HEADS.typeEntreprise, data, options),
+                    data: "prosp2021",
+                    filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+                    options: {
+                        colors: COLORS_OFFICE
+                    },
+                    chartType: CHART_TYPE.PIE
+                }
+            }
+        },
+        sector: {
+            id: "",
+            slideTitle: "Performance sur différents secteurs d'activité du Client",
+            KPIs: {
+                etudesSecteur: {
+                    name: "Performance par secteur",
+                    extract: (data, options) => performance(HEADS.secteur, data, options),
+                    data: "prosp2021",
+                    filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+                    options: {
+                        colors: COLORS_DUO
+                    },
+                    chartType: CHART_TYPE.COLUMN
+                },
+                CASecteur: {
+                    name: "Proportion du CA venant de chaque secteur",
+                    extract: (data, options) => turnoverDistribution(HEADS.secteur, data, options),
+                    data: "prosp2021",
+                    filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+                    options: {
+                        colors: COLORS_OFFICE
+                    },
+                    chartType: CHART_TYPE.PIE
+                }
+            }
+        },
+        sizeComparison: {
+            id: "",
+            slideTitle: "Performance sur différentes tailles d'étude",
+            KPIs: {
+                perfPrix: {
+                    name: "Nombre d'études par tranche de prix (en €)",
+                    extract: priceRange,
+                    data: "etude2021",
+                    filter: row => row[HEADS.prix] != "",
+                    options: {
+                        colors: [COLORS.burgundy],
+                        lowerBound: 500,
+                        higherBound: 4500,
+                        nbrRanges: 8
+                    },
+                    chartType: CHART_TYPE.COLUMN
+                },
+                perfNombreJEH: {
+                    name: "Nombre d'études par nombre de JEHs",
+                    extract: (data, options) => numberOfMissions(HEADS.JEH, data, options),
+                    data: "etude2021",
+                    filter: row => row[HEADS.JEH] != "",
+                    options: {
+                        colors: [COLORS.burgundy]
+                    },
+                    chartType: CHART_TYPE.COLUMN
+                },
+                perfDureeEtude: {
+                    name: "Nombre d'études par durée d'étude (en nombre de semaines)",
+                    extract: (data, options) => numberOfMissions(HEADS.durée, data, options),
+                    data: "etude2021",
+                    filter: row => row[HEADS.durée] != "",
+                    options: {
+                        colors: [COLORS.burgundy]
+                    },
+                    chartType: CHART_TYPE.COLUMN
+                }
+            }
+        },
+        contributions: {
+            id: "",
+            slideTitle: "Mesure des différentes contributions au CA",
+            KPIs: {
+                CAAlumni: {
+                    name: "Proportion du CA due aux alumni",
+                    extract: (data, options) => turnoverDistributionBinary(HEADS.alumni, data, options),
+                    data: "etude2021",
+                    options: {
+                        colors: [COLORS.pine, COLORS.silverPink]
+                    },
+                    chartType: CHART_TYPE.PIE
+                },
+                CAProsp: {
+                    name: "Proportion du CA venant de la prospection",
+                    extract: prospectionTurnover,
+                    data: "prosp2021",
+                    filter: row => row[HEADS.état] == ETAT_PROSP.etude,
+                    options: {
+                        colors: [COLORS.pine, COLORS.silverPink]
+                    },
+                    chartType: CHART_TYPE.PIE
+                }
+            }
+        },
+    },
+
 
     /* ----- Paramètres portant sur les mois ----- */
     /** 
@@ -395,17 +623,3 @@ const COLORS = Object.freeze({
      * @readonly
      */
     MONTH_NAMES = Object.freeze(["Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"]);
-
-
-
-/** 
- * Enum utilisé pour identifier les différents types de graphes.
- * @enum {Symbol}
- * @constant
- * @readonly
- */
-const CHART_TYPE = Object.freeze({
-    COLUMN: Symbol("column"),
-    PIE: Symbol("pie"),
-    LINE: Symbol("line")
-});

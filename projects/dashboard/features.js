@@ -71,7 +71,7 @@ function generateSlides(template, chartImages, folderId) {
     // First slide
     let currentSlide = presentation.appendSlide(SlidesApp.PredefinedLayout.SECTION_HEADER);
     currentSlide.getShapes()[0].getText().setText(today);
-    currentSlide.getShapes()[1].getText().setText(TOCHANGE.nameDirQualiteAndPromo);
+    currentSlide.getShapes()[1].getText().setText(qualityResp.nameTitle);
     presentation.getSlides()[0].remove();
 
     let box = currentSlide.insertShape(SlidesApp.ShapeType.RECTANGLE).setLeft(650).setTop(140).setWidth(300).setHeight(380),
@@ -85,7 +85,7 @@ function generateSlides(template, chartImages, folderId) {
             currentSlide = presentation.appendSlide(sectionLayout);
             currentSlide.getShapes()[1].getText().setText(today);
             currentSlide.getShapes()[2].getText().setText("Aubin Tchoï, Directeur Qualité 022");
-            currentSlide.getShapes()[0].getText().setText(TITLES[key]);
+            currentSlide.getShapes()[0].getText().setText(CATEGORIES[key].slideTitle);
         }
         chartImages[key].forEach(img => {
             // New slide
