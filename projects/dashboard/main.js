@@ -272,6 +272,14 @@ function generateKPI() {
     colors: [COLORS.pine, COLORS.silverPink]
   }));
 
+  // KPI : Nombre de contact venant du site
+  let contactBySiteTable = contactBySite(dataSite);
+  charts.contributions.push(createChart(CHART_TYPE.COLUMN, contactBySiteTable,"Nombre de contact venant du site", {
+    colors: [COLORS.pine, COLORS.silverPink]
+  }))
+
+  //KPI : 
+
   currentTime = measureTime(currentTime, "create the charts");
 
   // Adding the charts to the htmlOutput and the list of attachments
