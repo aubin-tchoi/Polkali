@@ -268,18 +268,18 @@ function performanceByContact(key, data) {
 // Nombre de contact du au site par mois
 function contactBySite(data) {
     let dataTable = Charts.newDataTable();
-    let dateData = data.map(row => [row["Horodateur"],row["Entreprise"]]);
+    let dateData = data.map(row => [row["Horodateur"], row["Entreprise"]]);
     // Columns : month, all 3 conversion rates
     dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
     dataTable.addColumn(Charts.ColumnType.NUMBER, `Nombre de contact par le site`);
     // Rows
     MONTH_LIST.forEach(function (month, idx) {
-        dataTable.addRow([`${MONTH_NAMES[month.month]} ${month.year}`,dateData.filter(row => (row[0].getMonth() == month.month && row[0].getFullYear() == month.year && row[1] != "test")).length]);
+        dataTable.addRow([`${MONTH_NAMES[month.month]} ${month.year}`, dateData.filter(row => (row[0].getMonth() == month.month && row[0].getFullYear() == month.year && row[1] != "test")).length]);
     });
     return dataTable;
 }
 
-function mailSent(obj){
+function mailSent(obj) {
     let dataTable = Charts.newDataTable();
     // Columns : month, nb of quali mail, nb of quanti mail
     dataTable.addColumn(Charts.ColumnType.STRING, "Mois");
@@ -288,12 +288,14 @@ function mailSent(obj){
     // Rows
     tables = []
     Object.values(obj).forEach(tableId => {
-        sheet= SpreadSheet.openById(tableId).getSheetByName("BDD");
-        arr = sheet.getRange(2,2,sheet.getLastRow(),sheet.getLastColumn()).getValues();
-        heads = sheet.getRange(1,1,1,sheet.getLastColumn()).getValues();
-        data = arr.map(row => ArrayToObj(row,heads));
-        tables.push(data);})
+        sheet = SpreadSheet.openById(tableId).getSheetByName("BDD");
+        arr = sheet.getRange(2, 2, sheet.getLastRow(), sheet.getLastColumn()).getValues();
+        heads = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues();
+        data = arr.map(row => ArrayToObj(row, heads));
+        tables.push(data);
+    })
     MONTH_LIST.forEach(function (month, idx) {
-    dataTable.addRow([`${MONTH_NAMES[month.month]} ${month.year}`,tables.reduce(compteur,data => (data.filter(row => row["Mail Normal"] == Quali).length + compteur),0),tables.reduce(compteur,data => (data.filter(row => row["Mail Normal"]== VRAI).length + compteur),0)]);});
+        dataTable.addRow([`${MONTH_NAMES[month.month]} ${month.year}`, tables.reduce(compteur, data => (data.filter(row => row["Mail Normal"] == Quali).length + compteur), 0), tables.reduce(compteur, data => (data.filter(row => row["Mail Normal"] == VRAI).length + compteur), 0)]);
+    });
     return dataTable;
 }

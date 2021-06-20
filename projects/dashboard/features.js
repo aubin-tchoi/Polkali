@@ -18,7 +18,7 @@ function sendMail(address, htmlOutput, subject, attachments) {
     });
     try {
         ui.alert("Envoi des diagrammes par mail", `Les diagrammes ont été envoyés par mail à : ${address}.`, ui.ButtonSet.OK);
-    } catch(e) {
+    } catch (e) {
         Logger.log(e);
     }
 }

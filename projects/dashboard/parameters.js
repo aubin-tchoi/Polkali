@@ -15,7 +15,7 @@ try {
  * @readonly
  */
 const TOCHANGE = Object.freeze({
-         nameDirQualiteAndPromo: "Paul Invernizzi, Responsable Qualité 022"
+    nameDirQualiteAndPromo: "Paul Invernizzi, Responsable Qualité 022"
 })
 const COLORS = Object.freeze({
         plum: "#934683",
@@ -102,9 +102,103 @@ const COLORS = Object.freeze({
         etudesIdBis: "1XY8CVuvPpscU2BkkpX0HZ4TqQo0SDWMIh3kzDSvvhcM",
         driveId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy",
         slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU",
-        devisSiteId : "1gYRsgfM86D0dw1lsrbEhsIIUxBo-o0bA93vEBHyfCHM",
-        devisSiteName : "Réponses au formulaire 1",
-        bddProspectionId : "1dKE_5-Yoi_ACJeq0R7nDY0U1Vz3ccvQo",
+        devisSiteId: "1gYRsgfM86D0dw1lsrbEhsIIUxBo-o0bA93vEBHyfCHM",
+        devisSiteName: "Réponses au formulaire 1",
+        bddProspectionId: "1dKE_5-Yoi_ACJeq0R7nDY0U1Vz3ccvQo",
+    }),
+    /* ----- Marqueurs----- */
+    /**  
+     * Marqueurs des sheets importants.
+     * @constant
+     * @readonly
+     */
+
+    ACCESS = Object.freeze({
+        etude2021: {
+            name: "etude2021",
+            id: "1gmJLAKvUOYFeS32raOiSTYiE_ozr7YSk26Y0t0blm04",
+            sheetName: "Suivi",
+            pos: {
+                data: {
+                    x: 5,
+                    y: 3
+                },
+                header: {
+                    x: 1,
+                    y: 3
+                },
+                trustColumn: 3
+            },
+            filter: row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état]))
+        },
+        etude2122: {
+            name: "etude2122",
+            id: "1zdomLLcx2M5tAo1KWmfUA5YbEMHTQcRYObObvHLdJAI",
+            sheetName: "Suivi",
+            pos: {
+                data: {
+                    x: 5,
+                    y: 3
+                },
+                header: {
+                    x: 1,
+                    y: 3
+                },
+                trustColumn: 3
+            },
+            filter: row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état]))
+        },
+        prosp2021: {
+            name: "prosp2021",
+            id: "1lJhJuZxUt_8_mVLXe5tazXPrb2Z3wr0M49rho974sNQ",
+            sheetName: "Suivi",
+            pos: {
+                data: {
+                    x: 4,
+                    y: 2
+                },
+                header: {
+                    x: 1,
+                    y: 2
+                },
+                trustColumn: 4
+            },
+            filter: row => (row[HEADS.premierContact] != "")
+        },
+        prosp2122: {
+            name: "prosp2122",
+            id: "1zdomLLcx2M5tAo1KWmfUA5YbEMHTQcRYObObvHLdJAI",
+            sheetName: "Suivi",
+            pos: {
+                data: {
+                    x: 4,
+                    y: 2
+                },
+                header: {
+                    x: 1,
+                    y: 2
+                },
+                trustColumn: 4
+            },
+            filter: row => (row[HEADS.premierContact] != "")
+        },
+        devisSite: {
+            name: "devisSite",
+            id: "1gYRsgfM86D0dw1lsrbEhsIIUxBo-o0bA93vEBHyfCHM",
+            sheetName: "Réponses au formulaire 1",
+            pos: {
+                data: {
+                    x: 2,
+                    y: 1
+                },
+                header: {
+                    x: 1,
+                    y: 1
+                },
+                trustColumn: 1
+            },
+            filter: _ => true
+        }
     }),
 
     /* ----- Paramètres d'accès bdd ----- */
@@ -114,12 +208,12 @@ const COLORS = Object.freeze({
      * @readonly
      */
     BDDPROSP = Object.freeze({
-        bddFC023Id : "1LeAwWXSPEYQu-m24mdjyBjvs7DnecHDatpIyJugB43w",
-        bddT023Id :"1AGNmN3qJeS4M2SwKFgPiad6L-SesxJpzc2ANROO71jU",
-        bddIng023Id : "1fbvkVGqTUohNY0mbtCXNUEBXL-X2qSPz03EKzfXqHH0",
-        bddInd023 : "1jP3UMeBRBGXaFbVxA8NuGu7o1a4zm-xLpe-G9j0QuYE",
-        bddBTP023 : "1wbnP5qAHuQBizKMOXYsoXjQTuXtivpoNZXevBGaBDLU",
-        bddBA023 :  "1SiZy8T7ZyvWvq6KD2cujuWTtHKWMnrEUpx9kGMtL-Dw"
+        bddFC023Id: "1LeAwWXSPEYQu-m24mdjyBjvs7DnecHDatpIyJugB43w",
+        bddT023Id: "1AGNmN3qJeS4M2SwKFgPiad6L-SesxJpzc2ANROO71jU",
+        bddIng023Id: "1fbvkVGqTUohNY0mbtCXNUEBXL-X2qSPz03EKzfXqHH0",
+        bddInd023: "1jP3UMeBRBGXaFbVxA8NuGu7o1a4zm-xLpe-G9j0QuYE",
+        bddBTP023: "1wbnP5qAHuQBizKMOXYsoXjQTuXtivpoNZXevBGaBDLU",
+        bddBA023: "1SiZy8T7ZyvWvq6KD2cujuWTtHKWMnrEUpx9kGMtL-Dw"
     }),
 
     /**  
@@ -299,4 +393,3 @@ const CHART_TYPE = Object.freeze({
     PIE: Symbol("pie"),
     LINE: Symbol("line")
 });
-
