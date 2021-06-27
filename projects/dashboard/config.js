@@ -22,13 +22,18 @@ const CHART_TYPE = Object.freeze({
 
 /* ----- Paramètres d'affichage ----- */
 /** 
- * Couleurs des graphes.
+ * Nom et poste qui seront affichés sur la 1ère slide de présentation.
  * @constant
  * @readonly
  */
 const qualityResp = Object.freeze({
         nameTitle: "Paul Invernizzi, Responsable Qualité 022"
     }),
+    /** 
+     * Couleurs des graphes.
+     * @constant
+     * @readonly
+     */
     COLORS = Object.freeze({
         plum: "#934683",
         wildOrchid: "#D66BA0",
