@@ -64,6 +64,27 @@ const prcnt = (a, b) => (parseInt(b, 10) == 0) ? 0 : a / b * 100;
 const sameMonth = (row, month) => parseInt(row[HEADS.premierContact].getMonth(), 10) == month.month && parseInt(row[HEADS.premierContact].getFullYear(), 10) == month.year;
 
 /**
+ * Conversion d'un Array d'Objects en DataTable.
+ * @param {Array} data Données à parser.
+ * @returns {DataTable} DataTable représentant les données d'entrées.
+ */
+function arrayToDataTable(data) {
+    let dataTable = Charts.newDataTable();
+
+    // Columns
+    Object.keys(data[0]).forEach(key => {
+        dataTable.addColumn(typeof data[0][key] == "number" ? Charts.ColumnType.NUMBER : Charts.ColumnType.STRING, key);
+    });
+
+    // Rows
+    data.forEach(dataRow => {
+        dataTable.addRow(Object.values(dataRow));
+    });
+
+    return dataTable;
+}
+
+/**
  * Conversion d'un graphe de type Chart en une image qui sera ajoutée à un HtmlOutput ainsi qu'à une liste.
  * @param {Chart} chart Graphe.
  * @param {string} title Titre du graphe.

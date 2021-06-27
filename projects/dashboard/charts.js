@@ -5,13 +5,15 @@
 /**
  * Creation d'un graphe au type Chart.
  * @param {Enum} chartType - Type du graphe (Pie, Line, Column).
- * @param {DataTable} dataTable - Table de données à utiliser.
+ * @param {Array} data - Données à utiliser sous forme d'array d'objects.
  * @param {string} title - Titre du graphe.
  * @param {Object} options - Options modifiant les propriétés du graphe (dimensions, couleurs, ...).
  * @returns {Chart} - Graphe complet.
  */
-function createChart(chartType, dataTable, title, options = {}) {
+function createChart(chartType, data, title, options = {}) {
     Logger.log(`Creating chart ${title} of type ${Object.keys(CHART_TYPE)[Object.values(CHART_TYPE).indexOf(chartType)]} with ${!options ? "no option" : `options : ${Object.entries(options)}`}.`);
+    let dataTable = arrayToDataTable(data);
+
     try {
         if (chartType === CHART_TYPE.COLUMN) {
             return addOptions(Charts.newColumnChart().setDataTable(dataTable), title, options);
@@ -79,7 +81,10 @@ function createEmbeddedChart(chartType, dataTable, title, options = {}, idSpread
  */
 function addOptions(chartBuilder, title, options) {
     // Adding default values
-    options = {...DEFAULT_PARAMS, ...options};
+    options = {
+        ...DEFAULT_PARAMS,
+        ...options
+    };
 
     return chartBuilder
         .setOption('legend', {
