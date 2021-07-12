@@ -67,7 +67,7 @@ function generateKPI() {
         Object.values(category[1].KPIs).forEach(
           KPI => {
             output = KPI.extract(data[KPI.data].filter(KPI.filter || (_ => true)), KPI.options);
-            charts[category[0]].push(createChart(KPI.chartType, output.dataTable, KPI.name, output.options));
+            charts[category[0]].push(createChart(KPI.chartType, output.data, KPI.name, output.options));
           })
       }
     });
