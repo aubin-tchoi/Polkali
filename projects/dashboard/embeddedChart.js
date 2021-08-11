@@ -14,7 +14,7 @@ function rewrite(data, sheetName, chartType) {
 }
 
 function convert(sheetName, chartType) {
-    let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+    let sheet = SpreadsheetApp.openById(IDSSKPI).getSheetByName(sheetName);
     let chart = sheet.newChart()
         .addRange(sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()))
         .setPosition(sheet.getLastRow() + 1, sheet.getLastColumn() + 1, 1, 1);
