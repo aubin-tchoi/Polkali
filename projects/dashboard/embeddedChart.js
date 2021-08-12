@@ -1,16 +1,17 @@
 const IDSSKPI = "16EkXSEQPI7LRb45aSbjZAZFPfP4pmx0__4leyLHsDIc";
 
-function rewrite(data, sheetName, chartType) {
-    const sheet = SpreadsheetApp.openById(IDSSKPI).getSheetByName(sheetName),
-        lgt = Object.values(data[0]).length;
+function rewrite(dataOut, sheetName, chartType) {
+    const sheet = SpreadsheetApp.openById(IDSSKPI).getSheetByName(sheetName);
+    Logger.log(dataOut);
     let newData = [];
-    if (chartType === "column") {
-        newData.push(Object.keys(data[0]));
-        data.forEach(obj => newData.push(Object.values(obj)));
-    } else if (chartType === "pie" || chartType === "line") {
-        data.forEach(obj => newData.push(Object.values(obj)));
-        sheet.getRange(1, 1, newData.length, newData[0].length).setValues(newData);
+    if (chartType === CHART_TYPE.COLUMN) {
+        //newData.push(Object.keys(dataOut.data));
+        dataOut.data.forEach(obj => newData.push(Object.values(obj)));
+    } else if (chartType === CHART_TYPE.PIE || chartType === CHART_TYPE.LINE) {
+        dataOut.data.forEach(obj => newData.push(Object.values(obj)));
     }
+    sheet.getRange(1, 1, newData.length, newData[0].length).setValues(newData);
+    Logger.log(newData);
 }
 
 function convert(sheetName, chartType) {
@@ -32,6 +33,11 @@ function convert(sheetName, chartType) {
 }
 
 function actu(){
+  let data = {};
+  // Data extracted from each sheet as an Array of Object, each element being 1 line in the Sheet with keys that match the columns given in HEADS.
+  Object.entries(DATA_LINKS).forEach(spreadsheet => {
+    data[spreadsheet[0]] = extractSheetData(spreadsheet[1].id, spreadsheet[1].sheetName, spreadsheet[1].pos).filter(spreadsheet[1].filter);
+  });
   Object.entries(CATEGORIES).forEach(
     category => {
       if (Object.keys(category[1].KPIs).length > 0) {
@@ -39,6 +45,7 @@ function actu(){
         Object.values(category[1].KPIs).forEach(
           KPI => {
             rewrite(KPI.extract(data[KPI.data].filter(KPI.filter || (_ => true)), KPI.options),KPI.name,KPI.chartType);
+            convert(KPI.name,KPI.chartType)
           })
       }
     });
