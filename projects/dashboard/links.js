@@ -103,7 +103,42 @@ const ADDRESSES = Object.freeze({
         },
         filter: _ => true
       }
+    },
+    questionnaireSatisfaction :{
+      QSetudiant: {
+        id: "",
+        sheetName: "",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 1
+        },
+        filter: _ => true
+      },
+      QSentreprise: {
+        id: "",
+        sheetName: "",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 1
+        },
+        filter: _ => true
+      }
     }
+
   }),
 
   /* ----- Paramètres d'accès bdd ----- */

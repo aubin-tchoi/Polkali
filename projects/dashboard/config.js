@@ -174,7 +174,15 @@ const HEADS = Object.freeze({
         negoc: "En négociation",
         redac: "En rédaction"
     });
-
+    LISTE_QUESTION_RATING_QS_E = Object.freeze([
+        "Cela correspondait-il à tes attentes ? (adéquation en matière de compétences, etc.)",
+        "Les échanges avec le suiveur étaient-ils de qualité ?",
+        "La charge de travail était-elle celle à laquelle tu t’attendais ?",
+        "Note la clarté des PEP recrute"
+    ])
+    LISTE_QUESTION_RATING_QS_C = Object.freeze([
+        
+    ])
 /* ----- Paramètres portant sur les mois ----- */
 /** 
  * Index des mois à représenter.

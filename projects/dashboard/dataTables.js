@@ -387,26 +387,26 @@ function contactBySite(dataIn, options) {
     };
 }
 
-function mailSent(obj, options) {
-    let dataOut = [],
-        tables = [];
+function moyenneRate(dataIn,options,liste){
+    let dataOut = [];
+    liste.forEach(question => dataOut.push({
+        [key]: question,
+        rate: dataIn.map(row => row[question]).reduce( (r,x) => r = r + x,0)/dataIn.length
+    }
+    ));
+    return {
+        data: dataOut,
+        options: options
+    };
+}
 
-    Object.values(obj).forEach(tableId => {
-        let sheet = SpreadSheet.openById(tableId).getSheetByName("BDD"),
-            arr = sheet.getRange(2, 2, sheet.getLastRow(), sheet.getLastColumn()).getValues(),
-            heads = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues(),
-            data = arr.map(row => heads.reduce((obj, key, idx) => (obj[key] = (row[idx] != "") ? row[idx] : obj[key] || '', obj), {}));
-        tables.push(data);
-    })
-
-    MONTH_LIST.forEach(function (month, idx) {
-        dataOut.push({
-            "Mois": `${MONTH_NAMES[month.month]} ${month.year}`,
-            "Mails Quali": tables.reduce(compteur, data => (compteur + data.filter(row => row["Mail Normal"] == Quali).length), 0),
-            "Mails Quanti": tables.reduce(compteur, data => (compteur + data.filter(row => row["Mail Normal"] == VRAI).length), 0)
-        });
-    });
-
+function rateOn5(question,dataIn,options){
+    let dataOut = [];
+    const numbers = [1,2,3,4,5];
+    numbers.forEach( number => dataOut.push({
+        [key]: number,
+        occurence: dataIn.filter(row => (row[question]==key) )
+    }))
     return {
         data: dataOut,
         options: options

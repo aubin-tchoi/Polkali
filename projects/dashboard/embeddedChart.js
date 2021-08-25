@@ -2,14 +2,8 @@ const IDSSKPI = "16EkXSEQPI7LRb45aSbjZAZFPfP4pmx0__4leyLHsDIc";
 
 function rewrite(dataOut, sheetName, chartType) {
     const sheet = SpreadsheetApp.openById(IDSSKPI).getSheetByName(sheetName);
-    Logger.log(dataOut);
     let newData = [];
-    if (chartType === CHART_TYPE.COLUMN) {
-        //newData.push(Object.keys(dataOut.data));
-        dataOut.data.forEach(obj => newData.push(Object.values(obj)));
-    } else if (chartType === CHART_TYPE.PIE || chartType === CHART_TYPE.LINE) {
-        dataOut.data.forEach(obj => newData.push(Object.values(obj)));
-    }
+    dataOut.data.forEach(obj => newData.push(Object.values(obj)));
     sheet.getRange(1, 1, newData.length, newData[0].length).setValues(newData);
 }
 
@@ -60,7 +54,6 @@ function actu() {
                 // Loop on each KPI within this category.
                 Object.values(category[1].KPIs).forEach(
                     KPI => {
-                        Logger.log(data[KPI.data].filter(KPI.filter || (_ => true)).length);
                         rewrite(KPI.extract(data[KPI.data].filter(KPI.filter || (_ => true)), KPI.options), KPI.name, KPI.chartType);
                     })
             }
