@@ -38,6 +38,10 @@ function convert(sheetName, chartType, options, title) {
         .setOption('hAxis.ticks', options.hticks)
         .setOption('vAxis.ticks', options.vticks)
         .setOption('title', title);
+    try{
+      chart.setOption('series', options.series)
+    }catch(e){Logger.log(e)
+    };
     sheet.getCharts().forEach(chart => { sheet.removeChart(chart); });
     sheet.insertChart(chart.build());
 }
