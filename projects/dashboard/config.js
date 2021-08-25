@@ -27,8 +27,8 @@ const CHART_TYPE = Object.freeze({
  * @readonly
  */
 const qualityResp = Object.freeze({
-        nameTitle: "Paul Invernizzi, Responsable Qualité 022"
-    }),
+    nameTitle: "Paul Invernizzi, Responsable Qualité 022"
+}),
     /** 
      * Couleurs des graphes.
      * @constant
@@ -96,23 +96,23 @@ const qualityResp = Object.freeze({
  * @readonly
  */
 const HEADS = Object.freeze({
-        entreprise: "Entreprise",
-        premierContact: "Premier contact",
-        typeContact: "Type de contact",
-        état: "État",
-        devis: "Devis réalisé",
-        caPot: "Prix potentiel de l'étude  € (HT)",
-        confiance: "Pourcentage de confiance à la conversion en réelle étude",
-        prix: "Prix en € (HT)",
-        durée: "Durée (semaines)",
-        alumni: "Alumni",
-        JEH: "Nb JEH",
-        concurrence: "Autres JE en concurrence",
-        domaine: "Domaine de compétence",
-        secteur: "Secteur du Client",
-        typeEntreprise: "Type d'entreprise",
-        prestation: "Prestation"
-    }),
+    entreprise: "Entreprise",
+    premierContact: "Premier contact",
+    typeContact: "Type de contact",
+    état: "État",
+    devis: "Devis réalisé",
+    caPot: "Prix potentiel de l'étude  € (HT)",
+    confiance: "Pourcentage de confiance à la conversion en réelle étude",
+    prix: "Prix en € (HT)",
+    durée: "Durée (semaines)",
+    alumni: "Alumni",
+    JEH: "Nb JEH",
+    concurrence: "Autres JE en concurrence",
+    domaine: "Domaine de compétence",
+    secteur: "Secteur du Client",
+    typeEntreprise: "Type d'entreprise",
+    prestation: "Prestation"
+}),
     /**  
      * Différents états possible dans la prospection (dans le suivi de la prospection).
      * @constant
@@ -182,70 +182,70 @@ const HEADS = Object.freeze({
  * @readonly
  */
 const MONTH_LIST = Object.freeze([{
-            month: 1,
-            year: 2020
-        },
-        {
-            month: 2,
-            year: 2020
-        },
-        {
-            month: 3,
-            year: 2020
-        },
-        {
-            month: 4,
-            year: 2020
-        },
-        {
-            month: 5,
-            year: 2020
-        },
-        {
-            month: 6,
-            year: 2020
-        },
-        {
-            month: 7,
-            year: 2020
-        },
-        {
-            month: 8,
-            year: 2020
-        },
-        {
-            month: 9,
-            year: 2020
-        },
-        {
-            month: 10,
-            year: 2020
-        },
-        {
-            month: 11,
-            year: 2020
-        },
-        {
-            month: 0,
-            year: 2021
-        },
-        {
-            month: 1,
-            year: 2021
-        },
-        {
-            month: 2,
-            year: 2021
-        },
-        {
-            month: 3,
-            year: 2021
-        },
-        {
-            month: 4,
-            year: 2021
-        }
-    ]),
+    month: 9,
+    year: 2020
+},
+{
+    month: 10,
+    year: 2020
+},
+{
+    month: 11,
+    year: 2020
+},
+{
+    month: 0,
+    year: 2021
+},
+{
+    month: 1,
+    year: 2021
+},
+{
+    month: 2,
+    year: 2021
+},
+{
+    month: 2,
+    year: 2021
+},
+{
+    month: 3,
+    year: 2021
+},
+{
+    month: 4,
+    year: 2021
+},
+{
+    month: 5,
+    year: 2021
+},
+{
+    month: 6,
+    year: 2021
+},
+{
+    month: 7,
+    year: 2021
+},
+{
+    month: 8,
+    year: 2021
+},
+{
+    month: 9,
+    year: 2021
+},
+{
+    month: 10,
+    year: 2021
+},
+{
+    month: 11,
+    year: 2021
+}
+]),
     /**
      * Manière dont les mois sont écrits.
      * @constant

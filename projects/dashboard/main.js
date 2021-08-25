@@ -42,7 +42,7 @@ function generateKPI() {
 
   // Data extracted from each sheet as an Array of Object, each element being 1 line in the Sheet with keys that match the columns given in HEADS.
   Object.entries(DATA_LINKS).forEach(spreadsheet => {
-    data[spreadsheet[0]] = extractSheetData(spreadsheet[1].id, spreadsheet[1].sheetName, spreadsheet[1].pos).filter(spreadsheet[1].filter);
+    data[spreadsheet[0]] = Object.values(spreadsheet[1]).reduce((dataTemp, sheet) => dataTemp.concat(extractSheetData(sheet.id, sheet.sheetName, sheet.pos).filter(sheet.filter)), []);
   });
 
   currentTime = measureTime(currentTime, "extract data from the two sheets");
