@@ -12,7 +12,7 @@
  * @param {Object} pos Object contenant deux clés : data et pos pour indiquer la position du header ainsi que des données. 
  * @returns {Array} Array d'Object décrivant l'ensemble des données extraites (1 ligne correspond à une ligne du fichier et les clés sont alors les valeurs du header).
  */
- function extractSheetData(spreadsheetId, sheetName, pos) {
+function extractSheetData(spreadsheetId, sheetName, pos) {
     const sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName(sheetName),
         data = sheet.getRange(pos.data.x, pos.data.y, manuallyGetRowNumber(sheet, pos.data.x, pos.trustColumn), (sheet.getLastColumn() - pos.data.y + 1)).getValues(),
         heads = sheet.getRange(pos.header.x, pos.header.y, 1, (sheet.getLastColumn() - pos.header.y + 1)).getValues().shift();

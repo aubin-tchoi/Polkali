@@ -190,10 +190,6 @@ const HEADS = Object.freeze({
  * @readonly
  */
 const MONTH_LIST = Object.freeze([{
-    month: 4,
-    year: 2020
-},
-{
     month: 5,
     year: 2020
 },
@@ -251,6 +247,10 @@ const MONTH_LIST = Object.freeze([{
 },
 {
     month: 7,
+    year: 2021
+},
+{
+    month: 8,
     year: 2021
 }
 ]),

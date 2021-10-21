@@ -7,7 +7,7 @@
  * @constant
  * @readonly
  */
-const ADDRESSES = Object.freeze({
+ const ADDRESSES = Object.freeze({
   driveId: "1dPi0dht-q_rI8fUmheA1j861huYPPcAy",
   slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU",
   bddProspectionId: "1dKE_5-Yoi_ACJeq0R7nDY0U1Vz3ccvQo",
@@ -104,61 +104,6 @@ const ADDRESSES = Object.freeze({
         filter: _ => true
       }
     }
-    /*,
-    tableauxCotisation :{
-      cotis2021 :{
-        id: "",
-        sheetName: "",
-        pos: {
-          data: {
-            x: 2,
-            y: 1
-          },
-          header: {
-            x: 1,
-            y: 1
-          },
-          trustColumn: 1
-        },
-        filter: _ => true
-      }
-    },
-    questionnaireSatisfaction :{
-      QSetudiant: {
-        id: "",
-        sheetName: "",
-        pos: {
-          data: {
-            x: 2,
-            y: 1
-          },
-          header: {
-            x: 1,
-            y: 1
-          },
-          trustColumn: 1
-        },
-        filter: _ => true
-      },
-      QSentreprise: {
-        id: "",
-        sheetName: "",
-        pos: {
-          data: {
-            x: 2,
-            y: 1
-          },
-          header: {
-            x: 1,
-            y: 1
-          },
-          trustColumn: 1
-        },
-        filter: _ => true
-      }
-    }
-    */
-
   }),
 
   /* ----- Paramètres d'accès bdd ----- */
@@ -192,8 +137,12 @@ const ADDRESSES = Object.freeze({
           extract: contacts,
           data: "prosp",
           options: {
-            colors: COLORS_OFFICE
-          },
+            colors: COLORS_OFFICE,
+            series: {0:{labelInLegend: "Premier RDV réalisé"},
+                    1:{labelInLegend: "Devis rédigé et envoyé"},
+                    2:{labelInLegend: "En négociation"},
+                    3:{labelInLegend: "Etude obtenue"}
+          }},
           chartType: CHART_TYPE.COLUMN
         },
         conversionMensuel: {
@@ -245,7 +194,10 @@ const ADDRESSES = Object.freeze({
           data: "prosp",
           options: {
             colors: COLORS_DUO,
-            percent: true
+            percent: true,
+            series: {0:{labelInLegend: "Nombre de contact"},
+                    1:{labelInLegend: "Taux de conversion global"},
+            }
           },
           chartType: CHART_TYPE.COLUMN
         },
@@ -276,8 +228,11 @@ const ADDRESSES = Object.freeze({
           data: "prosp",
           filter: row => row[HEADS.typeContact] != "",
           options: {
-            colors: COLORS_OFFICE
-          },
+            colors: COLORS_OFFICE,
+            series: {0:{labelInLegend: "Nombre de devis envoyés"},
+                    1:{labelInLegend: "Nombre d'études signées"},
+                    2:{labelInLegend: "CA en milliers d'euros"}
+          }},
           chartType: CHART_TYPE.COLUMN
         },
         CATypeContact: {
@@ -302,7 +257,10 @@ const ADDRESSES = Object.freeze({
           data: "prosp",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
           options: {
-            colors: COLORS_DUO
+            colors: COLORS_DUO,
+            series: {0:{labelInLegend: "Nombre d'études"},
+                    1:{labelInLegend: "CA en milliers d'euros"}
+            }
           },
           chartType: CHART_TYPE.COLUMN
         },
@@ -328,7 +286,10 @@ const ADDRESSES = Object.freeze({
           data: "prosp",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
           options: {
-            colors: COLORS_DUO
+            colors: COLORS_DUO,
+          series: {0:{labelInLegend: "Nombre d'études"},
+                    1:{labelInLegend: "CA en milliers d'euros"}
+            },
           },
           chartType: CHART_TYPE.COLUMN
         },
