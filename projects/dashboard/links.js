@@ -103,6 +103,25 @@ const ADDRESSES = Object.freeze({
         },
         filter: _ => true
       }
+    }
+    /*,
+    tableauxCotisation :{
+      cotis2021 :{
+        id: "",
+        sheetName: "",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 1
+        },
+        filter: _ => true
+      }
     },
     questionnaireSatisfaction :{
       QSetudiant: {
@@ -138,6 +157,7 @@ const ADDRESSES = Object.freeze({
         filter: _ => true
       }
     }
+    */
 
   }),
 
