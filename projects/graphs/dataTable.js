@@ -9,7 +9,7 @@
  * @param {Array} data Données d'entrée.
  * @returns {Array} Tableau 2D décrivant le taux de conversion entre chaque étape pour chaque mois.
  */
-function conversionTable(data) {
+ function conversionTable(data) {
     let conversionChart = [];
 
     // Rows
@@ -418,16 +418,16 @@ function rateOn5(question,dataIn,options){
 function keyNumbers(dataIn, options){
     let dataOut = [];
     dataOut.push({
-        "etude_travaillee" : "Etudes_Potentielles",
+        "etude_travaillee" : "Etudes travaillées",
         "Nombre" : dataIn.length
     });
     dataOut.push({
-        "etude_signee" : "Etudes_signees",
-        "Nombre" : dataIn.filter( row => Object.values(ETAT_ETUDE).indexOf(row[HEADS.état]) >= Object.values(ETAT_ETUDE).indexOf("En cours")).length
+        "etude_signee" : "Etudes signees",
+        "Nombre" : dataIn.filter( row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])) ).length
     });
     dataOut.push({
-        "etude_potentielle" : "CA_signe",
-        "Nombre" : dataIn.filter( row => (Object.values(ETAT_ETUDE).indexOf(row[HEADS.état]) >= Object.values(ETAT_ETUDE).indexOf("En cours"))).map(row => row[HEADS.prix]).reduce( (somme,valeur) => somme = somme + valeur,0)
+        "Ca_signe" : "CA signe (en millier d'euros)",
+        "Nombre" : (dataIn.filter( row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état]))).map(row => row[HEADS.prix]).reduce( (somme,valeur) => somme = somme + valeur,0))/1000
     });
 
     return {

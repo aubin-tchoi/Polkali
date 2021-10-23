@@ -68,7 +68,7 @@ function updateOrCreateChart(kpi,update) {
     if (update){
     sheet.updateChart(chart.build());
     }else{
-      sheet.insertChart(chart.build)
+      sheet.insertChart(chart.build())
     }
 }
 

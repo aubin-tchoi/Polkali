@@ -29,3 +29,6 @@ function onOpen(){
     .addItem("Actualiser", "actu")
     .addToUi();
 }
+
+function test(){
+}

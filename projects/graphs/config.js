@@ -163,6 +163,7 @@ const HEADS = Object.freeze({
         negoc: "En négociation",
         redac: "En rédaction",
         enAttente: "En attente",
+        devisAccepte: "Devis accepté",
         enCours: "En cours",
         terminée: "Terminée",
         cloturée: "Clôturée",
@@ -175,6 +176,7 @@ const HEADS = Object.freeze({
      */
     ETAT_ETUDE_BIS = Object.freeze({
         enAttente: "En attente",
+        devisAccepte: "Devis accepté",
         sanSuite: "Sans suite",
         aRelancer: "A relancer",
         negoc: "En négociation",

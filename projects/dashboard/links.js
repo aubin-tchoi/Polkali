@@ -33,10 +33,10 @@
           },
           trustColumn: 3
         },
-        filter: row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état]))
+        filter: row => (Object.values(ETAT_ETUDE).includes(row[HEADS.état]))
       },
       etude2122: {
-        id: "1zdomLLcx2M5tAo1KWmfUA5YbEMHTQcRYObObvHLdJAI",
+        id: "1h1rObRvdb2GKxdzgTZD3Kvwde_TUTlTOLC3l8BKzOBQ",
         sheetName: "Suivi",
         pos: {
           data: {
@@ -49,12 +49,12 @@
           },
           trustColumn: 3
         },
-        filter: row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état]))
+        filter: row => (Object.values(ETAT_ETUDE).includes(row[HEADS.état]))
       }
     },
     etudeMandat: {
       etude2122: {
-        id: "1zdomLLcx2M5tAo1KWmfUA5YbEMHTQcRYObObvHLdJAI",
+        id: "1h1rObRvdb2GKxdzgTZD3Kvwde_TUTlTOLC3l8BKzOBQ",
         sheetName: "Suivi",
         pos: {
           data: {
@@ -67,7 +67,7 @@
           },
           trustColumn: 3
         },
-        filter: row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état]))
+        filter: row => (Object.values(ETAT_ETUDE).includes(row[HEADS.état]))
       }
     },
     prosp: {
@@ -340,7 +340,7 @@
           name: "Nombre d'études par tranche de prix (en €)",
           extract: priceRange,
           data: "etude",
-          filter: row => row[HEADS.prix] != "",
+          filter: row => row[HEADS.prix] != "" && !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])),
           options: {
             colors: [COLORS.burgundy],
             lowerBound: 500,
@@ -379,6 +379,7 @@
           name: "Proportion du CA due aux alumni",
           extract: (data, options) => turnoverDistributionBinary(HEADS.alumni, data, options),
           data: "etude",
+          filter: row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])),
           options: {
             colors: [COLORS.pine, COLORS.silverPink]
           },
