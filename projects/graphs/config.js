@@ -7,6 +7,12 @@ try {
 } catch (e) {
     Logger.log(e);
 }
+/**
+ * Id du Spreadsheet contenant les graphes.
+ * @constant
+ * @readonly
+ */
+const IDSSKPI = "16EkXSEQPI7LRb45aSbjZAZFPfP4pmx0__4leyLHsDIc";
 
 /** 
  * Enum utilisé pour identifier les différents types de graphes.
@@ -173,16 +179,27 @@ const HEADS = Object.freeze({
         aRelancer: "A relancer",
         negoc: "En négociation",
         redac: "En rédaction"
-    });
+    }),
+    /** 
+     * Questions présentes dans le questionnaire satisfaction des élèves.
+     * @constant
+     * @readonly
+     */
     LISTE_QUESTION_RATING_QS_E = Object.freeze([
         "Cela correspondait-il à tes attentes ? (adéquation en matière de compétences, etc.)",
         "Les échanges avec le suiveur étaient-ils de qualité ?",
         "La charge de travail était-elle celle à laquelle tu t’attendais ?",
         "Note la clarté des PEP recrute"
-    ])
+    ]) 
+    /** 
+    * Questions présentes dans le questionnaire satisfaction des Clients.
+    * @constant
+    * @readonly
+    */
     LISTE_QUESTION_RATING_QS_C = Object.freeze([
         
-    ])
+    ]);
+
 /* ----- Paramètres portant sur les mois ----- */
 /** 
  * Index des mois à représenter.

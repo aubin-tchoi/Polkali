@@ -391,9 +391,10 @@ function moyenneRate(dataIn,options,liste){
     let dataOut = [];
     liste.forEach(question => dataOut.push({
         [key]: question,
-        rate: dataIn.map(row => row[question]).reduce( (r,x) => r = r + x,0)/dataIn.length
+        "rate" : dataIn.map(row => row[question]).reduce( (r,x) => r = r + x,0)/dataIn.length
     }
     ));
+
     return {
         data: dataOut,
         options: options
@@ -405,10 +406,34 @@ function rateOn5(question,dataIn,options){
     const numbers = [1,2,3,4,5];
     numbers.forEach( number => dataOut.push({
         [key]: number,
-        occurence: dataIn.filter(row => (row[question]==key) )
-    }))
+        "occurence" : dataIn.filter(row => (row[question]==key) ).length
+    }));
+
     return {
         data: dataOut,
         options: options
+    };
+}
+
+function keyNumbers(dataIn, options){
+    let dataOut = [];
+    dataOut.push({
+        [key] : Etudes_Potentielles,
+        "Nombre" : dataIn.length
+    });
+    dataOut.push({
+        [key] : Etudes_signées,
+        "Nombre" : dataIn.filter( row => Object.values(ETAT_PROSP).indexOf(row[HEADS.état]) >= Object.values(ETAT_PROSP).indexOf("En cours")).length
+    });
+    dataOut.push({
+        [key] : CA_signé,
+        "Nombre" : dataIn.filter( row => (Object.values(ETAT_PROSP).indexOf(row[HEADS.état]) >= Object.values(ETAT_PROSP).indexOf(state)))
+            .map(row = row[HEADS.prix])
+            .reduce( (somme,valeur) => somme = somme + valeur,0)
+    });
+
+    return {
+        data : dataOut,
+        options : options
     };
 }

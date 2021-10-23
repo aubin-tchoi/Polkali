@@ -152,7 +152,7 @@
           options: {
             colors: [COLORS.burgundy]
           },
-          chartType: CHART_TYPE.LINE
+          chartType: CHART_TYPE.COLUMN
         },
         site: {
           name: "Nombre de contact venant du site",
@@ -162,6 +162,15 @@
             colors: [COLORS.pine, COLORS.silverPink]
           },
           chartType: CHART_TYPE.COLUMN
+        },
+        nombresImportants: {
+          name : "Nombres d'Etudes potentielles, d'Etudes signées et de CA signé",
+          extract: keyNumbers,
+          data : "etude",
+          options: {
+            colors : [COLORS.burgundy]
+          },
+          chartType : CHART_TYPE.COLUMN
         },
         conversionEtapes: {
           name: "Taux de conversion sur chaque étape",

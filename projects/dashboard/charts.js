@@ -27,50 +27,49 @@
     }
 }
 
-/** 
- * Créer des charts incrustés aux sheets.
- * @param {Enum} chartType - Type du graphe (Pie, Line, Column).
- * @param {DataTable} dataTable - Table de données à utiliser.
- * @param {string} title - Titre du graphe.
- * @param {Object} options - Options modifiant les propriétés du graphe (dimensions, couleurs, ...).
- * @param {string} idSpreadsheet - ID du spreadsheet où on stocke les graphes.
- * @param {string} nameSheet - Nom du sheet où on place les graphes.
- */
-
-function createEmbeddedChart(chartType, dataTable, title, options = {}, idSpreadsheet, nameSheet) {
-    var sheet = SpreadsheetApp.openById().getSheetByName();
-    var chart = sheet.newChart()
-    try {
-        if (chartType === CHART_TYPE.COLUMN) {
-            chart.setChartType(Charts.ChartType.chartType)
-                .asColumnChart();
-        } else if (chartType === CHART_TYPE.PIE) {
-            chart.setChartType(Charts.ChartType.chartType)
-                .asPieChart();
-        } else if (chartType === CHART_TYPE.LINE) {
-            chart.setChartType(Charts.ChartType.chartType)
-                .asColumnChart();
-        }
-    } catch (e) {
-        Logger.log(`Could not create graph for info : ${title}, error : ${e}`);
+function updateOrCreateChart(kpi,update) {
+    let sheet = SpreadsheetApp.openById(IDSSKPI).getSheetByName(kpi.name);
+    let chart = sheet.newChart();
+    if (update){
+      chart = sheet.getCharts()[0].modify();
     }
-    //Pour créer un embedded Chart il faut ensuite créer un tableau dans le sheet destination qui est synchro avec le vrai tableau pour pouvoir add la range.
-    chart.sheet.addRange()
-        .setOption('legend', {
-            textStyle: {
-                font: 'roboto',
-                fontSize: 11
-            }
-        })
-        .setOption('colors', options.colors || Object.values(COLORS))
-        .setOption('vAxis.minValue', (options.percent) ? 0 : 'automatic')
-        .setOption('vAxis.maxValue', (options.percent) ? 100 : 'automatic')
-        .setOption('hAxis.ticks', options.hticks)
-        .setOption('vAxis.ticks', options.vticks)
-        .setTitle(title)
-        .setDimensions(options.width, options.height)
-        .build();
-    sheet.insertChart(chart);
+        chart.addRange(sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()))
+        .setPosition(sheet.getLastRow() + 1, sheet.getLastColumn() + 1, 1, 1);
+    if (kpi.chartType === CHART_TYPE.COLUMN) {
+        chart.setChartType(Charts.ChartType.COLUMN)
+            .asColumnChart();
+    } else if (kpi.chartType === CHART_TYPE.PIE) {
+        chart.setChartType(Charts.ChartType.PIE)
+            .asPieChart();
+    } else if (kpi.chartType === CHART_TYPE.LINE) {
+        chart.setChartType(Charts.ChartType.LINE)
+            .asLineChart().setOption('curveType', 'function').setOption('pointSize', 10).setOption('pointShape', 'diamond');
+    };
+    kpi.options = {
+        ...DEFAULT_PARAMS,
+        ...kpi.options
+    };
+    chart.setOption('legend', {
+        textStyle: {
+            font: 'roboto',
+            fontSize: 11
+        }
+    })
+        .setOption('colors', kpi.options.colors || Object.values(COLORS))
+        .setOption('vAxis.minValue', (kpi.options.percent) ? 0 : 'automatic')
+        .setOption('vAxis.maxValue', (kpi.options.percent) ? 100 : 'automatic')
+        .setOption('hAxis.ticks', kpi.options.hticks)
+        .setOption('vAxis.ticks', kpi.options.vticks)
+        .setOption('title', kpi.name);
+    try{
+      chart.setOption('series', kpi.options.series)
+    }catch(e){Logger.log(e)
+    };
+    if (update){
+    sheet.updateChart(chart.build());
+    }else{
+      sheet.insertChart(chart.build)
+    }
 }
 
 /** 
