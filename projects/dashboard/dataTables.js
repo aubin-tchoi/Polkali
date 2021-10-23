@@ -415,21 +415,20 @@ function rateOn5(question,dataIn,options){
     };
 }
 
+
 function keyNumbers(dataIn, options){
     let dataOut = [];
     dataOut.push({
-        [key] : Etudes_Potentielles,
+        "etude_travaillee" : "Etudes_Potentielles",
         "Nombre" : dataIn.length
     });
     dataOut.push({
-        [key] : Etudes_signées,
-        "Nombre" : dataIn.filter( row => Object.values(ETAT_PROSP).indexOf(row[HEADS.état]) >= Object.values(ETAT_PROSP).indexOf("En cours")).length
+        "etude_signee" : "Etudes_signees",
+        "Nombre" : dataIn.filter( row => Object.values(ETAT_ETUDE).indexOf(row[HEADS.état]) >= Object.values(ETAT_ETUDE).indexOf("En cours")).length
     });
     dataOut.push({
-        [key] : CA_signé,
-        "Nombre" : dataIn.filter( row => (Object.values(ETAT_PROSP).indexOf(row[HEADS.état]) >= Object.values(ETAT_PROSP).indexOf(state)))
-            .map(row = row[HEADS.prix])
-            .reduce( (somme,valeur) => somme = somme + valeur,0)
+        "etude_potentielle" : "CA_signe",
+        "Nombre" : dataIn.filter( row => (Object.values(ETAT_ETUDE).indexOf(row[HEADS.état]) >= Object.values(ETAT_ETUDE).indexOf("En cours"))).map(row => row[HEADS.prix]).reduce( (somme,valeur) => somme = somme + valeur,0)
     });
 
     return {
