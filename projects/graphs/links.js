@@ -52,6 +52,24 @@ const ADDRESSES = Object.freeze({
         filter: row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état]))
       }
     },
+    etudeMandat: {
+      etude2122: {
+        id: "1zdomLLcx2M5tAo1KWmfUA5YbEMHTQcRYObObvHLdJAI",
+        sheetName: "Suivi",
+        pos: {
+          data: {
+            x: 5,
+            y: 3
+          },
+          header: {
+            x: 1,
+            y: 3
+          },
+          trustColumn: 3
+        },
+        filter: row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état]))
+      }
+    },
     prosp: {
       prosp2021: {
         id: "1lJhJuZxUt_8_mVLXe5tazXPrb2Z3wr0M49rho974sNQ",
@@ -166,7 +184,7 @@ const ADDRESSES = Object.freeze({
         nombresImportants: {
           name : "Nombres d'Etudes potentielles, d'Etudes signées et de CA signé",
           extract: keyNumbers,
-          data : "etude",
+          data : "etudeMandat",
           options: {
             colors : [COLORS.burgundy]
           },
