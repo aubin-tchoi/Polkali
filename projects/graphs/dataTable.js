@@ -417,8 +417,7 @@ function rateOn5(question,dataIn,options){
 
 function keyNumbers(dataIn, options){
     let dataOut = [];
-    let tableDevisSent = dataIn.filter(row => Object.values(ETAT_ETUDE_TER).includes(row[HEADS.état])),
-        tableSignedEtude = dataIn.filter( row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])) );
+    let tableSignedEtude = dataIn.filter( row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])) );
     dataOut.push({
         "etude_travaillee" : "Etudes travaillées",
         "Nombre" : dataIn.length
@@ -431,13 +430,27 @@ function keyNumbers(dataIn, options){
         "Ca_signe" : "CA signe (en millier d'euros)",
         "Nombre" : tableSignedEtude.map(row => row[HEADS.prix]).reduce( (somme,valeur) => somme = somme + valeur,0)/1000
     });
-    
-    tauxDeConversion.push({
-        "taux_conversion" : `Conversion sur ${devisSent} devis envoyés`,
-        "Nombre" : 100*tableSignedEtude.length/tableDevisSent.length
-    })
+
     return {
         data : dataOut,
         options : options
     };
+}
+
+function converstionTotal(dataIn, options){
+    let dataOut = [];
+    let tableDevisSent = dataIn.filter(row => Object.values(ETAT_ETUDE_TER).includes(row[HEADS.état])),
+        tableSignedEtude = dataIn.filter( row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])));
+    dataOut.push({
+        "taux_conversion_devis": `Conversion sur ${tableDevisSent.length} devis envoyés`,
+        "Nombre" : 100*tableSignedEtude.length/tableDevisSent.length
+    });
+    dataOut.push({
+        "taux_conversion_etude": `Conversion sur ${dataIn.length} étude travaillée`,
+        "Nombre" : 100*tableSignedEtude.length/dataIn.length
+    });
+    return {
+        data : dataOut,
+        options : options
+    }
 }

@@ -104,6 +104,24 @@
         filter: row => (row[HEADS.premierContact] != "")
       }
     },
+    prospMandat: {
+      prosp2122: {
+        id: "1zdomLLcx2M5tAo1KWmfUA5YbEMHTQcRYObObvHLdJAI",
+        sheetName: "Suivi",
+        pos: {
+          data: {
+            x: 4,
+            y: 2
+          },
+          header: {
+            x: 1,
+            y: 2
+          },
+          trustColumn: 4
+        },
+        filter: row => (row[HEADS.premierContact] != "")
+      }
+    },
     infoSite: {
       devisSite: {
         id: "1gYRsgfM86D0dw1lsrbEhsIIUxBo-o0bA93vEBHyfCHM",
@@ -163,6 +181,15 @@
           }},
           chartType: CHART_TYPE.COLUMN
         },
+        totalConverstionRate: {
+          name: "Taux de conversion total",
+          extract: contacts,
+          data: "etudeMandat",
+          options: {
+            colors: COLORS_OFFICE
+          },
+          chartType: CHART_TYPE.COLUMN
+        },
         conversionMensuel: {
           name: "Taux de conversion global",
           extract: conversionRateOverTime,
@@ -218,7 +245,7 @@
         tauxDeConversionParTypeDeContact: {
           name: "Taux de conversion par type de contact",
           extract: (data, options) => conversionRate(HEADS.typeContact, data, options),
-          data: "prosp",
+          data: "prospMandat",
           options: {
             colors: COLORS_DUO,
             percent: true,
