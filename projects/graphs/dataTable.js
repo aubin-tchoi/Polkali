@@ -440,7 +440,7 @@ function keyNumbers(dataIn, options){
 function conversionTotal(dataIn, options){
     let dataOut = [];
     let tableDevisSent = dataIn.filter(row => row[HEADS.état] == ETAT_PROSP.devis || row[HEADS.état] == ETAT_PROSP.negoc ||row[HEADS.état] == ETAT_PROSP.etude),
-        tableSignedEtude = dataIn.filter( row => row[HEADS.état] == ETAT_PROSP.etudecl);
+        tableSignedEtude = dataIn.filter( row => row[HEADS.état] == ETAT_PROSP.etude);
     dataOut.push({
         "taux_conversion__devis_etude": `Conversion en étude signée sur ${tableDevisSent.length} devis envoyés`,
         "Nombre" : 100*tableSignedEtude.length/tableDevisSent.length
