@@ -437,17 +437,21 @@ function keyNumbers(dataIn, options){
     };
 }
 
-function converstionTotal(dataIn, options){
+function conversionTotal(dataIn, options){
     let dataOut = [];
-    let tableDevisSent = dataIn.filter(row => Object.values(ETAT_ETUDE_TER).includes(row[HEADS.état])),
+    let tableDevisSent = dataIn.filter(row => row[HEADS.état] == ETAT_PROSP.devis || row[HEADS.état] == ETAT_PROSP.negoc ||row[HEADS.état] == ETAT_PROSP.etude),
         tableSignedEtude = dataIn.filter( row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])));
     dataOut.push({
-        "taux_conversion_devis": `Conversion sur ${tableDevisSent.length} devis envoyés`,
+        "taux_conversion__devis_etude": `Conversion sur ${tableDevisSent.length} devis envoyés`,
         "Nombre" : 100*tableSignedEtude.length/tableDevisSent.length
     });
     dataOut.push({
-        "taux_conversion_etude": `Conversion sur ${dataIn.length} étude travaillée`,
+        "taux_conversion_contact_etude": `Conversion sur ${dataIn.length} contacts`,
         "Nombre" : 100*tableSignedEtude.length/dataIn.length
+    });
+    dataOut.push({
+        "taux_conversion_contact_devis": `Conversion sur ${dataIn.length} contacts`,
+        "Nombre" : 100*tableDevisSent.length/dataIn.length
     });
     return {
         data : dataOut,

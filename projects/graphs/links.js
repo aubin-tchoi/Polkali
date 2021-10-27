@@ -181,10 +181,10 @@
           }},
           chartType: CHART_TYPE.COLUMN
         },
-        totalConverstionRate: {
+        totalConversionRate: {
           name: "Taux de conversion total",
-          extract: contacts,
-          data: "etudeMandat",
+          extract: conversionTotal,
+          data: "prospMandat",
           options: {
             colors: COLORS_OFFICE
           },
