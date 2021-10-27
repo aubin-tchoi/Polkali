@@ -442,15 +442,15 @@ function conversionTotal(dataIn, options){
     let tableDevisSent = dataIn.filter(row => row[HEADS.état] == ETAT_PROSP.devis || row[HEADS.état] == ETAT_PROSP.negoc ||row[HEADS.état] == ETAT_PROSP.etude),
         tableSignedEtude = dataIn.filter( row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])));
     dataOut.push({
-        "taux_conversion__devis_etude": `Conversion sur ${tableDevisSent.length} devis envoyés`,
+        "taux_conversion__devis_etude": `Conversion en étude signée sur ${tableDevisSent.length} devis envoyés`,
         "Nombre" : 100*tableSignedEtude.length/tableDevisSent.length
     });
     dataOut.push({
-        "taux_conversion_contact_etude": `Conversion sur ${dataIn.length} contacts`,
+        "taux_conversion_contact_etude": `Conversion en étude signée sur ${dataIn.length} contacts`,
         "Nombre" : 100*tableSignedEtude.length/dataIn.length
     });
     dataOut.push({
-        "taux_conversion_contact_devis": `Conversion sur ${dataIn.length} contacts`,
+        "taux_conversion_contact_devis": `Conversion en devis envoyé sur ${dataIn.length} contacts`,
         "Nombre" : 100*tableDevisSent.length/dataIn.length
     });
     return {
