@@ -28,7 +28,7 @@ function archiving() {
     }
   }
 
-  // Removing initial sheet in ssNew and renaming its sheets
+  // Removing initial sheet in ssNew and renaming its shee
   ssNew.deleteSheet(ssNew.getSheetByName("Feuille 1"));
   ssNew.getSheets().forEach(function (s) {
     s.setName(s.getName().match(/Copie de (.+)/)[1]);
@@ -46,3 +46,5 @@ function archiving() {
     });
   }
 }
+
+//Bonnjoueueerrre
