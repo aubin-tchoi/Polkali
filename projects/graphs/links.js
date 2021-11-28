@@ -449,7 +449,7 @@
           chartType: CHART_TYPE.PIE
         },
         CADomaineActuel: {
-          name: "CA par domaine (Notre Mandat)",
+          name: "CA par filiere (Notre Mandat)",
           extract: (data, options) => turnoverDistribution(HEADS.filiere, data, options),
           data: "prospMandat",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
@@ -459,7 +459,7 @@
           chartType: CHART_TYPE.PIE
         },
         CADomaineAncien: {
-          name: "CA par domaine (Mandat précédent)",
+          name: "CA par filiere (Mandat précédent)",
           extract: (data, options) => turnoverDistribution(HEADS.filiere, data, options),
           data: "prospPrec",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
