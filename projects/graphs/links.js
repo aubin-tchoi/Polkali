@@ -282,10 +282,20 @@
           },
           chartType: CHART_TYPE.COLUMN
         },
-        repartitionDesContactsParDomaineDeCompétence: {
-          name: "Répartition des contacts par domaine de compétence",
+        repartitionDesContactsParDomaineDeCompétenceActuel: {
+          name: "Contacts par domaine de compétence (Actuel)",
           extract: (data, options) => totalDistribution(HEADS.domaine, data, options),
-          data: "prosp",
+          data: "prospMandat",
+          filter: row => row[HEADS.domaine] != "",
+          options: {
+            colors: COLORS_OFFICE
+          },
+          chartType: CHART_TYPE.PIE
+        },
+        repartitionDesContactsParDomaineDeCompétenceAncien: {
+          name: "Contacts par domaine de compétence (Ancien)",
+          extract: (data, options) => totalDistribution(HEADS.domaine, data, options),
+          data: "prospPrec",
           filter: row => row[HEADS.domaine] != "",
           options: {
             colors: COLORS_OFFICE
@@ -397,6 +407,26 @@
         CASecteurAncien: {
           name: "Proportion du CA par secteur (Mandat précédent)",
           extract: (data, options) => turnoverDistribution(HEADS.secteur, data, options),
+          data: "prospPrec",
+          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+          options: {
+            colors: COLORS_OFFICE
+          },
+          chartType: CHART_TYPE.PIE
+        },
+        CADomainexdActuel: {
+          name: "CA par domaine (Notre Mandat)",
+          extract: (data, options) => turnoverDistribution(HEADS.domaine, data, options),
+          data: "prospMandat",
+          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+          options: {
+            colors: COLORS_OFFICE
+          },
+          chartType: CHART_TYPE.PIE
+        },
+        CADomaineAncien: {
+          name: "CA par domaine (Mandat précédent)",
+          extract: (data, options) => turnoverDistribution(HEADS.domaine, data, options),
           data: "prospPrec",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
           options: {
