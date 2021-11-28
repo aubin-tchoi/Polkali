@@ -402,6 +402,32 @@
           },
           chartType: CHART_TYPE.COLUMN
         },
+        etudesFiliereActuel: {
+          name: "Performance par filiere (Actuel)",
+          extract: (data, options) => performance(HEADS.filiere, data, options),
+          data: "prospMandat",
+          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+          options: {
+            colors: COLORS_DUO,
+          series: {0:{labelInLegend: "Nombre d'études"},
+                    1:{labelInLegend: "CA en milliers d'euros"}
+            },
+          },
+          chartType: CHART_TYPE.COLUMN
+        },
+        etudesFiliereAncien: {
+          name: "Performance par filiere (Ancien)",
+          extract: (data, options) => performance(HEADS.filiere, data, options),
+          data: "prospPrec",
+          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+          options: {
+            colors: COLORS_DUO,
+          series: {0:{labelInLegend: "Nombre d'études"},
+                    1:{labelInLegend: "CA en milliers d'euros"}
+            },
+          },
+          chartType: CHART_TYPE.COLUMN
+        },
         CASecteurActuel: {
           name: "Proportion du CA par secteur (Notre Mandat)",
           extract: (data, options) => turnoverDistribution(HEADS.secteur, data, options),
@@ -424,7 +450,7 @@
         },
         CADomaineActuel: {
           name: "CA par domaine (Notre Mandat)",
-          extract: (data, options) => turnoverDistribution(HEADS.domaine, data, options),
+          extract: (data, options) => turnoverDistribution(HEADS.filiere, data, options),
           data: "prospMandat",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
           options: {
@@ -434,7 +460,7 @@
         },
         CADomaineAncien: {
           name: "CA par domaine (Mandat précédent)",
-          extract: (data, options) => turnoverDistribution(HEADS.domaine, data, options),
+          extract: (data, options) => turnoverDistribution(HEADS.filiere, data, options),
           data: "prospPrec",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
           options: {

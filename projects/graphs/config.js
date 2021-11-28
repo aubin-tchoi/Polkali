@@ -117,7 +117,8 @@ const HEADS = Object.freeze({
     domaine: "Domaine de compétence",
     secteur: "Secteur du Client",
     typeEntreprise: "Type d'entreprise",
-    prestation: "Prestation"
+    prestation: "Prestation",
+    filiere: "Filière"
 }),
     /**  
      * Différents états possible dans la prospection (dans le suivi de la prospection).
