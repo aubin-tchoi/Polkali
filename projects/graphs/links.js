@@ -304,11 +304,6 @@
         },
       }
     },
-    competitiveness: {
-      id: "",
-      slideTitle: "Compétitivité face aux autres JE",
-      KPIs: {}
-    },
     contactType: {
       id: "",
       slideTitle: "Performance sur différents types de contact",
@@ -381,10 +376,23 @@
       id: "",
       slideTitle: "Performance sur différents secteurs d'activité du Client",
       KPIs: {
-        etudesSecteur: {
-          name: "Performance par secteur",
+        etudesSecteurActuel: {
+          name: "Performance par secteur (Actuel)",
           extract: (data, options) => performance(HEADS.secteur, data, options),
-          data: "prosp",
+          data: "prospMandat",
+          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+          options: {
+            colors: COLORS_DUO,
+          series: {0:{labelInLegend: "Nombre d'études"},
+                    1:{labelInLegend: "CA en milliers d'euros"}
+            },
+          },
+          chartType: CHART_TYPE.COLUMN
+        },
+        etudesSecteurAncien: {
+          name: "Performance par secteur (Ancien)",
+          extract: (data, options) => performance(HEADS.secteur, data, options),
+          data: "prospPrec",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
           options: {
             colors: COLORS_DUO,
@@ -414,7 +422,7 @@
           },
           chartType: CHART_TYPE.PIE
         },
-        CADomainexdActuel: {
+        CADomaineActuel: {
           name: "CA par domaine (Notre Mandat)",
           extract: (data, options) => turnoverDistribution(HEADS.domaine, data, options),
           data: "prospMandat",
@@ -435,70 +443,5 @@
           chartType: CHART_TYPE.PIE
         }
       }
-    },
-    sizeComparison: {
-      id: "",
-      slideTitle: "Performance sur différentes tailles d'étude",
-      KPIs: {
-        perfPrix: {
-          name: "Nombre d'études par tranche de prix (en €)",
-          extract: priceRange,
-          data: "etude",
-          filter: row => row[HEADS.prix] != "" && !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])),
-          options: {
-            colors: [COLORS.burgundy],
-            lowerBound: 500,
-            higherBound: 4500,
-            nbrRanges: 8
-          },
-          chartType: CHART_TYPE.COLUMN
-        }//,
-        //perfNombreJEH: {
-        //  name: "Nombre d'études par nombre de JEHs",
-        //  extract: (data, options) => numberOfMissions(HEADS.JEH, data, options),
-        //  data: "etude",
-        //  filter: row => row[HEADS.JEH] != "",
-        //  options: {
-        //    colors: [COLORS.burgundy]
-        //  },
-        //  chartType: CHART_TYPE.COLUMN
-        //},
-        //perfDureeEtude: {
-        //  name: "Nombre d'études par durée d'étude (en nombre de semaines)",
-        //  extract: (data, options) => numberOfMissions(HEADS.durée, data, options),
-        //  data: "etude",
-        //  filter: row => row[HEADS.durée] != "",
-        //  options: {
-        //    colors: [COLORS.burgundy]
-        //  },
-        //  chartType: CHART_TYPE.COLUMN
-        //}
-      }
-    },
-    contributions: {
-      id: "",
-      slideTitle: "Mesure des différentes contributions au CA",
-      KPIs: {
-        CAAlumni: {
-          name: "Proportion du CA due aux alumni",
-          extract: (data, options) => turnoverDistributionBinary(HEADS.alumni, data, options),
-          data: "etude",
-          filter: row => !(Object.values(ETAT_ETUDE_BIS).includes(row[HEADS.état])),
-          options: {
-            colors: [COLORS.pine, COLORS.silverPink]
-          },
-          chartType: CHART_TYPE.PIE
-        },
-        CAProsp: {
-          name: "Proportion du CA venant de la prospection",
-          extract: prospectionTurnover,
-          data: "prosp",
-          filter: row => row[HEADS.état] == ETAT_PROSP.etude,
-          options: {
-            colors: [COLORS.pine, COLORS.silverPink]
-          },
-          chartType: CHART_TYPE.PIE
-        }
-      }
-    },
+    }
   };
