@@ -251,10 +251,19 @@
       id: "",
       slideTitle: "Typologie des contacts",
       KPIs: {
-        repartitionDesContactsParType: {
-          name: "Type de contact",
+        repartitionDesContactsParTypeActuel: {
+          name: "Type de contact (Actuel)",
           extract: (data, options) => totalDistribution(HEADS.typeContact, data, options),
-          data: "prosp",
+          data: "prospMandat",
+          options: {
+            colors: COLORS_OFFICE
+          },
+          chartType: CHART_TYPE.PIE
+        },
+        repartitionDesContactsParTypeAncien: {
+          name: "Type de contact (Ancien)",
+          extract: (data, options) => totalDistribution(HEADS.typeContact, data, options),
+          data: "prospPrec",
           options: {
             colors: COLORS_OFFICE
           },
