@@ -122,6 +122,24 @@
         filter: row => (row[HEADS.premierContact] != "")
       }
     },
+    prospPrec: {
+      prosp2021: {
+        id: "1lJhJuZxUt_8_mVLXe5tazXPrb2Z3wr0M49rho974sNQ",
+        sheetName: "Suivi",
+        pos: {
+          data: {
+            x: 4,
+            y: 2
+          },
+          header: {
+            x: 1,
+            y: 2
+          },
+          trustColumn: 4
+        },
+        filter: row => (row[HEADS.premierContact] != "")
+      }
+    },
     infoSite: {
       devisSite: {
         id: "1gYRsgfM86D0dw1lsrbEhsIIUxBo-o0bA93vEBHyfCHM",
@@ -289,10 +307,20 @@
           }},
           chartType: CHART_TYPE.COLUMN
         },
-        CATypeContact: {
-          name: "Proportion du CA venant de chaque type de contact",
+        CATypeContactActuel: {
+          name: "CA par type de contact (Notre Mandat)",
           extract: (data, options) => turnoverDistribution(HEADS.typeContact, data, options),
-          data: "prosp",
+          data: "prospMandat",
+          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.typeContact] != "",
+          options: {
+            colors: COLORS_OFFICE
+          },
+          chartType: CHART_TYPE.PIE
+        },
+        CATypeContactAncien: {
+          name: "CA par type de contact (Ancien Mandat)",
+          extract: (data, options) => turnoverDistribution(HEADS.typeContact, data, options),
+          data: "prospPrec",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.typeContact] != "",
           options: {
             colors: COLORS_OFFICE
@@ -347,10 +375,20 @@
           },
           chartType: CHART_TYPE.COLUMN
         },
-        CASecteur: {
-          name: "Proportion du CA venant de chaque secteur",
+        CASecteurActuel: {
+          name: "Proportion du CA par secteur (Notre Mandat)",
           extract: (data, options) => turnoverDistribution(HEADS.secteur, data, options),
-          data: "prosp",
+          data: "prospMandat",
+          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+          options: {
+            colors: COLORS_OFFICE
+          },
+          chartType: CHART_TYPE.PIE
+        },
+        CASecteurAncien: {
+          name: "Proportion du CA par secteur (Mandat précédent)",
+          extract: (data, options) => turnoverDistribution(HEADS.secteur, data, options),
+          data: "prospPrec",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
           options: {
             colors: COLORS_OFFICE
