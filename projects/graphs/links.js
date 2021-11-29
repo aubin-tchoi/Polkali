@@ -183,7 +183,7 @@
    */
   CATEGORIES = {
     summary: {
-      id: "",
+      id: "1RJj1CgGHDy7O7lGdobqlNU9FmZK5aMoFU45yP3ZJRwQ",
       slideTitle: "Bilan",
       KPIs: {
         contacts: {
@@ -248,7 +248,7 @@
       }
     },
     contactTypology: {
-      id: "",
+      id: "1BRUkav3iEDMtR7p_Gc9KQ1rHXNyavNnXDvAyyDYg4B8",
       slideTitle: "Typologie des contacts",
       KPIs: {
         repartitionDesContactsParTypeActuel: {
@@ -302,12 +302,6 @@
           },
           chartType: CHART_TYPE.PIE
         },
-      }
-    },
-    contactType: {
-      id: "",
-      slideTitle: "Performance sur différents types de contact",
-      KPIs: {
         etudeTypeContact: {
           name: "Performance par type de contact",
           extract: (data, options) => performanceByContact(HEADS.typeContact, data, options),
@@ -344,7 +338,7 @@
       }
     },
     companyType: {
-      id: "",
+      id: "1c0jFZz2z4naCrGzmabfo6nsMDgtKWsAGB9jaA9udxVs",
       slideTitle: "Performance sur différents types d'entreprises",
       KPIs: {
         etudesTypeEntreprise: {
@@ -373,7 +367,7 @@
       }
     },
     sector: {
-      id: "",
+      id: "1V-WipYoxxPouwbQ2BxGhwvTidAJddtAXAA8Xw5Fp0jE",
       slideTitle: "Performance sur différents secteurs d'activité du Client",
       KPIs: {
         etudesSecteurActuel: {

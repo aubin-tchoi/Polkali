@@ -1,5 +1,5 @@
-function rewrite(dataOut, sheetName) {
-    const sheet = SpreadsheetApp.openById(IDSSKPI).getSheetByName(sheetName);
+function rewrite(dataOut, sheetName, spreadsheetId) {
+    const sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName(sheetName);
     let newData = [];
     dataOut.data.forEach(obj => newData.push(Object.values(obj)));
     sheet.getRange(1, 1, newData.length, newData[0].length).setValues(newData);
@@ -17,7 +17,7 @@ function actu() {
                 // Loop on each KPI within this category.
                 Object.values(category[1].KPIs).forEach(
                     KPI => {
-                        rewrite(KPI.extract(data[KPI.data].filter(KPI.filter || (_ => true)), KPI.options), KPI.name);
+                        rewrite(KPI.extract(data[KPI.data].filter(KPI.filter || (_ => true)), KPI.options), KPI.name,category.id);
                     })
             }
         });
