@@ -183,7 +183,7 @@
    */
   CATEGORIES = {
     summary: {
-      id: "1RJj1CgGHDy7O7lGdobqlNU9FmZK5aMoFU45yP3ZJRwQ",
+      id: "16EkXSEQPI7LRb45aSbjZAZFPfP4pmx0__4leyLHsDIc",
       slideTitle: "Bilan",
       KPIs: {
         contacts: {

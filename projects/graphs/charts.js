@@ -27,8 +27,8 @@ function createChart(chartType, data, title, options = {}) {
     }
 }
 
-function updateOrCreateChart(kpi,update) {
-    let sheet = SpreadsheetApp.openById(IDSSKPI).getSheetByName(kpi.name);
+function updateOrCreateChart(kpi,update,spreadsheetId) {
+    let sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName(kpi.name);
     let chart = sheet.newChart();
     if (update){
       chart = sheet.getCharts()[0].modify();
