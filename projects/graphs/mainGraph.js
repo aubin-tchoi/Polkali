@@ -17,7 +17,7 @@ function actu() {
                 // Loop on each KPI within this category.
                 Object.values(category[1].KPIs).forEach(
                     KPI => {
-                        rewrite(KPI.extract(data[KPI.data].filter(KPI.filter || (_ => true)), KPI.options), KPI.name,category.id);
+                        rewrite(KPI.extract(data[KPI.data].filter(KPI.filter || (_ => true)), KPI.options), KPI.name,category[1].id);
                     })
             }
         });
