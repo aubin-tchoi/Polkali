@@ -1,4 +1,4 @@
-function rewrite(dataOut, sheetName, spreadsheetId) {
+function rewrite(dataOut, sheetName, spreadsheetId, ) {
     const sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName(sheetName);
     let newData = [];
     dataOut.data.forEach(obj => newData.push(Object.values(obj)));
@@ -17,7 +17,12 @@ function actu() {
                 // Loop on each KPI within this category.
                 Object.values(category[1].KPIs).forEach(
                     KPI => {
-                        rewrite(KPI.extract(data[KPI.data].filter(KPI.filter || (_ => true)), KPI.options), KPI.name,category[1].id);
+                      if (typeof KPI.dataHelp === "undefined") {
+                        rewrite(KPI.extract(data[KPI.data].filter(KPI.filter || (_ => true)), KPI.options), KPI.name,category[1].id);}
+                      else{
+                        rewrite(KPI.extract(data[KPI.data].filter(KPI.filter || (_ => true)), KPI.options, data[KPI.dataHelp]), KPI.name,category[1].id);
+                      }
+                        updateOrCreateChart(KPI,true,category[1].id);
                     })
             }
         });
@@ -28,7 +33,4 @@ function onOpen(){
     ui.createMenu("Actu")
     .addItem("Actualiser", "actu")
     .addToUi();
-}
-
-function test(){
 }

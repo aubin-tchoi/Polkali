@@ -36,6 +36,27 @@ function manuallyGetRowNumber(sheet, start, trustColumn) {
     }
 }
 
+/**
+ * Fonction qui pour chaque objet (étude) complète les informations par le tableau dataHelp
+ * @param {String} key Nom de la colonne qui reconnait les études entre elles
+ * @param {Array} data Données principales
+ * @param {Array} dataHelp Données supplémentaires
+ * @returns {Array} Tableau d'entrée amélioré
+ */
+ function fusion(key,data,dataAux,filter) {
+   let newData = [];
+
+   data.filter(etude => filter(etude)).forEach(function(etude) {
+     let newObject = {};
+     Object.entries(etude).forEach(property => newObject[property[0]] = property[1]);
+     try{Object.entries(dataAux.filter(row => (etude[key] == row[key]))[0])
+     .forEach(property => {if(property[1] != ""){
+         newObject[property[0]] = property[1]};});}
+      catch(e){};
+      newData.push(newObject)});
+
+   return newData;
+ }
 
 // ----- Computation tools -----
 

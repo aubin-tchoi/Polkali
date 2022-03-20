@@ -25,11 +25,11 @@
         pos: {
           data: {
             x: 5,
-            y: 3
+            y: 1
           },
           header: {
             x: 1,
-            y: 3
+            y: 1
           },
           trustColumn: 3
         },
@@ -41,11 +41,11 @@
         pos: {
           data: {
             x: 5,
-            y: 3
+            y: 1
           },
           header: {
             x: 1,
-            y: 3
+            y: 1
           },
           trustColumn: 3
         },
@@ -59,11 +59,11 @@
         pos: {
           data: {
             x: 5,
-            y: 3
+            y: 1
           },
           header: {
             x: 1,
-            y: 3
+            y: 1
           },
           trustColumn: 3
         },
@@ -77,11 +77,11 @@
         pos: {
           data: {
             x: 4,
-            y: 2
+            y: 1
           },
           header: {
             x: 1,
-            y: 2
+            y: 1
           },
           trustColumn: 4
         },
@@ -93,11 +93,11 @@
         pos: {
           data: {
             x: 4,
-            y: 2
+            y: 1
           },
           header: {
             x: 1,
-            y: 2
+            y: 1
           },
           trustColumn: 4
         },
@@ -111,11 +111,11 @@
         pos: {
           data: {
             x: 4,
-            y: 2
+            y: 1
           },
           header: {
             x: 1,
-            y: 2
+            y: 1
           },
           trustColumn: 4
         },
@@ -129,11 +129,11 @@
         pos: {
           data: {
             x: 4,
-            y: 2
+            y: 1
           },
           header: {
             x: 1,
-            y: 2
+            y: 1
           },
           trustColumn: 4
         },
@@ -203,15 +203,17 @@
           name: "Taux de conversion total",
           extract: conversionTotal,
           data: "prospMandat",
+          dataHelp: "etudeMandat",
           options: {
             colors: COLORS_OFFICE
           },
           chartType: CHART_TYPE.COLUMN
         },
         conversionMensuel: {
-          name: "Taux de conversion global",
+          name: "Taux de conversion de devis global",
           extract: conversionRateOverTime,
           data: "prosp",
+          dataHelp: "etude",
           options: {
             colors: [COLORS.burgundy]
           },
@@ -236,7 +238,7 @@
           chartType : CHART_TYPE.COLUMN
         },
         conversionEtapes: {
-          name: "Taux de conversion sur chaque étape",
+          name: "Taux de conversion sur chaque étape 20-22",
           extract: conversionRateByType,
           data: "prosp",
           options: {
@@ -304,8 +306,9 @@
         },
         etudeTypeContact: {
           name: "Performance par type de contact",
-          extract: (data, options) => performanceByContact(HEADS.typeContact, data, options),
+          extract: (data, options, dataAux) => performanceByContact(HEADS.typeContact, data, options, dataAux),
           data: "prosp",
+          dataHelp: "etude",
           filter: row => row[HEADS.typeContact] != "",
           options: {
             colors: COLORS_OFFICE,
@@ -360,7 +363,10 @@
           data: "prosp",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
           options: {
-            colors: COLORS_OFFICE
+            colors: COLORS_OFFICE,
+            is3D: true,
+            enableInteractivity: true,
+            legends: "Proportion du CA venant de chaque type d'entreprise"
           },
           chartType: CHART_TYPE.PIE
         }

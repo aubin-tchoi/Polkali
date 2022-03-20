@@ -10,7 +10,7 @@
  * @param {Object} options - Options modifiant les propriétés du graphe (dimensions, couleurs, ...).
  * @returns {Chart} - Graphe complet.
  */
-function createChart(chartType, data, title, options = {}) {
+ function createChart(chartType, data, title, options = {}) {
     Logger.log(`Creating chart ${title} of type ${Object.keys(CHART_TYPE)[Object.values(CHART_TYPE).indexOf(chartType)]} with ${!options ? "no option" : `options : ${Object.entries(options)}`}.`);
     let dataTable = arrayToDataTable(data);
 
@@ -65,6 +65,10 @@ function updateOrCreateChart(kpi,update,spreadsheetId) {
       chart.setOption('series', kpi.options.series)
     }catch(e){Logger.log(e)
     };
+    try{
+      chart.setOption('is3D', kpi.options.is3D)
+    }catch(e){Logger.log(e)
+    };
     if (update){
     sheet.updateChart(chart.build());
     }else{
@@ -72,7 +76,7 @@ function updateOrCreateChart(kpi,update,spreadsheetId) {
     }
 }
 
-/** 
+/**
  * Ajouter des options à un chartBuilder (appelée par createChart).
  * @param {ChartBuilder} chartBuilder - ChartBuilder utilisé.
  * @param {string} title - Titre du graphe.

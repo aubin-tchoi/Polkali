@@ -120,12 +120,26 @@ const HEADS = Object.freeze({
     prestation: "Prestation",
     filiere: "Filière"
 }),
-    /**  
+    /**
      * Différents états possible dans la prospection (dans le suivi de la prospection).
      * @constant
      * @readonly
      */
     ETAT_PROSP = Object.freeze({
+        rdv: "Premier RDV réalisé",
+        ssSuite: "Sans suite",
+        devis: "Devis rédigé et envoyé",
+        devisRefus: "Sans suite après Devis",
+        relance: "A relancer",
+        negoc: "En négociation",
+        etude: "Etude obtenue"
+    }),
+    /**
+     * Différents états possible dans la prospection (réussie)(dans le suivi de la prospection).
+     * @constant
+     * @readonly
+     */
+    ETAT_PROSP_TER = Object.freeze({
         rdv: "Premier RDV réalisé",
         devis: "Devis rédigé et envoyé",
         negoc: "En négociation",
@@ -151,9 +165,7 @@ const HEADS = Object.freeze({
         classique: "Prospection classique ",
         recommandé: "Recommandé ",
         ao: "Appel d'offre",
-        site: "Site",
-        redirectionQuali: "Redirection suite à la prospection quali ",
-        redirectionClassique: "Redirection suite à la prospection classique "
+        site: "Site"
     }),
     /** 
      * Différents états possible d'une étude (dans le suivi des études).
@@ -175,7 +187,7 @@ const HEADS = Object.freeze({
      * @constant
      * @readonly
      */
-    ETAT_ETUDE_BIS = Object.freeze({
+    ETAT_ETUDE_NON_ABOUTIE = Object.freeze({
         enAttente: "En attente",
         devisAccepte: "Devis accepté",
         sanSuite: "Sans suite",
@@ -184,17 +196,14 @@ const HEADS = Object.freeze({
         redac: "En rédaction"
     }),
     /** 
-    * Différents états possible d'une étude dont le devis a été envoyé.
+    * Différents états possible d'une étude signée.
     * @constant
     * @readonly
     */
-    ETAT_ETUDE_TER = Object.freeze({
-        enAttente: "En attente",
-        devisAccepte: "Devis accepté",
+    ETAT_ETUDE_SIGNEE = Object.freeze({
         enCours: "En cours",
         terminée: "Terminée",
-        cloturée: "Clôturée",
-        sanSuite: "Sans suite"
+        cloturée: "Clôturée"
     }),
     /** 
      * Questions présentes dans le questionnaire satisfaction des élèves.
@@ -213,7 +222,6 @@ const HEADS = Object.freeze({
     * @readonly
     */
     LISTE_QUESTION_RATING_QS_C = Object.freeze([
-        
     ]);
 
 /* ----- Paramètres portant sur les mois ----- */
@@ -223,22 +231,6 @@ const HEADS = Object.freeze({
  * @readonly
  */
  const MONTH_LIST = Object.freeze([{
-    month: 6,
-    year: 2020
-},
-{
-    month: 7,
-    year: 2020
-},
-{
-    month: 8,
-    year: 2020
-},
-{
-    month: 9,
-    year: 2020
-},
-{
     month: 10,
     year: 2020
 },
@@ -285,6 +277,22 @@ const HEADS = Object.freeze({
 {
     month: 9,
     year: 2021
+},
+{
+    month: 10,
+    year: 2021
+},
+{
+    month: 11,
+    year: 2021
+},
+{
+    month: 0,
+    year: 2022
+},
+{
+    month: 1,
+    year: 2022
 }
 ]),
     /**
