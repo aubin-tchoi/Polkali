@@ -2,7 +2,7 @@
 
 /** Hardcoded values of IDs and access parameters. */
 
-/**  
+/**
  * IDs et noms de sheets.
  * @constant
  * @readonly
@@ -12,7 +12,7 @@
   slidesTemplate: "15WdicqHVF8LtOPrlwdM5iD1_qKh7YPaM15hrGGVbVzU",
   bddProspectionId: "1dKE_5-Yoi_ACJeq0R7nDY0U1Vz3ccvQo",
 }),
-  /**  
+  /**
    * IDs et noms de sheet contenant des données.
    * @constant
    * @readonly
@@ -157,26 +157,109 @@
         },
         filter: _ => true
       }
+    },
+    BDD: {
+      Banque: {
+        id: "1SiZy8T7ZyvWvq6KD2cujuWTtHKWMnrEUpx9kGMtL-Dw",
+        sheetName: "BDD",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 10
+        },
+        filter: _ => true
+      },
+      Industrie: {
+        id: "1jP3UMeBRBGXaFbVxA8NuGu7o1a4zm-xLpe-G9j0QuYE",
+        sheetName: "BDD",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 10
+        },
+        filter: _ => true
+      },
+      Conseil: {
+        id: "1LeAwWXSPEYQu-m24mdjyBjvs7DnecHDatpIyJugB43w",
+        sheetName: "BDD",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 10
+        },
+        filter: row => row["Finance et conseil"] < 2
+      },
+      BTP: {
+        id: "1wbnP5qAHuQBizKMOXYsoXjQTuXtivpoNZXevBGaBDLU",
+        sheetName: "BDD",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 10
+        },
+        filter: _ => true
+      },
+      Ingenierie: {
+        id: "1fbvkVGqTUohNY0mbtCXNUEBXL-X2qSPz03EKzfXqHH0",
+        sheetName: "BDD",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 10
+        },
+        filter: _ => true
+      },
+      VET: {
+        id: "1AGNmN3qJeS4M2SwKFgPiad6L-SesxJpzc2ANROO71jU",
+        sheetName: "BDD",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 10
+        },
+        filter: _ => true
+      }
     }
   }),
 
-  /* ----- Paramètres d'accès bdd ----- */
-  /**  
-   * IDs et noms des BDD de prospection.
-   * @constant
-   * @readonly
-   */
-  BDDPROSP = Object.freeze({
-    bddFC023Id: "1LeAwWXSPEYQu-m24mdjyBjvs7DnecHDatpIyJugB43w",
-    bddT023Id: "1AGNmN3qJeS4M2SwKFgPiad6L-SesxJpzc2ANROO71jU",
-    bddIng023Id: "1fbvkVGqTUohNY0mbtCXNUEBXL-X2qSPz03EKzfXqHH0",
-    bddInd023: "1jP3UMeBRBGXaFbVxA8NuGu7o1a4zm-xLpe-G9j0QuYE",
-    bddBTP023: "1wbnP5qAHuQBizKMOXYsoXjQTuXtivpoNZXevBGaBDLU",
-    bddBA023: "1SiZy8T7ZyvWvq6KD2cujuWTtHKWMnrEUpx9kGMtL-Dw"
-  }),
-
   /* ----- Liste des KPIs groupés par catégorie ----- */
-  /**  
+  /**
    * Liste des KPIs.
    * @constant
    * @readonly
@@ -247,6 +330,30 @@
           },
           chartType: CHART_TYPE.COLUMN
         },
+      }
+    },
+    prospection: {
+      id: "1GIfUFsYQ4IZOx8etbQA2lzAgGErBmor_Ve9nS9sd_rY",
+      slideTitle: "Nombre de prospection dans le mandat",
+      KPIs: {
+        nbMailSecteur: {
+          name: "Mail par secteur",
+          extract: (data,options) => prospectionParSecteur(data,options),
+          data: BDD,
+          options: {
+            colors: COLORS_OFFICE
+          },
+          chartType: CHART_TYPE.PIE
+        },
+        nbMailTotal: {
+          name: 'Mail Total',
+          extract: (data,options) => prospectionTotal(data,options),
+          data: BDD,
+          options: {
+            colors: COLORS_OFFICE
+          },
+          chartType: CHART_TYPE.PIE
+        }
       }
     },
     contactTypology: {

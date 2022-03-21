@@ -195,7 +195,7 @@ const HEADS = Object.freeze({
         negoc: "En négociation",
         redac: "En rédaction"
     }),
-    /** 
+    /**
     * Différents états possible d'une étude signée.
     * @constant
     * @readonly
@@ -205,7 +205,20 @@ const HEADS = Object.freeze({
         terminée: "Terminée",
         cloturée: "Clôturée"
     }),
-    /** 
+    /**
+     * Différents types de BDD.
+     *@constant
+     *@readonly
+     */
+    TYPEBDD = Object.freeze({
+        VET: "VET",
+        Ing: "Ingénierie",
+        Ind: "Industrie",
+        BA: "Banque",
+        FC: "Conseil",
+        BTP: "BTP"
+    })
+    /**
      * Questions présentes dans le questionnaire satisfaction des élèves.
      * @constant
      * @readonly
@@ -215,8 +228,8 @@ const HEADS = Object.freeze({
         "Les échanges avec le suiveur étaient-ils de qualité ?",
         "La charge de travail était-elle celle à laquelle tu t’attendais ?",
         "Note la clarté des PEP recrute"
-    ]) 
-    /** 
+    ])
+    /**
     * Questions présentes dans le questionnaire satisfaction des Clients.
     * @constant
     * @readonly

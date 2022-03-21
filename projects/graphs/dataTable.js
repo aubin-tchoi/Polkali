@@ -338,3 +338,41 @@ function moyenneRate(dataIn,options,liste){
         options: options
     };
 }
+
+function prospectionParSecteur(dataIn, options){
+    let dataOut = [];
+    total = dataIn.filter(row => (row["Mail normal"] == 'quali' || row["Mail normal"] == 'VRAI')).length
+    TYPEBDD.forEach(type => dataOut.push({
+        [key]: type,
+        "rate" : dataIn.filter(row => row["type"] == type && (row["Mail normal"] == 'quali' || row["Mail normal"] == 'VRAI')).length/total
+    }))
+    return {
+        data: dataOut,
+        options: options
+    }
+}
+
+function prospectionTotal(dataIn,options){
+    let dataOut = [];
+    total = dataIn.filter(row => row["Mail"] != '').length
+    nbQuali = dataIn.filter(row => row["Mail normal"] == 'quali').length
+    nbQuanti = dataIn.filter(row => row["Mail normal"] == 'VRAI').length
+    autre = total - nbQuali - nbQuanti
+    dataOut.push({
+        [key]: quali,
+        "rate" : nbQuali/total
+    });
+    dataOut.push({
+        [key]: quali,
+        "rate" : nbQuanti/total
+    });
+    dataOut.push({
+        [key]: quali,
+        "rate" : autre/total
+    });
+
+    return {
+        data: dataOut,
+        options: options
+    }
+}
