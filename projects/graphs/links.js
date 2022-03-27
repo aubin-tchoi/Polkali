@@ -158,8 +158,8 @@
         filter: _ => true
       }
     },
-    BDD: {
-      Banque: {
+    bdd: {
+      banque: {
         id: "1SiZy8T7ZyvWvq6KD2cujuWTtHKWMnrEUpx9kGMtL-Dw",
         sheetName: "BDD",
         pos: {
@@ -171,11 +171,11 @@
             x: 1,
             y: 1
           },
-          trustColumn: 10
+          trustColumn: 2
         },
         filter: _ => true
       },
-      Industrie: {
+      industrie: {
         id: "1jP3UMeBRBGXaFbVxA8NuGu7o1a4zm-xLpe-G9j0QuYE",
         sheetName: "BDD",
         pos: {
@@ -187,11 +187,11 @@
             x: 1,
             y: 1
           },
-          trustColumn: 10
+          trustColumn: 2
         },
         filter: _ => true
       },
-      Conseil: {
+      conseil: {
         id: "1LeAwWXSPEYQu-m24mdjyBjvs7DnecHDatpIyJugB43w",
         sheetName: "BDD",
         pos: {
@@ -203,11 +203,11 @@
             x: 1,
             y: 1
           },
-          trustColumn: 10
+          trustColumn: 2
         },
         filter: row => row["Finance et conseil"] < 2
       },
-      BTP: {
+      btp: {
         id: "1wbnP5qAHuQBizKMOXYsoXjQTuXtivpoNZXevBGaBDLU",
         sheetName: "BDD",
         pos: {
@@ -219,11 +219,11 @@
             x: 1,
             y: 1
           },
-          trustColumn: 10
+          trustColumn: 2
         },
         filter: _ => true
       },
-      Ingenierie: {
+      ingenierie: {
         id: "1fbvkVGqTUohNY0mbtCXNUEBXL-X2qSPz03EKzfXqHH0",
         sheetName: "BDD",
         pos: {
@@ -235,11 +235,11 @@
             x: 1,
             y: 1
           },
-          trustColumn: 10
+          trustColumn: 2
         },
         filter: _ => true
       },
-      VET: {
+      vet: {
         id: "1AGNmN3qJeS4M2SwKFgPiad6L-SesxJpzc2ANROO71jU",
         sheetName: "BDD",
         pos: {
@@ -251,7 +251,79 @@
             x: 1,
             y: 1
           },
-          trustColumn: 10
+          trustColumn: 2
+        },
+        filter: _ => true
+      }
+    },
+    questionnaireClients: {
+      questionnaire:{
+        id: "198pDrAWgrXHoho5mzl0wix178UraCBrOW-iOXKIy9vA",
+        sheetName: "Réponses au formulaire 1",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 1
+        },
+        filter: _ => true
+      }
+    },
+    questionnaireEtudiants: {
+      questionnaire:{
+        id: "1bVdfG-KBsuZTJ486Kh00nqOj9InilGKT_T_vkAoINsU",
+        sheetName: "Feuille 1",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 1
+        },
+        filter: _ => true
+      }
+    },
+    communicationFacebook: {
+      communication: {
+        id: "1bVdfG-KBsuZTJ486Kh00nqOj9InilGKT_T_vkAoINsU",
+        sheetName: "Facebook",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 1
+        },
+        filter: _ => true
+      }
+    },
+    communicationLinkedIn: {
+      communication: {
+        id: "1bVdfG-KBsuZTJ486Kh00nqOj9InilGKT_T_vkAoINsU",
+        sheetName: "LinkedIn",
+        pos: {
+          data: {
+            x: 2,
+            y: 1
+          },
+          header: {
+            x: 1,
+            y: 1
+          },
+          trustColumn: 1
         },
         filter: _ => true
       }
@@ -278,8 +350,11 @@
             series: {0:{labelInLegend: "Premier RDV réalisé"},
                     1:{labelInLegend: "Devis rédigé et envoyé"},
                     2:{labelInLegend: "En négociation"},
-                    3:{labelInLegend: "Etude obtenue"}
-          }},
+                    3:{labelInLegend: "Etude obtenue"},
+            },
+            htitle : "Date du premier contact (Mois Année)",
+            vtitle : "Nombre d'études ayant passé chaque stade"
+          },
           chartType: CHART_TYPE.COLUMN
         },
         totalConversionRate: {
@@ -288,7 +363,9 @@
           data: "prospMandat",
           dataHelp: "etudeMandat",
           options: {
-            colors: COLORS_OFFICE
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : "Pourcentage de conversion (%)"
           },
           chartType: CHART_TYPE.COLUMN
         },
@@ -298,7 +375,9 @@
           data: "prosp",
           dataHelp: "etude",
           options: {
-            colors: [COLORS.burgundy]
+            colors: [COLORS.burgundy],
+            htitle : "Date du premier contact (Mois Année)",
+            vtitle : "Taux de conversion (%)"
           },
           chartType: CHART_TYPE.COLUMN
         },
@@ -307,7 +386,9 @@
           extract: contactBySite,
           data: "infoSite",
           options: {
-            colors: [COLORS.pine, COLORS.silverPink]
+            colors: COLORS.silverPink,
+            htitle : "Date du contact (Mois Année)",
+            vtitle : "Nombre de demande de contact faites sur le site"
           },
           chartType: CHART_TYPE.COLUMN
         },
@@ -316,8 +397,10 @@
           extract: keyNumbers,
           data : "etudeMandat",
           options: {
-            colors : [COLORS.burgundy]
-          },
+            colors : COLORS.burgundy,
+            htitle : "",
+            vtitle : ""
+            },
           chartType : CHART_TYPE.COLUMN
         },
         conversionEtapes: {
@@ -326,6 +409,8 @@
           data: "prosp",
           options: {
             colors: [COLORS.burgundy],
+            htitle : "",
+            vtitle : "Pourcentage de conversion (%)",
             percent: true
           },
           chartType: CHART_TYPE.COLUMN
@@ -339,18 +424,123 @@
         nbMailSecteur: {
           name: "Mail par secteur",
           extract: (data,options) => prospectionParSecteur(data,options),
-          data: BDD,
+          data: "bdd",
           options: {
-            colors: COLORS_OFFICE
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
           },
           chartType: CHART_TYPE.PIE
         },
         nbMailTotal: {
-          name: 'Mail Total',
-          extract: (data,options) => prospectionTotal(data,options),
-          data: BDD,
+          name: 'Nb Mail Total',
+          extract: (data,options) => prospectionTotalNumber(data,options),
+          data: "bdd",
           options: {
-            colors: COLORS_OFFICE
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
+          },
+          chartType: CHART_TYPE.PIE
+        },
+      }
+    },
+    com: {
+      id: "1xRghUQsXRLP_kBYqYCT9yGJoU_yzDzh-8AtuXOMtSYM",
+      slideTitle: 'Point sur la com',
+      KPIs: {
+        comFacebook: {
+          name: "Com Facebook",
+          extract: (data,options) => suiviCom(data,options),
+          filter: row => row["Message important"] == true,
+          data: "communicationFacebook",
+          options: {
+            colors: COLORS_OFFICE,
+            htitle : "Date de chaque post avec le nombre de post (Mois Année)",
+            vtitle : "Nombre de réactions cummulées sur le mois"
+          },
+          chartType: CHART_TYPE.LINE
+        },
+        comLinkedIn: {
+          name: "Com LinkedIn",
+          extract: (data,options) => suiviCom(data,options),
+          data: "communicationLinkedIn",
+          options: {
+            colors: COLORS_OFFICE,
+            htitle : "Date de chaque post avec le nombre de post (Mois Année)",
+            vtitle : "Nombre de réactions cummulées sur le mois"
+          },
+          chartType: CHART_TYPE.LINE
+        }
+      }
+    },
+    questionnaire: {
+      id: "1w_twJAGcbWzMV2kGE27vmA2-Bi48KqY9ca0Gq1q67t0",
+      slideTitle: "Réponses aux questionnaires de satisfaction",
+      KPIs: {
+        satisfactionGeneraleClient: {
+          name : "Satisfaction générale Client",
+          extract: (data, options) => answerAnalyze(data,options,"Degré de satisfaction général"),
+          data: "questionnaireClients",
+          options: {
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
+          },
+          chartType: CHART_TYPE.PIE
+        },
+        satisfactionRapiditeClient: {
+          name : "Rapidité de traitement de la demande",
+          extract: (data, options) => answerAnalyze(data,options,"Êtes-vous satisfait de notre accueil et de nos réponses ? [Rapidité de traitement de la demande]"),
+          data: "questionnaireClients",
+          options: {
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
+          },
+          chartType: CHART_TYPE.PIE
+        },
+        satisfactionReactiviteClient: {
+          name : "Réactivité à vos questions",
+          extract: (data, options) => answerAnalyze(data,options,"Êtes-vous satisfait de notre accueil et de nos réponses ? [Réactivité à vos questions]"),
+          data: "questionnaireClients",
+          options: {
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
+          },
+          chartType: CHART_TYPE.PIE
+        },
+        satisfactionDevisClient: {
+          name : "Satisfaction Devis Client",
+          extract: (data, options) => answerAnalyze(data,options,"Globalement, êtes-vous satisfait de notre devis ? [Clarté et simplicité du devis]"),
+          data: "questionnaireClients",
+          options: {
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
+          },
+          chartType: CHART_TYPE.PIE
+        },
+        satisfactionZimbraEtudiant: {
+          name : "Satisfaction Zimbra",
+          extract: (data, options) => answerAnalyze(data,options,"Clarté du message de présentation de la mission"),
+          data: "questionnaireEtudiants",
+          options: {
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
+          },
+          chartType: CHART_TYPE.PIE
+        },
+        satisfactionSuiveurEtudiant: {
+          name: "Qualité suiveur",
+          extract: (data, options) => answerAnalyze(data,options,"Les échanges avec le suiveur étaient-ils de qualité ?"),
+          data: "questionnaireEtudiants",
+          options: {
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
           },
           chartType: CHART_TYPE.PIE
         }
@@ -365,16 +555,9 @@
           extract: (data, options) => totalDistribution(HEADS.typeContact, data, options),
           data: "prospMandat",
           options: {
-            colors: COLORS_OFFICE
-          },
-          chartType: CHART_TYPE.PIE
-        },
-        repartitionDesContactsParTypeAncien: {
-          name: "Type de contact (Ancien)",
-          extract: (data, options) => totalDistribution(HEADS.typeContact, data, options),
-          data: "prospPrec",
-          options: {
-            colors: COLORS_OFFICE
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
           },
           chartType: CHART_TYPE.PIE
         },
@@ -387,7 +570,9 @@
             percent: true,
             series: {0:{labelInLegend: "Nombre de contact"},
                     1:{labelInLegend: "Taux de conversion global"},
-            }
+            },
+            htitle : "Type de contact",
+            vtitle : "Nombre de contact et taux de conversion"
           },
           chartType: CHART_TYPE.COLUMN
         },
@@ -397,51 +582,69 @@
           data: "prospMandat",
           filter: row => row[HEADS.domaine] != "",
           options: {
-            colors: COLORS_OFFICE
+            colors: COLORS_OFFICE,
+            htitle : "Domaine de compétence",
+            vtitle : "Nombre de contacts reçus"
           },
           chartType: CHART_TYPE.PIE
         },
-        repartitionDesContactsParDomaineDeCompétenceAncien: {
-          name: "Contacts par domaine de compétence (Ancien)",
-          extract: (data, options) => totalDistribution(HEADS.domaine, data, options),
-          data: "prospPrec",
+        etudeDomaine:{
+          name: "Performance par domaine de compétence",
+          extract: (data, options, dataAux) => performanceByContact(HEADS.domaine, data, options, dataAux),
+          data: "prospMandat",
+          dataHelp: "etudeMandat",
           filter: row => row[HEADS.domaine] != "",
           options: {
-            colors: COLORS_OFFICE
+            colors: COLORS_OFFICE,
+            series: {0:{labelInLegend: "Nombre de devis envoyés"},
+                    1:{labelInLegend: "Nombre d'études signées"},
+                    2:{labelInLegend: "CA en milliers d'euros"}
+            },
+            htitle : "Domaine de compétence",
+            vtitle : ""
           },
-          chartType: CHART_TYPE.PIE
+          chartType: CHART_TYPE.COLUMN
         },
         etudeTypeContact: {
           name: "Performance par type de contact",
           extract: (data, options, dataAux) => performanceByContact(HEADS.typeContact, data, options, dataAux),
-          data: "prosp",
-          dataHelp: "etude",
+          data: "prospMandat",
+          dataHelp: "etudeMandat",
           filter: row => row[HEADS.typeContact] != "",
           options: {
             colors: COLORS_OFFICE,
             series: {0:{labelInLegend: "Nombre de devis envoyés"},
                     1:{labelInLegend: "Nombre d'études signées"},
                     2:{labelInLegend: "CA en milliers d'euros"}
-          }},
+            },
+            htitle : "Type de contact",
+            vtitle : ""
+          },
           chartType: CHART_TYPE.COLUMN
         },
         CATypeContactActuel: {
           name: "CA par type de contact (Notre Mandat)",
-          extract: (data, options) => turnoverDistribution(HEADS.typeContact, data, options),
+          extract: (data, options, dataAux) => turnoverDistribution2(HEADS.typeContact, data, options, dataAux),
           data: "prospMandat",
-          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.typeContact] != "",
+          dataHelp: "etudeMandat",
+          filter: row => row[HEADS.typeContact] != "",
           options: {
-            colors: COLORS_OFFICE
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
           },
           chartType: CHART_TYPE.PIE
         },
-        CATypeContactAncien: {
-          name: "CA par type de contact (Ancien Mandat)",
-          extract: (data, options) => turnoverDistribution(HEADS.typeContact, data, options),
-          data: "prospPrec",
-          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.typeContact] != "",
-          options: {
-            colors: COLORS_OFFICE
+        CADomaineCompetence: {
+          name: "CA par domaine de compétence (Notre Mandat)",
+          extract: (data, options, dataAux) => turnoverDistribution2(HEADS.domaine, data, options, dataAux),
+          data: "prospMandat",
+          dataHelp: "etudeMandat",
+          filter: row => row[HEADS.domaine] != "",
+          optons: {
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
           },
           chartType: CHART_TYPE.PIE
         }
@@ -453,14 +656,17 @@
       KPIs: {
         etudesTypeEntreprise: {
           name: "Performance par type d'entreprise",
-          extract: (data, options) => performance(HEADS.typeEntreprise, data, options),
+          extract: (data, options, dataAux) => performance(HEADS.typeEntreprise, data, options, dataAux),
           data: "prosp",
-          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+          dataHelp: "etude",
+          filter: row => row[HEADS.secteur] != "",
           options: {
             colors: COLORS_DUO,
             series: {0:{labelInLegend: "Nombre d'études"},
                     1:{labelInLegend: "CA en milliers d'euros"}
-            }
+            },
+            htitle : "",
+            vtitle : ""
           },
           chartType: CHART_TYPE.COLUMN
         },
@@ -473,7 +679,8 @@
             colors: COLORS_OFFICE,
             is3D: true,
             enableInteractivity: true,
-            legends: "Proportion du CA venant de chaque type d'entreprise"
+            htitle : "",
+            vtitle : ""
           },
           chartType: CHART_TYPE.PIE
         }
@@ -484,64 +691,49 @@
       slideTitle: "Performance sur différents secteurs d'activité du Client",
       KPIs: {
         etudesSecteurActuel: {
-          name: "Performance par secteur (Actuel)",
-          extract: (data, options) => performance(HEADS.secteur, data, options),
+          name: "Performance par secteur",
+          extract: (data, options, dataAux) => performanceByContact(HEADS.secteur, data, options, dataAux),
           data: "prospMandat",
-          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+          dataHelp: "etudeMandat",
+          filter: row => row[HEADS.secteur] != "",
           options: {
             colors: COLORS_DUO,
-          series: {0:{labelInLegend: "Nombre d'études"},
-                    1:{labelInLegend: "CA en milliers d'euros"}
+          series: {0:{labelInLegend: "Nombre de devis envoyés"},
+                    1:{labelInLegend: "Nombre d'études signées"},
+                    2:{labelInLegend: "CA en milliers d'euros"}
             },
-          },
-          chartType: CHART_TYPE.COLUMN
-        },
-        etudesSecteurAncien: {
-          name: "Performance par secteur (Ancien)",
-          extract: (data, options) => performance(HEADS.secteur, data, options),
-          data: "prospPrec",
-          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
-          options: {
-            colors: COLORS_DUO,
-          series: {0:{labelInLegend: "Nombre d'études"},
-                    1:{labelInLegend: "CA en milliers d'euros"}
-            },
+            htitle : "Secteurs d'entreprises",
+            vtitle : ""
           },
           chartType: CHART_TYPE.COLUMN
         },
         etudesFiliereActuel: {
-          name: "Performance par filiere (Actuel)",
-          extract: (data, options) => performance(HEADS.filiere, data, options),
+          name: "Performance par filiere",
+          extract: (data, options,dataAux) => performanceByContact(HEADS.filiere, data, options, dataAux),
           data: "prospMandat",
-          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
+          dataHelp: 'etudeMandat',
+          filter: row => row[HEADS.secteur] != "",
           options: {
             colors: COLORS_DUO,
-          series: {0:{labelInLegend: "Nombre d'études"},
-                    1:{labelInLegend: "CA en milliers d'euros"}
+            series: {0:{labelInLegend: "Nombre de devis envoyés"},
+                    1:{labelInLegend: "Nombre d'études signées"},
+                    2:{labelInLegend: "CA en milliers d'euros"}
             },
-          },
-          chartType: CHART_TYPE.COLUMN
-        },
-        etudesFiliereAncien: {
-          name: "Performance par filiere (Ancien)",
-          extract: (data, options) => performance(HEADS.filiere, data, options),
-          data: "prospPrec",
-          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
-          options: {
-            colors: COLORS_DUO,
-          series: {0:{labelInLegend: "Nombre d'études"},
-                    1:{labelInLegend: "CA en milliers d'euros"}
-            },
+            htitle : "Filières des Ponts",
+            vtitle : ""
           },
           chartType: CHART_TYPE.COLUMN
         },
         CASecteurActuel: {
           name: "Proportion du CA par secteur (Notre Mandat)",
-          extract: (data, options) => turnoverDistribution(HEADS.secteur, data, options),
+          extract: (data, options,dataAux) => turnoverDistribution2(HEADS.secteur, data, options,dataAux),
           data: "prospMandat",
+          dataHelp: "etudeMandat",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
           options: {
-            colors: COLORS_OFFICE
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
           },
           chartType: CHART_TYPE.PIE
         },
@@ -551,27 +743,22 @@
           data: "prospPrec",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
           options: {
-            colors: COLORS_OFFICE
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
           },
           chartType: CHART_TYPE.PIE
         },
         CADomaineActuel: {
           name: "CA par filiere (Notre Mandat)",
-          extract: (data, options) => turnoverDistribution(HEADS.filiere, data, options),
+          extract: (data, options,dataAux) => turnoverDistribution2(HEADS.filiere, data, options,dataAux),
           data: "prospMandat",
+          dataHelp: "etudeMandat",
           filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
           options: {
-            colors: COLORS_OFFICE
-          },
-          chartType: CHART_TYPE.PIE
-        },
-        CADomaineAncien: {
-          name: "CA par filiere (Mandat précédent)",
-          extract: (data, options) => turnoverDistribution(HEADS.filiere, data, options),
-          data: "prospPrec",
-          filter: row => row[HEADS.état] == ETAT_PROSP.etude && row[HEADS.secteur] != "",
-          options: {
-            colors: COLORS_OFFICE
+            colors: COLORS_OFFICE,
+            htitle : "",
+            vtitle : ""
           },
           chartType: CHART_TYPE.PIE
         }

@@ -9,7 +9,7 @@ function actu() {
     let data = {};
     // Data extracted from each sheet as an Array of Object, each element being 1 line in the Sheet with keys that match the columns given in HEADS.
     Object.entries(DATA_LINKS).forEach(spreadsheet => {
-        data[spreadsheet[0]] = Object.values(spreadsheet[1]).reduce((dataTemp, sheet) => dataTemp.concat(extractSheetData(sheet.id, sheet.sheetName, sheet.pos).filter(sheet.filter)), []);
+      data[spreadsheet[0]] = Object.values(spreadsheet[1]).reduce((dataTemp, sheet) => dataTemp.concat(extractSheetData(sheet.id, sheet.sheetName, sheet.pos).filter(sheet.filter)), []);
     });
     Object.entries(CATEGORIES).forEach(
         category => {

@@ -160,7 +160,8 @@ const HEADS = Object.freeze({
      * @readonly
      */
     CONTACT_TYPE = Object.freeze({
-        quali: "Prospection quali ",
+        admin: "Administration/Laboratoire ENPC",
+        quali: "Prospection quali",
         spontané: "Contact spontané",
         classique: "Prospection classique ",
         recommandé: "Recommandé ",
@@ -244,16 +245,12 @@ const HEADS = Object.freeze({
  * @readonly
  */
  const MONTH_LIST = Object.freeze([{
-    month: 10,
-    year: 2020
-},
-{
     month: 11,
     year: 2020
 },
 {
     month: 0,
-    year: 2021
+    year: 2020
 },
 {
     month: 1,
@@ -301,10 +298,14 @@ const HEADS = Object.freeze({
 },
 {
     month: 0,
-    year: 2022
+    year: 2021
 },
 {
     month: 1,
+    year: 2022
+},
+{
+    month: 2,
     year: 2022
 }
 ]),

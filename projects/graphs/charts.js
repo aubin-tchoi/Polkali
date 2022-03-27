@@ -65,6 +65,14 @@ function updateOrCreateChart(kpi,update,spreadsheetId) {
       chart.setOption('series', kpi.options.series)
     }catch(e){Logger.log(e)
     };
+        try{
+      chart.setOption('hAxis.title', kpi.options.htitle)
+    }catch(e){Logger.log(e)
+    };
+        try{
+      chart.setOption('vAxis.title', kpi.options.vtitle)
+    }catch(e){Logger.log(e)
+    };
     try{
       chart.setOption('is3D', kpi.options.is3D)
     }catch(e){Logger.log(e)
@@ -104,4 +112,8 @@ function addOptions(chartBuilder, title, options) {
         .setTitle(title)
         .setDimensions(options.width, options.height)
         .build();
+}
+
+function execute(){
+  updateOrCreateChart(CATEGORIES.com.KPIs.comFacebook,false,"16EkXSEQPI7LRb45aSbjZAZFPfP4pmx0__4leyLHsDIc")
 }

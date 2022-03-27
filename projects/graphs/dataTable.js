@@ -52,15 +52,15 @@ function conversionTotal(dataIn, options, dataAux){
     let tableDevisSent = dataIn.filter(row => Object.values(ETAT_PROSP).indexOf(row[HEADS.état]) >= Object.values(ETAT_PROSP).indexOf(ETAT_PROSP.devis)),
         tableSignedEtude = dataAux.filter( row => Object.values(ETAT_ETUDE_SIGNEE).includes(row[HEADS.état]));
     dataOut.push({
-        "taux_conversion__devis_etude": `Conversion en étude signée sur ${tableDevisSent.length} devis envoyés`,
+        "taux_conversion_devis_etude": `Pourcentage d'études signées sur ${tableDevisSent.length} devis envoyés`,
         "Nombre" : 100*tableSignedEtude.length/tableDevisSent.length
     });
     dataOut.push({
-        "taux_conversion_contact_etude": `Conversion en étude signée sur ${dataIn.length} contacts`,
+        "taux_conversion_contact_etude": `Pourcentage d'études signées sur ${dataIn.length} contacts`,
         "Nombre" : 100*tableSignedEtude.length/dataIn.length
     });
     dataOut.push({
-        "taux_conversion_contact_devis": `Conversion en devis envoyé sur ${dataIn.length} contacts`,
+        "taux_conversion_contact_devis": `Pourcentage de devis envoyé sur ${dataIn.length} contacts`,
         "Nombre" : 100*tableDevisSent.length/dataIn.length
     });
     return {
@@ -133,13 +133,9 @@ function keyNumbers(dataIn, options){
 function conversionRateByType(dataIn, options) {
     let dataOut = [];
     let nbrdv = dataIn.length;
-    Logger.log(nbrdv);
     let nbdevis = dataIn.filter(row => Object.values(ETAT_PROSP).indexOf(ETAT_PROSP.devis) <= Object.values(ETAT_PROSP).indexOf(row[HEADS.état])).length;
-    Logger.log(nbdevis);
     let nbnegoc = dataIn.filter(row => Object.values(ETAT_PROSP).indexOf(ETAT_PROSP.negoc) <= Object.values(ETAT_PROSP).indexOf(row[HEADS.état])).length;
-    Logger.log(nbnegoc);
     let nbetude = dataIn.filter(row => Object.values(ETAT_PROSP).indexOf(ETAT_PROSP.etude) <= Object.values(ETAT_PROSP).indexOf(row[HEADS.état])).length;
-    Logger.log(nbetude);
 
     dataOut.push({
         "Étape de la conversion": `${ETAT_PROSP.rdv} -> ${ETAT_PROSP.devis}`,
@@ -173,7 +169,7 @@ function totalDistribution(key, dataIn, options) {
         // [key] : setting the key of an Object using a variable (only with ES6 and Babel)
         dataOut.push({
             [key]: type,
-            "Proportion des contacts": dataIn.filter(row => row[key] == type).length / dataIn.length
+            "Proportion des contacts": dataIn.filter(row => row[key] == type).length
         });
     });
 
@@ -199,6 +195,29 @@ function turnoverDistribution(key, dataIn, options, price = HEADS.caPot) {
             [key]: currentType,
             "Proportion du CA": prcnt(dataIn.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0), ca)
         });
+    });
+
+    return {
+        data: dataOut,
+        options: options
+    };
+}
+
+/**
+ * Calcul du CA selon les valeurs présentes dans une colonne du fichier de suivi de la prospection (transposable au suivi d'étude en remplaçant caPot en prix).
+ * @param {string} key Nom de la colonne selon laquelle sera évaluée la répartition du CA.
+ * @param {Array} dataIn Données d'entrée.
+ * @returns {Array} Table des données permettant de créer le graphe correspondant.
+ */
+function turnoverDistribution2(key, dataIn, options, dataHelp, price = HEADS.prix) {
+    let dataOut = [];
+    let filter = etude => (etude[HEADS.état] == ETAT_PROSP.etude)
+    let dataNew = fusion(HEADS.entreprise,dataIn,dataHelp,filter);
+    
+    uniqueValues(key, dataNew).forEach(currentType => {
+        dataOut.push({
+            [key]: currentType,
+            "Proportion du CA": dataNew.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0)});
     });
 
     return {
@@ -237,8 +256,10 @@ function performanceByContact(key, dataIn, options, dataHelp) {
     let dataOut = [];
     let filter = etude => (etude[HEADS.état] == ETAT_PROSP.etude)
     let dataNew = fusion(HEADS.entreprise,dataIn,dataHelp,filter);
+    Logger.log(dataIn.map(row => row["Entreprise"]));
+    Logger.log(dataIn.map(row => row["Entreprise"]).length);
     let maxTick = 0;
-    uniqueValues(key, dataIn).forEach(currentType => {
+    uniqueValues(key, dataNew).forEach(currentType => {
         maxTick = Math.max(
             maxTick,
             dataIn.filter(row => !!row[HEADS.devis] && row[key] == currentType).length,
@@ -246,7 +267,7 @@ function performanceByContact(key, dataIn, options, dataHelp) {
             parseInt(dataNew.filter(row => row[HEADS.état] == ETAT_PROSP.etude && row[key] == currentType).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0) / 1000, 10) + 1);
         dataOut.push({
             [key]: currentType,
-            "Nombre de devis envoyés": dataIn.filter(row => (Object.values(ETAT_ETUDE).indexOf(ETAT_ETUDE.devisAccepte) <= Object.values(ETAT_ETUDE).indexOf(row[HEADS.état]) || (Object.values(ETAT_PROSP).indexOf(ETAT_PROSP.devis) <= Object.values(ETAT_PROSP).indexOf(row[HEADS.état]) )) && row[key] == currentType).length,
+            "Nombre de devis envoyés": dataIn.filter(row => Object.values(ETAT_PROSP).indexOf(ETAT_PROSP.devis) <= Object.values(ETAT_PROSP).indexOf(row[HEADS.état]) && row[key] == currentType).length,
             "Nombre d'études signées": dataNew.filter(row => (Object.values(ETAT_ETUDE_SIGNEE).includes(row[HEADS.état]) && row[key] == currentType)).length,
             "CA (en milliers d'euros)": dataNew.filter(row => (Object.values(ETAT_ETUDE_SIGNEE).includes(row[HEADS.état]) && row[key] == currentType)).reduce((sum, row) => sum += parseInt(row[HEADS.prix], 10) || 0, 0) / 1000
         });
@@ -267,16 +288,18 @@ function performanceByContact(key, dataIn, options, dataHelp) {
  * @returns {Array} Table des données permettant de créer le graphe correspondant
  * et tableau des valeurs à indiquer selon l'axe vertical.
  */
-function performance(key, dataIn, options, price = HEADS.caPot) {
+function performance(key, dataIn, options, dataAux, price = HEADS.prix) {
     let dataOut = [],
         maxTick = 0;
+    let filter = etude => (etude[HEADS.état] == ETAT_PROSP.etude)
+    let dataNew = fusion(HEADS.entreprise,dataIn,dataAux,filter);
 
     uniqueValues(key, dataIn).forEach(currentType => {
         maxTick = Math.max(maxTick, dataIn.filter(row => row[key] == currentType).length, parseInt(dataIn.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0) / 1000, 10) + 1);
         dataOut.push({
             [key]: currentType,
-            "Nombre d'études": dataIn.filter(row => row[key] == currentType).length,
-            "CA (en milliers d'€)": dataIn.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0) / 1000
+            "Nombre d'études": dataNew.filter(row => row[key] == currentType).length,
+            "CA (en milliers d'€)": dataNew.filter(row => row[key] == currentType).reduce((sum, row) => sum += parseInt(row[price], 10) || 0, 0) / 1000
         });
     });
 
@@ -311,68 +334,80 @@ function priceRange(dataIn, options) {
     };
 }
 
-function rateOn5(question,dataIn,options){
-    let dataOut = [];
-    const numbers = [1,2,3,4,5];
-    numbers.forEach( number => dataOut.push({
-        [key]: number,
-        "occurence" : dataIn.filter(row => (row[question]==key) ).length
-    }));
+function answerAnalyze(dataIn, options, question){
+  let dataOut = [],
+  newData = dataIn.map(row => row[question]);
+  let val = [];
+  newData.forEach(value => {if(val.indexOf(value) == -1){val.push(value)}});
 
-    return {
-        data: dataOut,
-        options: options
-    };
-}
+  val.forEach( v => {
+    dataOut.push({
+      [v]: v,
+      nombre: newData.filter(row => (row == v)).length
+    })
+  })
 
-
-function moyenneRate(dataIn,options,liste){
-    let dataOut = [];
-    liste.forEach(question => dataOut.push({
-        [key]: question,
-        "rate" : dataIn.map(row => row[question]).reduce( (r,x) => r = r + x,0)/dataIn.length
-    }
-    ));
-    return {
-        data: dataOut,
-        options: options
-    };
+  return {
+    data: dataOut,
+    options: options
+  }
 }
 
 function prospectionParSecteur(dataIn, options){
     let dataOut = [];
-    total = dataIn.filter(row => (row["Mail normal"] == 'quali' || row["Mail normal"] == 'VRAI')).length
-    TYPEBDD.forEach(type => dataOut.push({
-        [key]: type,
-        "rate" : dataIn.filter(row => row["type"] == type && (row["Mail normal"] == 'quali' || row["Mail normal"] == 'VRAI')).length/total
-    }))
+    let newData = dataIn.filter(row => row["Mail"] != "");
+    total = newData.filter(row => (row["Contacté par"] != '')).length;
+    Object.values(TYPEBDD).forEach(type => {dataOut.push({
+        [type]: type + " quanti",
+        "Quanti" : newData.filter(row => row["Type"] == type && row["Contacté par"] != '' && row["Mail normal"] == true).length/total
+    });
+    dataOut.push({
+      [type]: type + " quali",
+      "Quali": newData.filter(row => row["Type"] == type && row["Contacté par"] != '' && row["Mail normal"] == "quali").length/total
+
+    })})
     return {
         data: dataOut,
         options: options
     }
 }
 
-function prospectionTotal(dataIn,options){
+function prospectionTotalNumber(dataIn,options){
     let dataOut = [];
     total = dataIn.filter(row => row["Mail"] != '').length
-    nbQuali = dataIn.filter(row => row["Mail normal"] == 'quali').length
-    nbQuanti = dataIn.filter(row => row["Mail normal"] == 'VRAI').length
+    nbQuali = dataIn.filter(row => row["Mail normal"] == 'quali' && row["Contacté par"] != '').length
+    nbQuanti = dataIn.filter(row => row["Mail normal"] == true && row["Contacté par"] != '').length
     autre = total - nbQuali - nbQuanti
     dataOut.push({
-        [key]: quali,
-        "rate" : nbQuali/total
+        'Quali': "quali",
+        "Nombre" : nbQuali
     });
     dataOut.push({
-        [key]: quali,
-        "rate" : nbQuanti/total
+        'Quanti': "quanti",
+        "Nombre" : nbQuanti
     });
     dataOut.push({
-        [key]: quali,
-        "rate" : autre/total
+        'Non envoyé': 'Non envoyé',
+        "Nombre" : autre
     });
-
     return {
         data: dataOut,
         options: options
     }
+}
+
+function suiviCom(dataIn,options){
+  let dataOut = [];
+
+  MONTH_LIST.forEach(function (month) {
+      dataOut.push({
+            "Mois": `${MONTH_NAMES[month.month]} ${month.year} ${dataIn.filter(row => (row["Date"].getMonth() == month.month && row["Date"].getFullYear() == month.year)).length}`+ " posts",
+            "Nombre de réaction": dataIn.filter(row => (row["Date"].getMonth() == month.month && row["Date"].getFullYear() == month.year)).reduce((sum,row) => sum += row["Nombre de réaction"],0)
+      });
+    });
+
+  return {
+    data: dataOut,
+    options: options
+  }
 }

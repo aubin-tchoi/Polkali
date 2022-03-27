@@ -27,9 +27,9 @@
  * @returns {number} Nombre de lignes de données.
  */
 function manuallyGetRowNumber(sheet, start, trustColumn) {
-    // 100 is considered as a higher bound for the number of rows inside of this sheet
-    let data = sheet.getRange(start, trustColumn, (100 - start + 1), 1).getValues();
-    for (row = 0; row < 100; row++) {
+    // 1000 is considered as a higher bound for the number of rows inside of this sheet
+    let data = sheet.getRange(start, trustColumn, (1000 - start + 1), 1).getValues();
+    for (row = 0; row < 1000; row++) {
         if ((data[row][0]) == "") {
             return row;
         }
@@ -190,4 +190,3 @@ const logTime = (message) => ((target, name, descriptor) => {
     descriptor.value();
     measureTime(initialTime, message);
 });
-
